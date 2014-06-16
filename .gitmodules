@@ -1,0 +1,18 @@
+[submodule "modules/zsh-syntax-highlighting"]
+	path = modules/zsh-syntax-highlighting
+	url = git://github.com/zsh-users/zsh-syntax-highlighting.git
+[submodule "modules/zsh-completions"]
+	path = modules/zsh-completions
+	url = git://github.com/zsh-users/zsh-completions.git
+[submodule "modules/auto-fu.zsh"]
+	path = modules/auto-fu.zsh
+	url = git://github.com/hchbaw/auto-fu.zsh.git
+[submodule "modules/base16-iterm2"]
+	path = modules/base16-iterm2
+	url = https://github.com/chriskempson/base16-iterm2
+[submodule "modules/hub"]
+	path = modules/hub
+	url = git://github.com/github/hub.git
+[submodule "modules/zsh-notify"]
+	path = modules/zsh-notify
+	url = https://github.com/marzocchi/zsh-notify.git
