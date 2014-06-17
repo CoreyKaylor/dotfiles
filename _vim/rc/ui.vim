@@ -12,6 +12,15 @@ set foldmethod=syntax                               "fold via syntax of files
 set foldlevelstart=99                               "open all folds by default
 let g:xml_syntax_folding=1                          "enable xml folding
 
+set timeoutlen=300                                  "mapping timeout
+set ttimeoutlen=50                                  "keycode timeout
+
+set mouse=a                                         "enable mouse
+set mousehide                                       "hide when characters are typed
+set history=1000                                    "number of command lines to remember
+set ttyfast                                         "assume fast terminal connection
+set viewoptions=folds,options,cursor,unix,slash     "unix/windows compatibility
+
 set cursorline
 autocmd WinLeave * setlocal nocursorline
 autocmd WinEnter * setlocal cursorline
@@ -29,3 +38,8 @@ else
     let &t_EI = "\<Esc>]50;CursorShape=0\x7"
   endif
 endif
+
+autocmd BufReadPost *
+      \ if line("'\"") > 0 && line("'\"") <= line("$") |
+      \  exe 'normal! g`"zvzz' |
+      \ endif
