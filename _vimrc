@@ -1,18 +1,18 @@
-source $HOME/.vim/rc/general.vimrc
-source $HOME/.vim/rc/behavior.vimrc
-source $HOME/.vim/rc/mapping.vimrc
-source $HOME/.vim/rc/ui.vimrc
-source $HOME/.vim/rc/search.vimrc
-source $HOME/.vim/rc/ftdetects.vimrc
-source $HOME/.vim/rc/plugins.vimrc
-source $HOME/.vim/rc/highlight.vimrc
+" source $HOME/.vim/rc/general.vim
+" source $HOME/.vim/rc/behavior.vim
+" source $HOME/.vim/rc/mapping.vim
+" source $HOME/.vim/rc/search.vim
+" source $HOME/.vim/rc/ftdetects.vim
+source $HOME/.vim/rc/plugins.vim
+source $HOME/.vim/rc/ui.vim
+" source $HOME/.vim/rc/highlight.vim
 
-if has('mac')
-    source $HOME/.vim/rc/mac.vimrc
-endif
+" if has('mac')
+"    source $HOME/.vim/rc/mac.vim
+" endif
 
-if exists("$HOME/.vimrc.local")
-    source $HOME/.vimrc.local
-endif
+" if exists("$HOME/.vimrc.local")
+"    source $HOME/.vimrc.local
+" endif
 
 " vim: set filetype=vim :
