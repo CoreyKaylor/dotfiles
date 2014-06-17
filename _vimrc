@@ -1,4 +1,4 @@
-" source $HOME/.vim/rc/general.vim
+source $HOME/.vim/rc/general.vim
 " source $HOME/.vim/rc/behavior.vim
 " source $HOME/.vim/rc/mapping.vim
 " source $HOME/.vim/rc/search.vim
