@@ -24,6 +24,7 @@ set viewoptions=folds,options,cursor,unix,slash     "unix/windows compatibility
 set cursorline
 autocmd WinLeave * setlocal nocursorline
 autocmd WinEnter * setlocal cursorline
+inoremap <silent> <Esc> <C-O>:stopinsert<CR>
 
 if has('gui_running')
   set guioptions+=t
