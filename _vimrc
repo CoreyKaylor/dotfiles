@@ -1,6 +1,6 @@
 source $HOME/.vim/rc/general.vim
 " source $HOME/.vim/rc/behavior.vim
-" source $HOME/.vim/rc/mapping.vim
+source $HOME/.vim/rc/mappings.vim
 " source $HOME/.vim/rc/search.vim
 " source $HOME/.vim/rc/ftdetects.vim
 source $HOME/.vim/rc/plugins.vim
