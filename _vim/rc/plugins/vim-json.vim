@@ -1,1 +1,1 @@
-NeoBundleLazy 'leshill/vim-json', {'autoload':{'filetypes':['javascript','json']}}
+NeoBundleLazy 'elzr/vim-json', {'autoload':{'filetypes':['javascript','json']}}
