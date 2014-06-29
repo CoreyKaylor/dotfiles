@@ -6,6 +6,7 @@ set autoindent               " automatic indent new lines
 set smartindent              " be smart about it
 set expandtab                " expand tabs to spaces
 set nosmarttab               " no tabs
+set tabstop=2
 " Allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 if exists('$TMUX')
@@ -20,7 +21,7 @@ set tags=tags;/
 set showfulltag
 set modeline
 set modelines=5
-set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.idea/*,*/.DS_Store
+set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.idea/*,*/.DS_Store,*/node_modules,*/.mimosa
 set visualbell t_vb=         " No beep sound
 set noerrorbells
 set novisualbell
@@ -28,3 +29,4 @@ set hlsearch
 set incsearch
 set ignorecase
 set smartcase
+set noswapfile
