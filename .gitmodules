@@ -16,3 +16,6 @@
 [submodule "modules/zsh-notify"]
 	path = modules/zsh-notify
 	url = https://github.com/marzocchi/zsh-notify.git
+[submodule "modules/tmux-MacOSX-pasteboard"]
+	path = modules/tmux-MacOSX-pasteboard
+	url = git://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard.git
