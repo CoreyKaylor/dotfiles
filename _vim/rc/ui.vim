@@ -24,13 +24,6 @@ set viewoptions=folds,options,cursor,unix,slash     "unix/windows compatibility
 set cursorline
 autocmd WinLeave * setlocal nocursorline
 autocmd WinEnter * setlocal cursorline
-" Causes insert mode arrow key problems
-" inoremap <silent> <Esc> <C-O>:stopinsert<CR>
-" Alternative programmatic
-let CursorColumnI = 0 "the cursor column position in INSERT
-autocmd InsertEnter * let CursorColumnI = col('.')
-autocmd CursorMovedI * let CursorColumnI = col('.')
-autocmd InsertLeave * if col('.') != CursorColumnI | call cursor(0, col('.')+1) | endif"
 
 if has('gui_running')
   set guioptions+=t
