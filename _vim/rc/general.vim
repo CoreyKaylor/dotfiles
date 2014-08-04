@@ -2,11 +2,13 @@ let mapleader = ','
 let g:mapleader = ','
 set nolazyredraw             " don't redraw while executing macros
 set fileformats=unix,mac,dos " Automatic end-of-file format detection
-set autoindent               " automatic indent new lines
-set smartindent              " be smart about it
-set expandtab                " expand tabs to spaces
-set nosmarttab               " no tabs
+" set autoindent               " automatic indent new lines
+" set smartindent              " be smart about it
+" set expandtab                " expand tabs to spaces
+set smarttab                   " no tabs
 set tabstop=2
+set softtabstop=2
+set shiftwidth=2
 " Allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 if exists('$TMUX')

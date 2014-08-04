@@ -5,6 +5,20 @@ function! bundle.hooks.on_source(bundle)
   call unite#filters#sorter_default#use(['sorter_rank'])
   call unite#set_profile('files', 'smartcase', 1)
   call unite#custom#source('line,outline','matchers','matcher_fuzzy')
+	call unite#custom#source('file_rec,file_rec/async,file_mru,file,buffer,grep',
+      \ 'ignore_pattern', join([
+      \ '\.git/',
+      \ 'git5/.*/review/',
+      \ 'google/obj/',
+      \ 'tmp/',
+      \ '.sass-cache',
+      \ '.hg/',
+      \ 'node_modules/',
+      \ 'bower_components/',
+      \ 'dist/',
+      \ '.git5_specs/',
+      \ '.pyc',
+      \ ], '\|'))
 endfunction
 let g:unite_enable_start_insert=1
 let g:unite_source_history_yank_enable=1
@@ -23,7 +37,7 @@ autocmd FileType unite call s:unite_settings()
 nmap <space> [unite]
 nnoremap [unite] <nop>
 nnoremap <silent> [unite]<space> :<C-u>Unite -toggle -auto-resize -buffer-name=mixed file_rec/async:! buffer file_mru bookmark<cr><c-u>
-nnoremap <silent> [unite]f :<C-u>Unite -toggle -auto-resize -buffer-name=files file_rec/async:!<cr><c-u>
+nnoremap <silent> [unite]f :<C-u>Unite -toggle -auto-resize -buffer-name=files file_rec<cr><c-u>
 nnoremap <silent> [unite]e :<C-u>Unite -buffer-name=recent file_mru<cr>
 nnoremap <silent> [unite]y :<C-u>Unite -buffer-name=yanks history/yank<cr>
 nnoremap <silent> [unite]l :<C-u>Unite -auto-resize -buffer-name=line line<cr>
