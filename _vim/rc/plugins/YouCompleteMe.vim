@@ -1,6 +1,6 @@
 NeoBundle 'Valloric/YouCompleteMe', {
   \ 'vim_version':'7.3.584', 
-  \ 'build' : { 'mac' : './install.sh' },
+  \ 'build' : { 'mac' : './install.sh --omnisharp-completer' },
   \ }
 set completeopt-=preview
 
