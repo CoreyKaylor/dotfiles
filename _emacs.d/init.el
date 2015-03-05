@@ -1,0 +1,37 @@
+(require 'package)
+
+(setq package-archives
+      '(("gnu"       . "http://elpa.gnu.org/packages/")
+        ("original"  . "http://tromey.com/elpa")
+        ("org"       . "http://orgmode.org/elpa/")
+        ("marmalade" . "http://marmalade-repo.org/packages/")
+        ("melpa"     . "http://melpa.milkbox.net/packages/")))
+
+(package-initialize)
+
+(unless package-archive-contents
+  (package-refresh-contents))
+
+(defvar required-packages
+  (list 'use-package))
+
+(dolist (package required-packages)
+  (unless (package-installed-p package)
+    (package-install package)))
+
+(require 'use-package)
+
+(defun load-directory (dir)
+  "`load' all elisp libraries in directory DIR which are not already loaded."
+  (interactive "D")
+  (let ((libraries-loaded (mapcar #'file-name-sans-extension
+                                  (delq nil (mapcar #'car load-history)))))
+    (dolist (file (directory-files dir t ".+\\.elc?$"))
+      (let ((library (file-name-sans-extension file)))
+        (unless (member library libraries-loaded)
+          (load library nil t)
+          (push library libraries-loaded))))))
+
+(load-directory "~/.emacs.d/config/")
+
+(set-face-attribute 'default nil :height 140 :font "Consolas")
