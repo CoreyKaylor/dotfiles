@@ -3,3 +3,4 @@ spell/
 elpa/
 auto-save-list/
 .netrwhist
+.DS_Store
