@@ -35,3 +35,14 @@
 (load-directory "~/.emacs.d/config/")
 
 (set-face-attribute 'default nil :height 140 :font "Consolas")
+
+(setq backup-directory-alist
+								`((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+								`((".*" ,temporary-file-directory t)))
+
+(fset 'yes-or-no-p 'y-or-n-p)
+(setq-default indent-tabs-mode nil)
+(tool-bar-mode 0)
+(global-linum-mode 1)
+(setq whitespace-style (quote (spaces tabs space-mark tab-mark)))
