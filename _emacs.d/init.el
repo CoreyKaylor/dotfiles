@@ -46,3 +46,5 @@
 (tool-bar-mode 0)
 (global-linum-mode 1)
 (setq whitespace-style (quote (spaces tabs space-mark tab-mark)))
+
+(toggle-frame-maximized)
