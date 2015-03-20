@@ -4,3 +4,4 @@ elpa/
 auto-save-list/
 .netrwhist
 .DS_Store
+/_emacs.d/omnisharp-emacs/

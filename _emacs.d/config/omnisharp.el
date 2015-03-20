@@ -2,14 +2,18 @@
   (add-to-list 'company-backends 'company-omnisharp)
   (omnisharp-mode)
   (company-mode)
-  (turn-on-eldoc-mode)
-  (flycheck-mode))
+  (turn-on-eldoc-mode))
+  ;;(flycheck-mode))
 
 (use-package omnisharp
   :ensure omnisharp
   :config 
     (setq omnisharp-company-do-template-completion t)
     (add-hook 'csharp-mode-hook 'my-csharp-mode)
+    (evil-define-key 'normal omnisharp-mode-map (kbd ",rt") (lambda() (interactive) (omnisharp-unit-test "single"))) 
+    (evil-define-key 'normal omnisharp-mode-map (kbd ",rf") (lambda() (interactive) (omnisharp-unit-test "fixture")))
+    (evil-define-key 'normal omnisharp-mode-map (kbd ",ra") (lambda() (interactive) (omnisharp-unit-test "all")))
+
     (evil-define-key 'normal omnisharp-mode-map (kbd "g d") 'omnisharp-go-to-definition)
     (evil-define-key 'normal omnisharp-mode-map (kbd "<SPC> b") 'omnisharp-build-in-emacs)
     (evil-define-key 'normal omnisharp-mode-map (kbd "<SPC> cf") 'omnisharp-code-format)
@@ -22,3 +26,4 @@
     (evil-define-key 'normal omnisharp-mode-map (kbd "<SPC> x") 'omnisharp-fix-code-issue-at-point)
     (evil-define-key 'normal omnisharp-mode-map (kbd "<SPC> fx") 'omnisharp-fix-usings)
     (evil-define-key 'normal omnisharp-mode-map (kbd "<SPC> o") 'omnisharp-auto-complete-overrides))
+ 
