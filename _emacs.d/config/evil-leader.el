@@ -11,6 +11,11 @@
       "e" 'find-file
       "b" 'switch-to-buffer
       "k" 'kill-buffer
-      "w" 'save-buffer)
+      "w" 'save-buffer
+      "gs" 'magit-status
+      "gc" 'magit-commit
+      "gl" 'magit-log
+      "gn" 'git-gutter+-next-hunk
+      "gp" 'git-gutter+-previous-hunk)
     )
   )
