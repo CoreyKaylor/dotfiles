@@ -1,5 +1,4 @@
 (require 'package)
-
 (setq package-archives
       '(("gnu"       . "http://elpa.gnu.org/packages/")
         ("original"  . "http://tromey.com/elpa")
@@ -18,6 +17,10 @@
 (dolist (package required-packages)
   (unless (package-installed-p package)
     (package-install package)))
+
+(setq inhibit-splash-screen t
+      inhibit-startup-echo-area-message t
+      inhibit-startup-message t)
 
 (require 'use-package)
 

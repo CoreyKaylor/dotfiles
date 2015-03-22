@@ -6,3 +6,4 @@ auto-save-list/
 .DS_Store
 /_emacs.d/omnisharp-emacs/
 /_emacs.d/projectile-bookmarks.eld
+/_emacs.d/projectile.cache

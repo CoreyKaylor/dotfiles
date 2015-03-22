@@ -1,2 +1,3 @@
 (use-package powerline-evil
-  :ensure powerline-evil)
+  :ensure t
+  :defer 5)

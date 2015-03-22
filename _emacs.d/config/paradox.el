@@ -1,2 +1,3 @@
 (use-package paradox
-  :ensure paradox)
+  :ensure t
+  :defer 15)

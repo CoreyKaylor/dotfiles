@@ -1,3 +1,3 @@
 (use-package jsx-mode
-  :ensure jsx-mode
+  :ensure t
   :mode ("\\.jsx\\'" . jsx-mode))

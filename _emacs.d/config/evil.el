@@ -1,5 +1,5 @@
 (use-package evil
   :commands (evil-mode)
-  :ensure evil
-  :demand evil
-  :init (evil-mode 1))
+  :ensure t
+  :defer 2
+  :config (evil-mode 1))

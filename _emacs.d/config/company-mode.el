@@ -1,2 +1,2 @@
 (use-package company
-  :ensure company)
+  :ensure t)

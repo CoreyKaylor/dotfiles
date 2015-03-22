@@ -1,2 +1,3 @@
 (use-package flycheck
-  :ensure flycheck)
+  :ensure t
+  :defer 15)

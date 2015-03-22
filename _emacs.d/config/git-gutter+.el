@@ -1,6 +1,8 @@
 (use-package git-gutter+
-  :ensure git-gutter+
+  :ensure t
+  :disabled t
   :config (global-git-gutter+-mode))
 
 (use-package git-gutter-fringe+
-  :ensure git-gutter-fringe+)
+  :ensure t
+  :disabled t)

@@ -1,4 +1,5 @@
 (use-package smooth-scroll
-  :ensure smooth-scroll
+  :ensure t
+  :defer 5
   :config
   (smooth-scroll-mode t))

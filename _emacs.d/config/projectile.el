@@ -1,3 +1,7 @@
 (use-package projectile
-  :ensure projectile
-  :init (projectile-global-mode))
+  :ensure t
+  :commands projectile-global-mode
+  :defer 5
+  :bind-keymap ("C-c p" . projectile-command-map)
+  :config
+    (projectile-global-mode))

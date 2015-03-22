@@ -1,3 +1,4 @@
 (use-package powerline
-  :ensure powerline
-  :init (powerline-default-theme))
+  :ensure t
+  :defer 5
+  :config (powerline-default-theme))
