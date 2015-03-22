@@ -51,3 +51,8 @@
 (setq whitespace-style (quote (spaces tabs space-mark tab-mark)))
 
 (toggle-frame-maximized)
+
+(global-set-key (kbd "C-h") 'windmove-left)
+(global-set-key (kbd "C-l") 'windmove-right)
+(global-set-key (kbd "C-j") 'windmove-down)
+(global-set-key (kbd "C-k") 'windmove-up)
