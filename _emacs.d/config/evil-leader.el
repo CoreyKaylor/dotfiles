@@ -15,5 +15,8 @@
       "gs" 'magit-status
       "gc" 'magit-commit
       "gl" 'magit-log
-      "gn" 'git-gutter+-next-hunk
-      "gp" 'git-gutter+-previous-hunk))
+      "gg" 'git-gutter-mode
+      "gn" 'git-gutter:next-hunk
+      "gp" 'git-gutter:previous-hunk
+      "gh" 'git-gutter:stage-hunk
+      "gr" 'git-gutter:revert-hunk))
