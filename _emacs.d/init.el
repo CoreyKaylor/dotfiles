@@ -21,6 +21,12 @@
 (setq inhibit-splash-screen t
       inhibit-startup-echo-area-message t
       inhibit-startup-message t)
+(setq shell-file-name "/bin/zsh")
+
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
 
 (require 'use-package)
 
@@ -39,11 +45,6 @@
 
 (set-face-attribute 'default nil :height 140 :font "Consolas")
 
-(setq backup-directory-alist
-								`((".*" . ,temporary-file-directory)))
-(setq auto-save-file-name-transforms
-								`((".*" ,temporary-file-directory t)))
-
 (fset 'yes-or-no-p 'y-or-n-p)
 (setq-default indent-tabs-mode nil)
 (tool-bar-mode 0)
@@ -52,7 +53,7 @@
 
 (toggle-frame-maximized)
 
-(global-set-key (kbd "C-h") 'windmove-left)
-(global-set-key (kbd "C-l") 'windmove-right)
-(global-set-key (kbd "C-j") 'windmove-down)
-(global-set-key (kbd "C-k") 'windmove-up)
+(global-set-key (kbd "C-c w h") 'windmove-left)
+(global-set-key (kbd "C-c w l") 'windmove-right)
+(global-set-key (kbd "C-c w j") 'windmove-down)
+(global-set-key (kbd "C-c w k") 'windmove-up)

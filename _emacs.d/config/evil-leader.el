@@ -1,8 +1,7 @@
+(require 'use-package)
 (use-package evil-leader
   :ensure t
   :defer 5
-  :commands (evil-leader-mode)
-  :demand evil-leader
   :config
     (global-evil-leader-mode)
     (evil-leader/set-leader ",")
@@ -11,6 +10,7 @@
       "b" 'switch-to-buffer
       "k" 'kill-buffer
       "w" 'save-buffer
+      "ff" 'helm-projectile-find-file
       "gf" 'helm-projectile-find-file-dwim
       "gs" 'magit-status
       "gc" 'magit-commit

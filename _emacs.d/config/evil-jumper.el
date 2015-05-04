@@ -1,6 +1,6 @@
+(require 'use-package)
 (use-package evil-jumper
   :ensure evil-jumper
-  :defer 5
   :config 
     (setq evil-jumper-auto-center t)
     (setq evil-jumper-file (concat temporary-file-directory "evil-jumps"))

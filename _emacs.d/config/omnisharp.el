@@ -1,26 +1,59 @@
+(require 'use-package)
+
 (defun my-csharp-mode ()
+  (defvar company-backends)
+  (defvar c-basic-offset)
   (add-to-list 'company-backends 'company-omnisharp)
   (omnisharp-mode)
   (company-mode)
-  (turn-on-eldoc-mode))
-  ;;(flycheck-mode))
+  (setq c-basic-offset 4)
+  (setq tab-width 4)
+  (setq indent-tabs-mode nil)
+  (eldoc-mode))
 
 (use-package omnisharp
   :ensure t
-  :mode ("\\.cs\\'" . csharp-mode)
-  :init (add-hook 'csharp-mode-hook 'my-csharp-mode)
-  :config 
-    (setq omnisharp-company-do-template-completion t)
+  :init
+  (add-hook 'csharp-mode-hook 'my-csharp-mode)
+  (custom-set-variables
+   '(omnisharp-company-sort-results t)
+   '(omnisharp-auto-complete-want-documentation nil)
+   '(omnisharp-company-strip-trailing-brackets nil)
+   )
+  :config
+  (defvar evil-normal-state-map)
+  (add-to-list 'auto-mode-alist '("\\.cs$" . csharp-mode))
+  (setq omnisharp-company-do-template-completion t)
 
-    (evil-define-key 'normal omnisharp-mode-map (kbd "g d") 'omnisharp-go-to-definition)
-    (evil-leader/set-key
-      "rt" (lambda() (interactive) (omnisharp-unit-test "single"))
-      "rf" (lambda() (interactive) (omnisharp-unit-test "fixture"))
-      "ra" (lambda() (interactive) (omnisharp-unit-test "all"))
-      "fu" 'omnisharp-helm-find-usages
-      "cf" 'omnisharp-code-format
-      "b"  'omnisharp-build-in-emacs
-      "fi" 'omnisharp-find-implementations
-      "fx" 'omnisharp-fix-usings
-    ))
- 
+  (evil-define-key 'normal omnisharp-mode-map (kbd "g d") (lambda() (interactive) (evil-jumper--set-jump) (omnisharp-go-to-definition)))
+  (evil-define-key 'normal omnisharp-mode-map (kbd ", b") 'omnisharp-build-in-emacs)
+  (evil-define-key 'normal omnisharp-mode-map (kbd ", cf") 'omnisharp-code-format)
+  (evil-define-key 'normal omnisharp-mode-map (kbd ", nm") 'omnisharp-rename-interactively)
+  (evil-define-key 'normal omnisharp-mode-map (kbd ", fu") 'omnisharp-helm-find-usages)
+  (evil-define-key 'normal omnisharp-mode-map (kbd ", fs") 'omnisharp-helm-find-symbols)
+  (evil-define-key 'normal omnisharp-mode-map (kbd "<M-RET>") 'omnisharp-run-code-action-refactoring)
+  (evil-define-key 'normal omnisharp-mode-map (kbd ", ss") 'omnisharp-start-omnisharp-server)
+  (evil-define-key 'normal omnisharp-mode-map (kbd ", sp") 'omnisharp-stop-omnisharp-server)
+  (evil-define-key 'normal omnisharp-mode-map (kbd ", fi") 'omnisharp-find-implementations)
+  (evil-define-key 'normal omnisharp-mode-map (kbd ", x") 'omnisharp-fix-code-issue-at-point)
+  (evil-define-key 'normal omnisharp-mode-map (kbd ", fx") 'omnisharp-fix-usings)
+  (evil-define-key 'normal omnisharp-mode-map (kbd ", o") 'omnisharp-auto-complete-overrides)
+  (defun omnisharp-unit-test (mode)
+    "Run tests after building the solution. Mode should be one of 'single', 'fixture' or 'all'"
+    (interactive)
+    (let ((build-command
+           (omnisharp-post-message-curl
+            (concat (omnisharp-get-host) "buildcommand") (omnisharp--get-common-params)))
+
+          (test-command
+           (cdr (assoc 'TestCommand
+                       (omnisharp-post-message-curl-as-json
+                        (concat (omnisharp-get-host) "gettestcontext")
+                        (cons `("Type" . ,mode) (omnisharp--get-common-params)))))))
+
+      (compile (concat (replace-regexp-in-string "\n$" "" build-command) " && " test-command))))
+  (define-key evil-normal-state-map (kbd ", rt") (lambda() (interactive) (omnisharp-unit-test-single)))
+  (define-key evil-normal-state-map (kbd ", rf") (lambda() (interactive) (omnisharp-unit-test-fixture)))
+  (define-key evil-normal-state-map (kbd ", ra") (lambda() (interactive) (omnisharp-unit-test-all)))
+  (define-key evil-normal-state-map (kbd ", rl") 'recompile)
+  )

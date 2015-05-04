@@ -1,6 +1,7 @@
+(require 'use-package)
 (use-package magit
   :ensure t
-  :defer 15
+  :defer 1
   :config
     (evil-set-initial-state 'magit-mode 'normal)
     (evil-set-initial-state 'magit-status-mode 'normal)

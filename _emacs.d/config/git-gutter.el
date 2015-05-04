@@ -1,3 +1,4 @@
+(require 'use-package)
 (use-package git-gutter
   :ensure t
   :defer
