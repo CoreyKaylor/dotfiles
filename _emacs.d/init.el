@@ -47,6 +47,7 @@
 
 (fset 'yes-or-no-p 'y-or-n-p)
 (setq-default indent-tabs-mode nil)
+(define-key global-map (kbd "RET") 'newline-and-indent)
 (tool-bar-mode 0)
 (global-linum-mode 1)
 (setq whitespace-style (quote (spaces tabs space-mark tab-mark)))

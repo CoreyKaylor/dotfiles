@@ -97,3 +97,6 @@
 (add-hook 'js-mode-hook
           (function (lambda ()
                       (setq evil-shift-width js-indent-level))))
+
+(define-key evil-normal-state-map (kbd "M-J") 'flycheck-next-error)
+(define-key evil-normal-state-map (kbd "M-K") 'flycheck-previous-error)
