@@ -31,9 +31,9 @@ link_file bin
 
 # package install
 
-if [ ! -d $HOME/.vim/bundle/neobundle.vim ]
+if [ ! -d $HOME/.vim/autoload/plug.vim ]
 then
-  git clone git://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim
+	curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 fi
 
 git update-index --assume-unchanged modules/zsh-completions

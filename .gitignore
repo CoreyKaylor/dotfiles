@@ -2,6 +2,8 @@ bundle/
 spell/
 elpa/
 auto-save-list/
+autoload/
+plugged/
 .netrwhist
 .DS_Store
 /_emacs.d/omnisharp-emacs/

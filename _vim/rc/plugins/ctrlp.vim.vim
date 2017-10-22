@@ -1,1 +1,0 @@
-NeoBundle 'ctrlpvim/ctrlp.vim'
