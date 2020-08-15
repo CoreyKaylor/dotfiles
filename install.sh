@@ -36,4 +36,9 @@ then
 	curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 fi
 
-git update-index --assume-unchanged modules/zsh-completions
+if [ ! -d $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]
+then
+	git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+fi
+
+# git update-index --assume-unchanged modules/zsh-completions
