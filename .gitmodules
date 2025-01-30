@@ -4,3 +4,21 @@
 [submodule "modules/zsh-notify"]
 	path = modules/zsh-notify
 	url = https://github.com/marzocchi/zsh-notify.git
+[submodule "hub"]
+	path = hub
+	url = https://github.com/mislav/hub.git
+[submodule "zsh-syntax-highlighting"]
+	path = zsh-syntax-highlighting
+	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
+[submodule "zsh-completions"]
+	path = zsh-completions
+	url = https://github.com/zsh-users/zsh-completions.git
+[submodule "auto-fu.zsh"]
+	path = auto-fu.zsh
+	url = https://github.com/hchbaw/auto-fu.zsh.git
+[submodule "tmux-MacOSX-pasteboard"]
+	path = tmux-MacOSX-pasteboard
+	url = https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard.git
+[submodule "fonts"]
+	path = fonts
+	url = https://github.com/powerline/fonts.git
