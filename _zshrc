@@ -5,6 +5,15 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# Homebrew setup (macOS only, works for both Intel and Apple Silicon)
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    if [[ -f /opt/homebrew/bin/brew ]]; then
+        eval "$(/opt/homebrew/bin/brew shellenv)"  # Apple Silicon
+    elif [[ -f /usr/local/bin/brew ]]; then
+        eval "$(/usr/local/bin/brew shellenv)"      # Intel Mac
+    fi
+fi
+
 source ~/.zplug/init.zsh
 export TERM="xterm-256color"
 ZSH_THEME="powerlevel10k/powerlevel10k"
