@@ -6,8 +6,12 @@ autoload/
 plugged/
 .netrwhist
 .DS_Store
+.idea/
 /_emacs.d/omnisharp-emacs/
 /_emacs.d/projectile-bookmarks.eld
 /_emacs.d/projectile.cache
 /_emacs.d/recentf
 /_emacs.d/eshell
+/_config/*
+!_config/nvim/
+!_config/mise/

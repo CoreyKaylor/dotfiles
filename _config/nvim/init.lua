@@ -1,0 +1,3 @@
+-- Neovim Configuration
+
+require("user")
