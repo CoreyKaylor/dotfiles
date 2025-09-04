@@ -1,3 +1,18 @@
+" Terminal-specific color configuration
+if $TERM_PROGRAM == 'ghostty'
+  " Force 256 color mode for Ghostty
+  set t_Co=256
+  " Use 256 color solarized variant
+  let g:solarized_termcolors=256
+  " No transparency
+  let g:solarized_termtrans=0
+  " Don't degrade colors
+  let g:solarized_degrade=0
+  " Keep contrast normal
+  let g:solarized_contrast="normal"
+  let g:solarized_visibility="normal"
+endif
+
 colorscheme solarized
 set background=light
 set guifont=Inconsolata\ for\ Powerline:h15
