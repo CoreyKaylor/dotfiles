@@ -1,5 +1,18 @@
 vim.lsp.enable('lua_ls')
 vim.lsp.enable('kotlin_lsp')
+vim.lsp.enable('sqls')
+
+-- Helper command to check LSP status
+vim.api.nvim_create_user_command('LspInfo', function()
+  local clients = vim.lsp.get_clients({ bufnr = 0 })
+  if #clients == 0 then
+    print("No LSP clients attached to this buffer")
+  else
+    for _, client in ipairs(clients) do
+      print(string.format("LSP: %s (id: %d)", client.name, client.id))
+    end
+  end
+end, { desc = 'Show attached LSP clients' })
 
 vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(ev)
