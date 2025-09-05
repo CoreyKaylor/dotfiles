@@ -23,7 +23,6 @@ vim.keymap.set('n', '<S-Up>', ':buffer')
 vim.keymap.set('n', '<S-Down>', vim.cmd.buffers)
 vim.keymap.set('n', '<S-Del>', vim.cmd.bdelete)
 
-vim.keymap.set('i', '<Tab>', '<C-x><C-o>')
 vim.keymap.set('i', '<C-c>', '<Esc>:wa<CR>')
 vim.keymap.set('n', '<C-c>', '<Esc>:wa<CR>')
 vim.keymap.set('n', '<leader>?', vim.cmd.map)
