@@ -1,6 +1,27 @@
-vim.lsp.enable('lua_ls')
-vim.lsp.enable('kotlin_lsp')
-vim.lsp.enable('sqls')
+-- Load LSP configurations
+local lsp_configs = {
+  'lua_ls',
+  'kotlin_lsp',
+  'sqls',
+}
+
+-- Add the lsp directory to the runtime path
+vim.opt.runtimepath:append(vim.fn.stdpath('config'))
+
+for _, lsp_name in ipairs(lsp_configs) do
+  local config_path = vim.fn.stdpath('config') .. '/lsp/' .. lsp_name .. '.lua'
+  local f = io.open(config_path, 'r')
+  if f then
+    f:close()
+    local ok, config = pcall(dofile, config_path)
+    if ok then
+      vim.lsp.config[lsp_name] = config
+      vim.lsp.enable(lsp_name)
+    else
+      vim.notify('Failed to load LSP config: ' .. lsp_name .. ' - ' .. tostring(config), vim.log.levels.ERROR)
+    end
+  end
+end
 
 -- Helper command to check LSP status
 vim.api.nvim_create_user_command('LspInfo', function()
@@ -13,6 +34,18 @@ vim.api.nvim_create_user_command('LspInfo', function()
     end
   end
 end, { desc = 'Show attached LSP clients' })
+
+-- Force LSP buffer sync command (useful for kotlin-lsp sync issues)
+vim.api.nvim_create_user_command('LspSync', function()
+  vim.cmd('write')
+  local clients = vim.lsp.get_clients({ bufnr = 0 })
+  for _, client in ipairs(clients) do
+    -- Force document synchronization
+    local params = vim.lsp.util.make_text_document_params(0)
+    client.notify('textDocument/didSave', params)
+  end
+  print("LSP buffer synchronized")
+end, { desc = 'Force sync current buffer with LSP' })
 
 vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(ev)
@@ -35,10 +68,20 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
     -- Actions
     vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, opts)
-    vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
-    vim.keymap.set('n', '<leader>f', function()
-      vim.lsp.buf.format({ async = true })
+    vim.keymap.set('n', '<leader>rn', function()
+      -- Workaround for kotlin-lsp sync issues
+      if vim.bo.modified then
+        vim.cmd('write')
+      end
+      vim.defer_fn(vim.lsp.buf.rename, 100)
     end, opts)
+    -- Note: conform.nvim will override this for Kotlin files
+    -- Only set this keymap if conform.nvim isn't loaded or doesn't handle this filetype
+    if not pcall(require, 'conform') then
+      vim.keymap.set('n', '<leader>f', function()
+        vim.lsp.buf.format({ async = false, timeout_ms = 5000 })
+      end, opts)
+    end
 
     -- Diagnostics
     vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)

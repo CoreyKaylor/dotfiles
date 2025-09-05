@@ -9,6 +9,7 @@ return {
     "pom.xml",
     "build.gradle",
     "build.gradle.kts",
-    "workspace.json"
+    "workspace.json",
+    ".git"
   },
 }
