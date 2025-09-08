@@ -47,6 +47,12 @@ for _, lsp_name in ipairs(lsp_configs) do
   end
 end
 
+-- Rounded border for hover (help text)
+vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
+  vim.lsp.handlers.hover,
+  { border = 'rounded' }
+)
+
 -- Helper command to check LSP status
 vim.api.nvim_create_user_command('LspInfo', function()
   local clients = vim.lsp.get_clients({ bufnr = 0 })
@@ -79,7 +85,15 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
-    vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+    vim.keymap.set('n', 'gr', function()
+      local builtin = require('telescope.builtin')
+      builtin.lsp_references({
+        initial_mode = 'normal',
+        layout_strategy = 'horizontal',
+        layout_config = { preview_width = 0.55 },
+        show_line = false,
+      })
+    end, opts)
     vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
     vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
 
