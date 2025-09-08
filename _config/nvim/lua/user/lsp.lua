@@ -3,6 +3,7 @@ local lsp_configs = {
   'lua_ls',
   'kotlin_lsp',
   'sqls',
+  'csharp_lsp',
 }
 
 -- Add the lsp directory to the runtime path
@@ -15,8 +16,31 @@ for _, lsp_name in ipairs(lsp_configs) do
     f:close()
     local ok, config = pcall(dofile, config_path)
     if ok then
-      vim.lsp.config[lsp_name] = config
-      vim.lsp.enable(lsp_name)
+      local cmd = config.cmd and config.cmd[1]
+      if cmd and vim.fn.executable(cmd) == 0 then
+        vim.notify('Skipping LSP ' .. lsp_name .. ' (missing executable: ' .. cmd .. ')', vim.log.levels.WARN)
+      else
+        -- Store config table for manual start
+        package.loaded['lsp.' .. lsp_name] = config
+        -- Autostart on matching filetypes
+        vim.api.nvim_create_autocmd('FileType', {
+          pattern = config.filetypes or {},
+          callback = function(args)
+            -- Avoid duplicate start
+            local bufnr = args.buf
+            local ft = vim.api.nvim_buf_get_option(bufnr, 'filetype')
+            for _, client in ipairs(vim.lsp.get_clients { bufnr = bufnr }) do
+              if client.name == lsp_name then return end
+            end
+            local root_dir = config.root_dir and config.root_dir(vim.api.nvim_buf_get_name(bufnr)) or vim.loop.cwd()
+            local new_config = vim.tbl_deep_extend('force', {}, config, {
+              name = lsp_name,
+              root_dir = root_dir,
+            })
+            vim.lsp.start(new_config)
+          end,
+        })
+      end
     else
       vim.notify('Failed to load LSP config: ' .. lsp_name .. ' - ' .. tostring(config), vim.log.levels.ERROR)
     end
