@@ -4,6 +4,7 @@ local lsp_configs = {
   'kotlin_lsp',
   'sqls',
   'csharp_lsp',
+  'typescript_lsp',
 }
 
 -- Add the lsp directory to the runtime path
