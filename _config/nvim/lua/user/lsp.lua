@@ -5,6 +5,7 @@ local lsp_configs = {
   'sqls',
   'csharp_lsp',
   'typescript_lsp',
+  'golang_lsp',
 }
 
 -- Add the lsp directory to the runtime path
