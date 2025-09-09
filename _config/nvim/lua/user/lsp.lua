@@ -6,6 +6,7 @@ local lsp_configs = {
   'csharp_lsp',
   'typescript_lsp',
   'golang_lsp',
+  'python_lsp',
 }
 
 -- Add the lsp directory to the runtime path
