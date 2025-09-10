@@ -10,6 +10,7 @@ local lsp_configs = {
   'typescript_lsp',
   'golang_lsp',
   'python_lsp',
+  'json_lsp',
   'web_lsp',  -- This now contains html, css, and emmet configs
 }
 
