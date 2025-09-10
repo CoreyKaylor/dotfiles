@@ -203,13 +203,14 @@ local css_config = {
 -- Emmet LSP Configuration
 local emmet_config = {
   cmd = { 'emmet-ls', '--stdio' },
-  filetypes = { 'html', 'css', 'scss', 'less', 'javascriptreact', 'typescriptreact' },
+  filetypes = { 'html', 'css', 'scss', 'less', 'javascriptreact', 'typescriptreact', 'vue' },
   root_markers = { 'package.json', '.git' },
   settings = {
     emmet = {
       includeLanguages = {
         javascriptreact = 'html',
-        typescriptreact = 'html'
+        typescriptreact = 'html',
+        vue = 'html'
       },
       variables = {
         lang = 'en'

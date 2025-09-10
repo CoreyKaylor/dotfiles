@@ -1,9 +1,9 @@
 return {
   'mattn/emmet-vim',
-  ft = { 'html', 'css', 'scss', 'less', 'javascriptreact', 'typescriptreact', 'vue' },
+  ft = { 'html', 'css', 'scss', 'less', 'jsx', 'tsx', 'javascriptreact', 'typescriptreact', 'vue' },
   init = function()
     -- Emmet configuration
-    vim.g.user_emmet_mode = 'i'  -- Enable in insert mode
+    vim.g.user_emmet_mode = 'inv'  -- Enable in insert, normal, and visual modes
     vim.g.user_emmet_leader_key = '<C-y>'  -- Leader key for emmet commands
     vim.g.user_emmet_install_global = 0  -- Don't install globally
 
@@ -29,6 +29,15 @@ return {
       },
       typescript = {
         extends = 'jsx'
+      },
+      javascriptreact = {
+        extends = 'jsx'
+      },
+      typescriptreact = {
+        extends = 'jsx'
+      },
+      vue = {
+        extends = 'html'
       }
     }
   end,
@@ -37,7 +46,7 @@ return {
     vim.cmd([[
       augroup EmmetInstall
         autocmd!
-        autocmd FileType html,css,scss,less,javascriptreact,typescriptreact EmmetInstall
+        autocmd FileType html,css,scss,less,jsx,tsx,javascriptreact,typescriptreact,vue EmmetInstall
       augroup END
     ]])
   end,
