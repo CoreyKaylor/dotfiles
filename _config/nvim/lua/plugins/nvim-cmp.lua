@@ -87,9 +87,6 @@ return {
       end
     end
     
-    -- Register the custom source
-    cmp.register_source('executables', executable_source.new())
-    
     -- Load snippets from friendly-snippets
     require('luasnip.loaders.from_vscode').lazy_load()
     
@@ -151,6 +148,7 @@ return {
       },
       
       sources = cmp.config.sources({
+        { name = 'html-css' }, -- CSS class completion for HTML
         { name = 'nvim_lsp' },
         { name = 'luasnip' },
         { name = 'path' },
@@ -174,6 +172,7 @@ return {
               relative_path = '[Path]',
               nvim_lua = '[Lua]',
               executables = '[Command]',
+              ["html-css"] = '[CSS]',
             })[entry.source.name]
             return vim_item
           end
@@ -209,6 +208,24 @@ return {
           cmp.config.compare.length,
           cmp.config.compare.order,
         },
+      },
+    })
+    
+    -- Enhanced setup for HTML files
+    cmp.setup.filetype({ 'html', 'htmldjango', 'tsx', 'jsx', 'vue', 'svelte', 'astro' }, {
+      sources = cmp.config.sources({
+        { name = 'html-css', priority = 1000 }, -- High priority for CSS classes
+        { name = 'nvim_lsp', priority = 900 },
+        { name = 'luasnip', priority = 800 },
+        { name = 'emmet_ls', priority = 700 }, -- If you have emmet
+        { name = 'path', priority = 600 },
+      }, {
+        { name = 'buffer', keyword_length = 3, priority = 500 },
+      }),
+      -- Shorter keyword length for HTML files
+      completion = {
+        keyword_length = 1, -- Start completing after 1 character in HTML
+        completeopt = 'menu,menuone,noselect',
       },
     })
     
