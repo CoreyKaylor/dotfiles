@@ -12,6 +12,7 @@ local lsp_configs = {
   'python_lsp',
   'json_lsp',
   'web_lsp',  -- This now contains html, css, and emmet configs
+  'marksman',  -- Markdown LSP with wiki-link support
 }
 
 -- Add the lsp directory to the runtime path
