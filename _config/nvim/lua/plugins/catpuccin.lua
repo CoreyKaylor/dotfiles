@@ -1,7 +1,10 @@
 return { "catppuccin/nvim",
          name = "catppuccin",
-         priority = 1000,
+         lazy = true,
+         priority = 999, -- Lower priority than solarized
          config = function()
-           vim.cmd([[colorscheme catppuccin]])
+           require("catppuccin").setup({
+             -- Keep catppuccin available but don't auto-apply
+           })
          end,
 }
