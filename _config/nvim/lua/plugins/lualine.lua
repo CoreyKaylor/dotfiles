@@ -122,7 +122,7 @@ return {
       tabline = {},
       winbar = {},
       inactive_winbar = {},
-      extensions = { 'nvim-tree', 'aerial', 'trouble', 'fugitive' }
+      extensions = { 'nvim-tree', 'aerial', 'trouble' }
     })
   end,
 }

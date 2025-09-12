@@ -46,7 +46,7 @@ return {
         -- NOTE: this will be called a lot so don't do any heavy processing here
         custom_filter = function(buf_number, buf_numbers)
           -- filter out filetypes you don't want to see
-          if vim.bo[buf_number].filetype ~= "qf" and vim.bo[buf_number].filetype ~= "fugitive" then
+          if vim.bo[buf_number].filetype ~= "qf" and vim.bo[buf_number].filetype ~= "NeogitStatus" then
             return true
           end
         end,
