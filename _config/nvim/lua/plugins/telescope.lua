@@ -181,6 +181,9 @@ return {
 
     -- Load extensions
     telescope.load_extension('fzf')
+    
+    -- Load neovim-project extension if available
+    pcall(telescope.load_extension, 'neovim-project')
 
     -- Create command for quick access
     vim.api.nvim_create_user_command('Files', 'Telescope find_files', {})
