@@ -40,7 +40,7 @@ vim.keymap.set('n', '<C-q>', smart_quit, { desc = "Smart quit" })
 vim.keymap.set('n', '<C-t>', vim.cmd.tabnew)
 -- Note: <C-w> conflicts with window commands, using leader-based alternative
 -- Smart tab close that handles the "last tab" error
-vim.keymap.set('n', '<leader>w', function()
+vim.keymap.set('n', '<leader>tc', function()
   local tab_count = vim.fn.tabpagenr('$')
   print("Attempting to close tab (total tabs: " .. tab_count .. ")")
   
@@ -136,12 +136,12 @@ vim.keymap.set('n', '<S-Del>', vim.cmd.bdelete)
 vim.keymap.set('i', '<C-c>', '<Esc>:wa<CR>')
 vim.keymap.set('n', '<C-c>', '<Esc>:wa<CR>')
 vim.keymap.set('n', '<leader>?', vim.cmd.map)
-vim.keymap.set('n', '<leader>r', ':%s/<C-r<C-W>//g<Left><Left>')
+vim.keymap.set('n', '<leader>s', ':%s/<C-r<C-W>//g<Left><Left>')
 vim.keymap.set('n', '<leader>e', ':Lex 30<CR>')
 vim.keymap.set('n', '<F3>', ':set list!<CR>')
 vim.keymap.set('n', '<F4>', ':set hls!<CR>')
 
-vim.keymap.set('v', '<leader>r', ':s/') --replace
+vim.keymap.set('v', '<leader>s', ':s/') --replace
 vim.keymap.set('v', '<leader>y', '"+y') --yank selection to clipboard
 vim.keymap.set('v', '<leader>d', '"_d') --delete selection into void register
 vim.keymap.set('v', '<leader>p', '_dP') --delete selection into the void register and paste over it

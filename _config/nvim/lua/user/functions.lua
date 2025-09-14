@@ -17,7 +17,7 @@ vim.api.nvim_create_autocmd('FileType', {
 --})
 
 --git grep
-vim.keymap.set('n', '<leader>g', function()
+vim.keymap.set('n', '<leader>gg', function()
   local cword = vim.fn.expand('<cword>')
   local git_grep = 'git grep -I -n '..cword
   local cmd = 'system("'..git_grep..'")'
@@ -44,7 +44,7 @@ end,
 
 vim.keymap.set('n', '<leader>o', ':OpenFile')
 
-vim.keymap.set('n', '<leader>m', function()
+vim.keymap.set('n', '<leader>mk', function()
   vim.cmd.lgetexpr('system(&makeprg)')
   vim.cmd.lopen()
 end)

@@ -8,7 +8,7 @@ return {
     { "Shatur/neovim-session-manager" },
   },
   keys = {
-    { "<leader>fp", function()
+    { "<leader>pp", function()
         -- Enhanced project finder with better subfolder handling
         local telescope = require('telescope')
         local builtin = require('telescope.builtin')
@@ -278,14 +278,14 @@ Type to search by name, path, or category!]]
           end,
         }):find()
       end, desc = "Find projects (enhanced)" },
-    { "<leader>fP", function() require('telescope').extensions['neovim-project'].discover() end, desc = "Find projects (original)" },
-    { "<leader>fh", function() require('telescope').extensions['neovim-project'].history() end, desc = "Recent projects" },
+    { "<leader>pP", function() require('telescope').extensions['neovim-project'].discover() end, desc = "Find projects (original)" },
+    { "<leader>ph", function() require('telescope').extensions['neovim-project'].history() end, desc = "Recent projects" },
     { "<leader>pr", function() 
         local current_dir = vim.fn.getcwd()
         print("Current directory: " .. current_dir)
       end, desc = "Show current directory" },
     { "<leader>pl", function() require('neovim-project').load_recent_project() end, desc = "Load recent project" },
-    { "<leader>fs", function() 
+    { "<leader>ps", function() 
         local scratch_dir = vim.fn.expand("~/Projects/scratch")
         if vim.fn.isdirectory(scratch_dir) == 1 then
           vim.cmd("cd " .. vim.fn.fnameescape(scratch_dir))

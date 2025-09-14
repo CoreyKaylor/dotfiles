@@ -22,7 +22,7 @@ return {
 
     -- Window creation (split creation) - Missing from original implementation
     { '<leader>v',         '<cmd>vsplit<cr>',                                               desc = 'Create vertical split' },
-    { '<leader>s',         '<cmd>split<cr>',                                                desc = 'Create horizontal split' },
+    { '<leader>h',         '<cmd>split<cr>',                                                desc = 'Create horizontal split' },
     { '<leader>-',         '<cmd>split<cr>',                                                desc = 'Create horizontal split (alt)' },
     { '<leader>|',         '<cmd>vsplit<cr>',                                               desc = 'Create vertical split (alt)' },
 

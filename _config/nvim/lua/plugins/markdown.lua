@@ -10,7 +10,7 @@ return {
     keys = {
       { '<leader>mp', '<cmd>MarkdownPreview<cr>', desc = 'Start markdown preview' },
       { '<leader>ms', '<cmd>MarkdownPreviewStop<cr>', desc = 'Stop markdown preview' },
-      { '<leader>mt', '<cmd>MarkdownPreviewToggle<cr>', desc = 'Toggle markdown preview' },
+      { '<leader>mT', '<cmd>MarkdownPreviewToggle<cr>', desc = 'Toggle markdown preview' },
     },
     init = function()
       -- Set browser to open preview in
