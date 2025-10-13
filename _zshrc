@@ -5,6 +5,18 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# Load environment variables from ~/.env if it exists
+if [[ -f "$HOME/.env" && -r "$HOME/.env" ]]; then
+    # Only load files owned by current user with secure permissions
+    if [[ "$(stat -f %Su "$HOME/.env")" == "$(whoami)" ]] && [[ "$(stat -f %Mp%Lp "$HOME/.env")" -le 600 ]]; then
+        set -a  # automatically export all variables
+        source "$HOME/.env"
+        set +a  # disable auto-export
+    else
+        echo "Warning: ~/.env has insecure permissions or ownership" >&2
+    fi
+fi
+
 # Homebrew setup (macOS only, works for both Intel and Apple Silicon)
 if [[ "$OSTYPE" == "darwin"* ]]; then
     if [[ -f /opt/homebrew/bin/brew ]]; then

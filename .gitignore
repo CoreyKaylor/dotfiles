@@ -15,3 +15,8 @@ plugged/
 /_config/*
 !_config/nvim/
 !_config/mise/
+
+# Environment files (should never be committed)
+.env
+.env.local
+.env.*.local
