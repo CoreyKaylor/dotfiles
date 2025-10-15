@@ -2,13 +2,8 @@ return {
   'mrjones2014/smart-splits.nvim',
   lazy = true,
   keys = {
-    -- Window navigation (seamless with tmux if configured)
-    { '<C-h>',             function() require('smart-splits').move_cursor_left() end,  desc = 'Move to left window' },
-    { '<C-j>',             function() require('smart-splits').move_cursor_down() end,  desc = 'Move to window below' },
-    { '<C-k>',             function() require('smart-splits').move_cursor_up() end,    desc = 'Move to window above' },
-    { '<C-l>',             function() require('smart-splits').move_cursor_right() end, desc = 'Move to right window' },
-
-    -- Window resizing using hjkl (manual control)
+    -- Window navigation disabled (using vim-tmux-navigator instead for Ctrl-hjkl)
+    -- Window resizing using Alt+hjkl (manual control)
     { '<A-h>',             function() require('smart-splits').resize_left() end,       desc = 'Resize window left' },
     { '<A-j>',             function() require('smart-splits').resize_down() end,       desc = 'Resize window down' },
     { '<A-k>',             function() require('smart-splits').resize_up() end,         desc = 'Resize window up' },
@@ -47,6 +42,9 @@ return {
   },
   config = function()
     require('smart-splits').setup({
+      -- Disable tmux integration (causes errors, using manual approach instead)
+      multiplexer_integration = nil,
+
       -- Ignored filetypes (won't resize windows)
       ignored_filetypes = {
         'NvimTree',

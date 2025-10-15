@@ -1,6 +1,6 @@
 " Terminal-specific color configuration
-if $TERM_PROGRAM == 'ghostty'
-  " Force 256 color mode for Ghostty
+if $TERM_PROGRAM == 'ghostty' || exists('$TMUX') || &term =~# '256color'
+  " Force 256 color mode for Ghostty, tmux, or any 256color terminal
   set t_Co=256
   " Use 256 color solarized variant
   let g:solarized_termcolors=256

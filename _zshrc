@@ -47,6 +47,11 @@ zplug load
 
 alias gw="./gradlew"
 
+# tmux aliases
+alias ta='tmux attach -t'
+alias tl='tmux ls'
+alias tn='tmux new -s'
+
 DEFAULT_USER="$(whoami)"
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#ddd"
 
@@ -68,3 +73,5 @@ export PATH="$HOME/.opencode/bin:$PATH"
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 export LC_ALL=en_US.UTF-8
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

@@ -21,6 +21,8 @@ brew "emscripten"
 brew "eza"
 # Simple, fast and user-friendly alternative to find
 brew "fd"
+# Command-line fuzzy finder
+brew "fzf"
 # GitHub command-line tool
 brew "gh"
 # Distributed revision control system
