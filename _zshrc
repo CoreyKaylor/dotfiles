@@ -28,6 +28,7 @@ fi
 
 source ~/.zplug/init.zsh
 export TERM="xterm-256color"
+export XDG_CONFIG_HOME="$HOME/.config"
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
 zplug "zsh-users/zsh-autosuggestions"
@@ -66,7 +67,7 @@ export PATH=$PATH:$ANDROID_HOME/emulator
 
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="/opt/homebrew/opt/sqlite/bin:$PATH"
-. "$HOME/.local/bin/env"
+[ -f "$HOME/.local/bin/env" ] && . "$HOME/.local/bin/env"
 
 export PATH="$HOME/.opencode/bin:$PATH"
 

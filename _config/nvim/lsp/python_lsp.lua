@@ -135,7 +135,6 @@ elseif lsp_name == 'pyright' then
     },
   }
 else
-  -- Return empty config if no Python LSP found
-  vim.notify('No Python LSP server found. Please install python-lsp-server (pip install python-lsp-server) or pyright (npm install -g pyright)', vim.log.levels.WARN)
+  -- Return empty config if no Python LSP found; loader will skip it silently
   return {}
 end

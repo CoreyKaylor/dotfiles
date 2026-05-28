@@ -30,8 +30,8 @@ for _, lsp_name in ipairs(lsp_configs) do
         -- Load each web configuration separately
         for web_lsp_type, web_config in pairs(config) do
           local cmd = web_config.cmd and web_config.cmd[1]
-          if cmd and vim.fn.executable(cmd) == 0 then
-            vim.notify('Skipping web LSP ' .. web_lsp_type .. ' (missing executable: ' .. cmd .. ')', vim.log.levels.WARN)
+          if not cmd or vim.fn.executable(cmd) == 0 then
+            -- Silently skip if executable not found
           else
             package.loaded['lsp.web_' .. web_lsp_type] = web_config
             vim.api.nvim_create_autocmd('FileType', {
@@ -55,8 +55,8 @@ for _, lsp_name in ipairs(lsp_configs) do
       else
         -- Handle regular single LSP configurations
         local cmd = config.cmd and config.cmd[1]
-        if cmd and vim.fn.executable(cmd) == 0 then
-          vim.notify('Skipping LSP ' .. lsp_name .. ' (missing executable: ' .. cmd .. ')', vim.log.levels.WARN)
+        if not cmd or not config.filetypes or #config.filetypes == 0 or vim.fn.executable(cmd) == 0 then
+          -- Silently skip LSPs with incomplete config or missing executable
         else
           package.loaded['lsp.' .. lsp_name] = config
           vim.api.nvim_create_autocmd('FileType', {
@@ -83,11 +83,7 @@ for _, lsp_name in ipairs(lsp_configs) do
   end
 end
 
--- Rounded border for hover (help text)
-vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
-  vim.lsp.handlers.hover,
-  { border = 'rounded' }
-)
+-- Rounded border for hover comes from vim.opt.winborder = 'rounded' in options.lua
 
 -- Helper command to check LSP status
 vim.api.nvim_create_user_command('LspInfo', function()

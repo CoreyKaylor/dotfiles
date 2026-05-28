@@ -20,5 +20,5 @@ vim.opt.exrc=true --Add support for local .nvim.lua configuration to localize se
 vim.opt.mouse="" --Disable mouse
 vim.opt.path=""..vim.fn.getcwd()..","..vim.fn.getcwd().."/**"
 
-vim.opt.winborder=rounded
+vim.opt.winborder='rounded'
 

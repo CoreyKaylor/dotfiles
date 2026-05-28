@@ -25,8 +25,14 @@ brew "fd"
 brew "fzf"
 # GitHub command-line tool
 brew "gh"
+# Go language server
+brew "gopls"
 # Distributed revision control system
 brew "git"
+# Simple terminal UI for git commands
+brew "lazygit"
+# Syntax-highlighting pager for git/diff (side-by-side diffs in lazygit)
+brew "git-delta"
 # GNU Pretty Good Privacy (PGP) package
 brew "gnupg"
 # Go Language's command-line interface for database migrations
@@ -43,6 +49,12 @@ brew "ktlint"
 brew "lua"
 # Language Server for the Lua language
 brew "lua-language-server"
+# Markdown language server with wiki-link support
+brew "marksman"
+# TypeScript / JavaScript language server
+brew "typescript-language-server"
+# HTML, CSS, JSON language servers extracted from VS Code
+brew "vscode-langservers-extracted"
 # Just-In-Time Compiler (JIT) for the Lua programming language
 brew "luajit"
 # Minimalist GNU for Windows and GCC cross-compilers
@@ -53,6 +65,8 @@ brew "mise"
 brew "mono-libgdiplus"
 # Incremental parsing library
 brew "tree-sitter"
+# Tree-sitter CLI (used by nvim-treesitter auto_install)
+brew "tree-sitter-cli"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
 # Search tool like grep and The Silver Searcher
