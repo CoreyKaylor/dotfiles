@@ -98,6 +98,9 @@ compinit -C -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
 
 load_antidote
 
+bindkey -M emacs '^F' forward-char
+bindkey -M viins '^F' vi-forward-char
+
 if (( $+commands[mise] )); then
   eval "$(mise activate zsh)"
 fi
