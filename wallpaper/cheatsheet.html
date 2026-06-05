@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Keybinding Cheat Sheet</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 3840px;
+    height: 2160px;
+    overflow: hidden;
+    background: #1a1b26;
+    font-family: 'JetBrains Mono', 'SF Mono', 'Menlo', monospace;
+    color: #c0caf5;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 420px 1fr 420px;
+    grid-template-rows: auto 1fr auto;
+    width: 3840px;
+    height: 2160px;
+    box-sizing: border-box;
+    padding: 18px;
+    gap: 12px;
+  }
+
+  /* --- Cards --- */
+  .card {
+    background: #16161e;
+    border: 1px solid #2f3549;
+    border-radius: 8px;
+    padding: 14px 16px 10px;
+    overflow: hidden;
+  }
+
+  .card h2 {
+    margin: 0 0 8px;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .card h2 .src {
+    font-size: 12px;
+    font-weight: 400;
+    opacity: 0.45;
+    margin-left: 8px;
+  }
+
+  .card table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .card td {
+    padding: 2px 0;
+    vertical-align: top;
+    font-size: 15px;
+    line-height: 1.45;
+  }
+  .card td:first-child {
+    white-space: nowrap;
+    padding-right: 12px;
+    width: 1%;
+  }
+  .card td:last-child {
+    color: #9aa5ce;
+  }
+
+  kbd {
+    display: inline-block;
+    background: #292e42;
+    border: 1px solid #3b4261;
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-family: inherit;
+    font-size: 14px;
+    color: #e0af68;
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+
+  .mode {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 0 5px;
+    border-radius: 3px;
+    vertical-align: middle;
+    margin-left: 4px;
+    line-height: 1.6;
+  }
+  .mode-n { background: #2f6b4f; color: #9ece6a; }
+  .mode-v { background: #4a3760; color: #bb9af7; }
+  .mode-i { background: #394b70; color: #7dcfff; }
+  .mode-o { background: #5a4a2f; color: #e0af68; }
+  .mode-x { background: #4a3760; color: #bb9af7; }
+  .mode-c { background: #5a3030; color: #f7768e; }
+
+  /* Accent colors per category */
+  .accent-tmux    { color: #7aa2f7; }
+  .accent-nav     { color: #2ac3de; }
+  .accent-core    { color: #9ece6a; }
+  .accent-diag    { color: #f7768e; }
+  .accent-format  { color: #bb9af7; }
+  .accent-tele    { color: #7dcfff; }
+  .accent-harpoon { color: #ff9e64; }
+  .accent-git     { color: #f7768e; }
+  .accent-gitsign { color: #e0af68; }
+  .accent-lsp     { color: #bb9af7; }
+  .accent-flash   { color: #2ac3de; }
+  .accent-comment { color: #9ece6a; }
+  .accent-zsh     { color: #7aa2f7; }
+  .accent-trouble { color: #f7768e; }
+  .accent-surr    { color: #ff9e64; }
+  .accent-extra   { color: #565f89; }
+  .accent-func    { color: #e0af68; }
+
+  /* --- Grid placement --- */
+  .top-left    { grid-column: 1; grid-row: 1; }
+  .top-center  { grid-column: 2; grid-row: 1; }
+  .top-right   { grid-column: 3; grid-row: 1; }
+  .left        { grid-column: 1; grid-row: 2; display: flex; flex-direction: column; gap: 12px; }
+  .center      { grid-column: 2; grid-row: 2; display: flex; flex-direction: column; gap: 10px; padding: 8px; }
+  .right       { grid-column: 3; grid-row: 2; display: flex; flex-direction: column; gap: 12px; }
+  .bot-left    { grid-column: 1; grid-row: 3; }
+  .bot-center  { grid-column: 2; grid-row: 3; }
+  .bot-right   { grid-column: 3; grid-row: 3; }
+
+  /* --- Tier 2 inner strip --- */
+  .tier2 {
+    background: #13131a;
+    border: 1px solid #2f3549;
+    border-radius: 6px;
+    padding: 10px 14px 8px;
+  }
+  .tier2 h3 {
+    margin: 0 0 5px;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+  }
+  .tier2 h3 .src {
+    font-size: 11px;
+    font-weight: 400;
+    opacity: 0.4;
+    margin-left: 6px;
+  }
+  .tier2 table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .tier2 td {
+    padding: 1px 0;
+    vertical-align: top;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+  .tier2 td:first-child {
+    white-space: nowrap;
+    padding-right: 10px;
+    width: 1%;
+  }
+  .tier2 td:last-child {
+    color: #8b95b5;
+  }
+  .tier2 kbd {
+    font-size: 11px;
+    padding: 0 4px;
+    border-color: #2f3549;
+    background: #1e2030;
+  }
+
+  .center-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    flex: 1;
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- ===== TOP LEFT: Tmux ===== -->
+  <div class="top-left card" data-source="_tmux.conf">
+    <h2 class="accent-tmux">Tmux <span class="src">prefix: C-a</span></h2>
+    <table>
+      <tr><td><kbd>\</kbd></td><td>split vertical</td></tr>
+      <tr><td><kbd>-</kbd></td><td>split horizontal</td></tr>
+      <tr><td><kbd>h/j/k/l</kbd></td><td>select pane</td></tr>
+      <tr><td><kbd>H/J/K/L</kbd></td><td>resize pane (5, repeat)</td></tr>
+      <tr><td><kbd>C-h</kbd> <kbd>C-l</kbd></td><td>prev / next window</td></tr>
+      <tr><td><kbd>Esc</kbd></td><td>copy mode</td></tr>
+      <tr><td><kbd>v</kbd></td><td>begin selection</td></tr>
+      <tr><td><kbd>y</kbd></td><td>yank to clipboard</td></tr>
+      <tr><td><kbd>p</kbd></td><td>paste buffer</td></tr>
+      <tr><td><kbd>C-c</kbd> <kbd>C-v</kbd></td><td>system clipboard</td></tr>
+      <tr><td><kbd>f</kbd></td><td>session switcher (fzf)</td></tr>
+      <tr><td><kbd>r</kbd></td><td>reload config</td></tr>
+      <tr><td><kbd>Up</kbd> <kbd>Down</kbd></td><td>maximize / restore pane</td></tr>
+    </table>
+  </div>
+
+  <!-- ===== TOP CENTER: Seamless Navigation ===== -->
+  <div class="top-center card" data-source="tmux+vim-tmux-navigator+smart-splits">
+    <h2 class="accent-nav">Seamless Navigation</h2>
+    <table>
+      <tr><td><kbd>C-h/j/k/l</kbd></td><td>move across tmux panes + nvim splits</td></tr>
+      <tr><td><kbd>Alt-h/j/k/l</kbd></td><td>resize splits (nvim) / pane nav (tmux)</td></tr>
+      <tr><td><kbd>,,h/j/k/l</kbd></td><td>swap buffer position</td></tr>
+      <tr><td><kbd>C-l</kbd> <span class="mode mode-n">pfx</span></td><td>clear screen in tmux</td></tr>
+    </table>
+  </div>
+
+  <!-- ===== TOP RIGHT: empty spacer or title ===== -->
+  <div class="top-right card" style="display:flex;align-items:center;justify-content:center;border-color:#2f3549;">
+    <div style="text-align:center;">
+      <div style="font-size:28px;font-weight:800;color:#7aa2f7;letter-spacing:1px;">KEYBINDING</div>
+      <div style="font-size:28px;font-weight:800;color:#c0caf5;letter-spacing:1px;">CHEAT SHEET</div>
+      <div style="font-size:13px;color:#565f89;margin-top:6px;">dotfiles &middot; tmux &middot; nvim &middot; zsh</div>
+    </div>
+  </div>
+
+  <!-- ===== LEFT COLUMN ===== -->
+  <div class="left">
+
+    <!-- Nvim Core -->
+    <div class="card" data-source="keymaps.lua">
+      <h2 class="accent-core">Nvim Core <span class="src">leader: ,</span></h2>
+      <table>
+        <tr><td><kbd>,+</kbd></td><td>vertical split</td></tr>
+        <tr><td><kbd>,-</kbd></td><td>horizontal split</td></tr>
+        <tr><td><kbd>C-t</kbd></td><td>new tab</td></tr>
+        <tr><td><kbd>C-p</kbd> <kbd>C-n</kbd></td><td>prev / next tab</td></tr>
+        <tr><td><kbd>C-c</kbd> <span class="mode mode-n">n</span><span class="mode mode-i">i</span></td><td>save all</td></tr>
+        <tr><td><kbd>C-q</kbd></td><td>smart quit</td></tr>
+        <tr><td><kbd>,s</kbd> <span class="mode mode-n">n</span></td><td>search &amp; replace word</td></tr>
+        <tr><td><kbd>,s</kbd> <span class="mode mode-v">v</span></td><td>replace in selection</td></tr>
+        <tr><td><kbd>,y</kbd> <span class="mode mode-v">v</span></td><td>yank to clipboard</td></tr>
+        <tr><td><kbd>,d</kbd> <span class="mode mode-v">v</span></td><td>void delete</td></tr>
+        <tr><td><kbd>,p</kbd> <span class="mode mode-v">v</span></td><td>paste-over</td></tr>
+        <tr><td><kbd>F2</kbd></td><td>file tree</td></tr>
+        <tr><td><kbd>F3</kbd></td><td>find in tree</td></tr>
+        <tr><td><kbd>F9</kbd></td><td>code outline</td></tr>
+        <tr><td><kbd>J</kbd></td><td>join (centered)</td></tr>
+        <tr><td><kbd>C-u</kbd> <kbd>C-d</kbd></td><td>scroll half (centered)</td></tr>
+        <tr><td><kbd>S-Left</kbd> <kbd>S-Right</kbd></td><td>prev / next buffer</td></tr>
+      </table>
+    </div>
+
+    <!-- Diagnostics -->
+    <div class="card" data-source="diagnostics.lua">
+      <h2 class="accent-diag">Diagnostics <span class="src">global</span></h2>
+      <table>
+        <tr><td><kbd>[d</kbd> <kbd>]d</kbd></td><td>prev / next diagnostic</td></tr>
+        <tr><td><kbd>,e</kbd></td><td>diagnostic float</td></tr>
+        <tr><td><kbd>,q</kbd></td><td>diagnostics to loclist</td></tr>
+      </table>
+    </div>
+
+    <!-- Formatting -->
+    <div class="card" data-source="conform.lua">
+      <h2 class="accent-format">Formatting <span class="src">conform</span></h2>
+      <table>
+        <tr><td><kbd>,f</kbd> <span class="mode mode-n">n</span></td><td>format buffer</td></tr>
+        <tr><td><kbd>,f</kbd> <span class="mode mode-v">v</span></td><td>format selection</td></tr>
+      </table>
+    </div>
+
+    <!-- Telescope -->
+    <div class="card" data-source="telescope.lua">
+      <h2 class="accent-tele">Telescope <span class="src">Space</span></h2>
+      <table>
+        <tr><td><kbd>SPC SPC</kbd></td><td>find files (dropdown)</td></tr>
+        <tr><td><kbd>SPC f</kbd></td><td>find files</td></tr>
+        <tr><td><kbd>SPC e</kbd></td><td>recent files</td></tr>
+        <tr><td><kbd>SPC b</kbd></td><td>buffers</td></tr>
+        <tr><td><kbd>SPC /</kbd></td><td>live grep</td></tr>
+        <tr><td><kbd>SPC l</kbd></td><td>buffer lines</td></tr>
+        <tr><td><kbd>SPC s</kbd></td><td>quick buffer switch</td></tr>
+        <tr><td><kbd>SPC r</kbd></td><td>resume last search</td></tr>
+        <tr><td><kbd>SPC k</kbd></td><td>keymaps</td></tr>
+        <tr><td><kbd>SPC h</kbd></td><td>help tags</td></tr>
+      </table>
+    </div>
+
+    <!-- Harpoon -->
+    <div class="card" data-source="harpoon.lua">
+      <h2 class="accent-harpoon">Harpoon</h2>
+      <table>
+        <tr><td><kbd>,ha</kbd></td><td>add file</td></tr>
+        <tr><td><kbd>,hd</kbd></td><td>remove file</td></tr>
+        <tr><td><kbd>,hc</kbd></td><td>clear all</td></tr>
+        <tr><td><kbd>,hh</kbd></td><td>telescope list</td></tr>
+        <tr><td><kbd>,1</kbd>&ndash;<kbd>,4</kbd></td><td>jump to file 1-4</td></tr>
+        <tr><td><kbd>,hn</kbd> <kbd>,hp</kbd></td><td>next / prev file</td></tr>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- ===== CENTER: Tier 2 inner strip ===== -->
+  <div class="center">
+    <div class="center-inner">
+
+      <!-- Surround -->
+      <div class="tier2" data-source="surround.lua">
+        <h3 class="accent-surr">Surround <span class="src">nvim-surround</span></h3>
+        <table>
+          <tr><td><kbd>,S</kbd></td><td>surround word with parens</td></tr>
+          <tr><td><kbd>,"</kbd> <kbd>,'</kbd> <kbd>,(</kbd> <kbd>,{</kbd> <kbd>,[</kbd> <span class="mode mode-v">v</span></td><td>visual surrounds</td></tr>
+          <tr><td><kbd>ys{m}{c}</kbd></td><td>add surround</td></tr>
+          <tr><td><kbd>yss{c}</kbd></td><td>surround line</td></tr>
+          <tr><td><kbd>yS</kbd> / <kbd>ySS</kbd></td><td>with newlines</td></tr>
+          <tr><td><kbd>ds{c}</kbd></td><td>delete surround</td></tr>
+          <tr><td><kbd>cs{o}{n}</kbd></td><td>change surround</td></tr>
+          <tr><td><kbd>S{c}</kbd> <span class="mode mode-v">v</span></td><td>visual surround</td></tr>
+          <tr><td><kbd>gS</kbd> <span class="mode mode-v">v</span></td><td>visual line surround</td></tr>
+          <tr><td><kbd>C-g s</kbd> <span class="mode mode-i">i</span></td><td>insert mode surround</td></tr>
+          <tr><td colspan="2" style="color:#8b95b5;font-size:11px;padding-top:3px;">chars: f=func t=tag p=() b=[] r={} a=&lt;&gt; c=comment q=quote</td></tr>
+        </table>
+      </div>
+
+      <!-- Telescope internals -->
+      <div class="tier2" data-source="telescope.lua">
+        <h3 class="accent-tele">Telescope Internals <span class="src">insert mode</span></h3>
+        <table>
+          <tr><td><kbd>C-j</kbd> <kbd>C-k</kbd></td><td>navigate results</td></tr>
+          <tr><td><kbd>C-n</kbd> <kbd>C-p</kbd></td><td>cycle history</td></tr>
+          <tr><td><kbd>C-u</kbd> <kbd>C-d</kbd></td><td>scroll preview</td></tr>
+          <tr><td><kbd>C-x</kbd></td><td>open in split</td></tr>
+          <tr><td><kbd>C-v</kbd></td><td>open in vsplit</td></tr>
+          <tr><td><kbd>C-t</kbd></td><td>open in tab</td></tr>
+          <tr><td><kbd>C-q</kbd></td><td>send to quickfix</td></tr>
+          <tr><td><kbd>dd</kbd> <span class="mode mode-n">n</span></td><td>delete buffer (buffers picker)</td></tr>
+        </table>
+      </div>
+
+      <!-- Nvim extras -->
+      <div class="tier2" data-source="keymaps.lua, bufferline.lua">
+        <h3 class="accent-extra">Nvim Extras</h3>
+        <table>
+          <tr><td><kbd>,t1</kbd>&ndash;<kbd>,t9</kbd></td><td>tab by number</td></tr>
+          <tr><td><kbd>,tc</kbd> <kbd>,to</kbd> <kbd>,tt</kbd></td><td>close / only / new tab</td></tr>
+          <tr><td><kbd>,tn</kbd> <kbd>,tp</kbd></td><td>next / prev tab</td></tr>
+          <tr><td><kbd>F5</kbd></td><td>toggle whitespace</td></tr>
+          <tr><td><kbd>F6</kbd></td><td>toggle hlsearch</td></tr>
+          <tr><td><kbd>,?</kbd></td><td>show mappings</td></tr>
+          <tr><td><kbd>S-Up</kbd></td><td>:buffer prompt</td></tr>
+          <tr><td><kbd>S-Down</kbd></td><td>show buffers</td></tr>
+          <tr><td><kbd>S-Del</kbd></td><td>delete buffer</td></tr>
+          <tr><td><kbd>n</kbd> <kbd>N</kbd> <kbd>*</kbd></td><td>centered search</td></tr>
+          <tr><td><kbd>C-PgUp</kbd> <kbd>C-PgDn</kbd></td><td>loclist nav</td></tr>
+          <tr><td><kbd>,bp</kbd></td><td>pin buffer</td></tr>
+          <tr><td><kbd>,bo</kbd></td><td>close other buffers</td></tr>
+          <tr><td><kbd>,bP</kbd></td><td>close non-pinned</td></tr>
+          <tr><td><kbd>,br</kbd> <kbd>,bl</kbd></td><td>close right / left</td></tr>
+        </table>
+      </div>
+
+      <!-- Git extras -->
+      <div class="tier2" data-source="git.lua, gitsigns.lua, functions.lua">
+        <h3 class="accent-git">Git Extras</h3>
+        <table>
+          <tr><td><kbd>,g/</kbd></td><td>git grep word</td></tr>
+          <tr><td><kbd>,gf</kbd></td><td>fetch</td></tr>
+          <tr><td><kbd>,gm</kbd></td><td>merge</td></tr>
+          <tr><td><kbd>,gr</kbd></td><td>rebase</td></tr>
+          <tr><td><kbd>,gz</kbd></td><td>stash</td></tr>
+          <tr><td><kbd>,gH</kbd></td><td>current file history</td></tr>
+          <tr><td><kbd>,gG</kbd></td><td>lazygit current file</td></tr>
+          <tr><td><kbd>,gF</kbd></td><td>lazygit filter</td></tr>
+          <tr><td><kbd>,hu</kbd></td><td>undo stage hunk</td></tr>
+          <tr><td><kbd>,hR</kbd></td><td>reset buffer</td></tr>
+          <tr><td><kbd>,hD</kbd></td><td>diff this (~)</td></tr>
+          <tr><td><kbd>,td</kbd></td><td>toggle deleted</td></tr>
+          <tr><td><kbd>ih</kbd> <span class="mode mode-o">o</span><span class="mode mode-x">x</span></td><td>select hunk</td></tr>
+        </table>
+      </div>
+
+      <!-- Trouble -->
+      <div class="tier2" data-source="trouble.lua">
+        <h3 class="accent-trouble">Trouble</h3>
+        <table>
+          <tr><td><kbd>,xx</kbd></td><td>all diagnostics</td></tr>
+          <tr><td><kbd>,xX</kbd></td><td>buffer diagnostics</td></tr>
+          <tr><td><kbd>,cs</kbd></td><td>symbols</td></tr>
+          <tr><td><kbd>,cl</kbd></td><td>LSP refs</td></tr>
+          <tr><td><kbd>,xL</kbd></td><td>loclist</td></tr>
+          <tr><td><kbd>,xQ</kbd></td><td>quickfix</td></tr>
+          <tr><td><kbd>,xw</kbd></td><td>workspace diag</td></tr>
+          <tr><td><kbd>,xd</kbd></td><td>doc diag</td></tr>
+        </table>
+      </div>
+
+      <!-- LSP extras -->
+      <div class="tier2" data-source="lsp.lua">
+        <h3 class="accent-lsp">LSP Extras</h3>
+        <table>
+          <tr><td><kbd>,wa</kbd></td><td>add workspace folder</td></tr>
+          <tr><td><kbd>,wr</kbd></td><td>remove workspace folder</td></tr>
+          <tr><td><kbd>,wl</kbd></td><td>list workspace folders</td></tr>
+        </table>
+      </div>
+
+      <!-- Functions -->
+      <div class="tier2" data-source="functions.lua">
+        <h3 class="accent-func">Functions</h3>
+        <table>
+          <tr><td><kbd>,o</kbd></td><td>open file by name</td></tr>
+          <tr><td><kbd>,mk</kbd></td><td>run makeprg</td></tr>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== RIGHT COLUMN ===== -->
+  <div class="right">
+
+    <!-- Git -->
+    <div class="card" data-source="git.lua">
+      <h2 class="accent-git">Git <span class="src">neogit + diffview + lazygit</span></h2>
+      <table>
+        <tr><td><kbd>,gs</kbd></td><td>status</td></tr>
+        <tr><td><kbd>,gc</kbd></td><td>commit</td></tr>
+        <tr><td><kbd>,gp</kbd></td><td>push</td></tr>
+        <tr><td><kbd>,gP</kbd></td><td>pull</td></tr>
+        <tr><td><kbd>,gd</kbd></td><td>open diffview</td></tr>
+        <tr><td><kbd>,gD</kbd></td><td>close diffview</td></tr>
+        <tr><td><kbd>,gh</kbd></td><td>file history</td></tr>
+        <tr><td><kbd>,gg</kbd></td><td>lazygit</td></tr>
+        <tr><td><kbd>,gl</kbd></td><td>log</td></tr>
+        <tr><td><kbd>,gb</kbd></td><td>branches</td></tr>
+      </table>
+    </div>
+
+    <!-- Gitsigns -->
+    <div class="card" data-source="gitsigns.lua">
+      <h2 class="accent-gitsign">Gitsigns <span class="src">git buffers</span></h2>
+      <table>
+        <tr><td><kbd>]c</kbd> <kbd>[c</kbd></td><td>next / prev hunk</td></tr>
+        <tr><td><kbd>,hs</kbd> <span class="mode mode-n">n</span><span class="mode mode-v">v</span></td><td>stage hunk</td></tr>
+        <tr><td><kbd>,hr</kbd> <span class="mode mode-n">n</span><span class="mode mode-v">v</span></td><td>reset hunk</td></tr>
+        <tr><td><kbd>,hS</kbd></td><td>stage buffer</td></tr>
+        <tr><td><kbd>,gv</kbd></td><td>preview hunk</td></tr>
+        <tr><td><kbd>,hb</kbd></td><td>blame line</td></tr>
+        <tr><td><kbd>,gw</kbd></td><td>diff this (vim diff)</td></tr>
+        <tr><td><kbd>,tb</kbd></td><td>toggle line blame</td></tr>
+      </table>
+    </div>
+
+    <!-- LSP -->
+    <div class="card" data-source="lsp.lua">
+      <h2 class="accent-lsp">LSP <span class="src">lsp buffers</span></h2>
+      <table>
+        <tr><td><kbd>gd</kbd></td><td>definition</td></tr>
+        <tr><td><kbd>gD</kbd></td><td>declaration</td></tr>
+        <tr><td><kbd>gi</kbd></td><td>implementation</td></tr>
+        <tr><td><kbd>gr</kbd></td><td>references (telescope)</td></tr>
+        <tr><td><kbd>K</kbd></td><td>hover</td></tr>
+        <tr><td><kbd>gK</kbd></td><td>signature help</td></tr>
+        <tr><td><kbd>,ca</kbd> <span class="mode mode-n">n</span><span class="mode mode-v">v</span></td><td>code action</td></tr>
+        <tr><td><kbd>,rn</kbd></td><td>rename</td></tr>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- ===== BOTTOM LEFT: Flash ===== -->
+  <div class="bot-left card" data-source="flash.lua">
+    <h2 class="accent-flash">Flash</h2>
+    <table>
+      <tr><td><kbd>s</kbd> <span class="mode mode-n">n</span><span class="mode mode-x">x</span><span class="mode mode-o">o</span></td><td>jump forward</td></tr>
+      <tr><td><kbd>S</kbd> <span class="mode mode-n">n</span><span class="mode mode-x">x</span><span class="mode mode-o">o</span></td><td>jump backward</td></tr>
+      <tr><td><kbd>r</kbd> <span class="mode mode-o">o</span></td><td>remote</td></tr>
+      <tr><td><kbd>R</kbd> <span class="mode mode-o">o</span><span class="mode mode-x">x</span></td><td>treesitter</td></tr>
+      <tr><td><kbd>C-s</kbd> <span class="mode mode-c">c</span></td><td>toggle in search</td></tr>
+    </table>
+  </div>
+
+  <!-- ===== BOTTOM CENTER: Comment ===== -->
+  <div class="bot-center card" data-source="comment.lua">
+    <h2 class="accent-comment">Comment</h2>
+    <table>
+      <tr><td><kbd>gcc</kbd></td><td>toggle line comment</td></tr>
+      <tr><td><kbd>gbc</kbd></td><td>toggle block comment</td></tr>
+      <tr><td><kbd>gc{motion}</kbd> <span class="mode mode-n">n</span><span class="mode mode-v">v</span></td><td>comment region</td></tr>
+      <tr><td><kbd>gb{motion}</kbd> <span class="mode mode-n">n</span><span class="mode mode-v">v</span></td><td>block comment region</td></tr>
+      <tr><td><kbd>gcO</kbd> <kbd>gco</kbd> <kbd>gcA</kbd></td><td>comment above / below / eol</td></tr>
+    </table>
+  </div>
+
+  <!-- ===== BOTTOM RIGHT: Zsh & Buffers ===== -->
+  <div class="bot-right card" data-source="_zshrc, bufferline.lua">
+    <h2 class="accent-zsh">Zsh &amp; Buffers</h2>
+    <table>
+      <tr><td><kbd>gw</kbd></td><td>gradlew alias</td></tr>
+      <tr><td><kbd>ta</kbd></td><td>tmux attach</td></tr>
+      <tr><td><kbd>tl</kbd></td><td>tmux list sessions</td></tr>
+      <tr><td><kbd>tn</kbd></td><td>tmux new session</td></tr>
+      <tr><td><kbd>,bp</kbd></td><td>pin / unpin buffer</td></tr>
+      <tr><td><kbd>,bo</kbd></td><td>close other buffers</td></tr>
+    </table>
+  </div>
+
+</div>
+</body>
+</html>
