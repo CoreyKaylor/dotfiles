@@ -1,6 +1,8 @@
 tap "homebrew/bundle"
 tap "jetbrains/utils"
 tap "supabase/tap"
+# Fast zsh plugin manager with static bundle generation
+brew "antidote"
 # Bourne-Again SHell, a UNIX command interpreter
 brew "bash"
 # Cross-platform make
@@ -33,6 +35,8 @@ brew "git"
 brew "lazygit"
 # Syntax-highlighting pager for git/diff (side-by-side diffs in lazygit)
 brew "git-delta"
+# Command runner for repo-local tasks
+brew "just"
 # GNU Pretty Good Privacy (PGP) package
 brew "gnupg"
 # Go Language's command-line interface for database migrations
@@ -73,6 +77,10 @@ brew "neovim"
 brew "ripgrep"
 # 7-Zip is a file archiver with a high compression ratio
 brew "sevenzip"
+# Symlink farm manager for dotfiles
+brew "stow"
+# Fast Python package and tool manager
+brew "uv"
 # Vi 'workalike' with many additional features
 brew "vim"
 # Low level tooling for WebAssembly in Rust

@@ -1,6 +1,0 @@
-require("user.options")
-require("user.keymaps")
-require("user.functions")
-require("user.diagnostics")
-require("user.lazy")
-require("user.lsp")

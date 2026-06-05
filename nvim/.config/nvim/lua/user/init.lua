@@ -1,0 +1,8 @@
+require("user.options")
+require("user.keymaps")
+require("user.functions")
+require("user.diagnostics")
+require("user.html")
+require("user.treesitter_guard")
+require("user.lazy")
+require("user.lsp")

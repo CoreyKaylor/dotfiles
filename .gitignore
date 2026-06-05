@@ -12,9 +12,7 @@ plugged/
 /_emacs.d/projectile.cache
 /_emacs.d/recentf
 /_emacs.d/eshell
-/_config/*
-!_config/nvim/
-!_config/mise/
+nvim.log
 
 # Environment files (should never be committed)
 .env

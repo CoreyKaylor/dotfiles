@@ -1,0 +1,4 @@
+romkatv/powerlevel10k kind:path depth:1
+zsh-users/zsh-autosuggestions kind:defer
+zsh-users/zsh-syntax-highlighting kind:defer
+ohmyzsh/ohmyzsh path:plugins/git

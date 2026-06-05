@@ -1,71 +1,76 @@
-#!/bin/sh
+#!/usr/bin/env bash
+set -euo pipefail
 
-# submodules
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PACKAGES=(zsh tmux nvim mise git)
 
-git submodule init
-git submodule update
+info() {
+  printf '%s\n' "$*"
+}
 
-# make symbolic links
+has() {
+  command -v "$1" >/dev/null 2>&1
+}
 
-link_file() {
-  source="${PWD}/$1"
-  target="${HOME}/${1/_/.}"
+ensure_homebrew() {
+  if [[ "$(uname -s)" != "Darwin" ]]; then
+    return
+  fi
 
-  if [ -e $target ] ; then
-    if [ ! -d $target ] ; then
-      echo "Update\t$target"
-      mv $target $target.bak
-      ln -sf ${source} ${target}
-    fi
-  else
-    echo "Install\t$target"
-    ln -sf ${source} ${target}
+  if ! has brew; then
+    info "Installing Homebrew..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  fi
+
+  eval "$(brew shellenv)"
+}
+
+ensure_packages() {
+  if [[ "$(uname -s)" == "Darwin" ]]; then
+    ensure_homebrew
+    brew bundle install --file="$ROOT/Brewfile"
+    return
+  fi
+
+  if ! has stow; then
+    info "GNU Stow is required. Install it with your system package manager, then rerun ./install.sh."
+    exit 1
   fi
 }
 
-for i in _*
-do
-  link_file $i
-done
-link_file bin
+remove_stale_underscore_links() {
+  local targets=(
+    "$HOME/.config"
+    "$HOME/.zshrc"
+    "$HOME/.zprofile"
+    "$HOME/.zshenv"
+    "$HOME/.zsh_plugins.txt"
+    "$HOME/.tmux.conf"
+    "$HOME/.gitconfig"
+  )
 
-# package install
+  local target link
+  for target in "${targets[@]}"; do
+    [[ -L "$target" ]] || continue
+    link="$(readlink "$target")"
+    case "$link" in
+      "$ROOT"/_*|"$ROOT"/_config|"$ROOT"/_config/*)
+        info "Removing stale link $target -> $link"
+        unlink "$target"
+        ;;
+    esac
+  done
+}
 
-if [ ! -d $HOME/.vim/autoload/plug.vim ]
-then
-	curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-fi
+stow_packages() {
+  for package in "${PACKAGES[@]}"; do
+    info "Stowing $package"
+    stow --dir="$ROOT" --target="$HOME" --restow "$package"
+  done
+}
 
-if [[ ! -d ~/.zplug ]];then
-    git clone https://github.com/b4b4r07/zplug ~/.zplug
-fi
+ensure_packages
+remove_stale_underscore_links
+stow_packages
 
-# Homebrew setup (macOS only)
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    echo "Setting up Homebrew for macOS..."
-    
-    # Check and install Homebrew if not present
-    if ! command -v brew &> /dev/null; then
-        echo "Installing Homebrew..."
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-        
-        # Add Homebrew to PATH for this session
-        if [[ -f /opt/homebrew/bin/brew ]]; then
-            eval "$(/opt/homebrew/bin/brew shellenv)"  # Apple Silicon
-        elif [[ -f /usr/local/bin/brew ]]; then
-            eval "$(/usr/local/bin/brew shellenv)"      # Intel Mac
-        fi
-    else
-        echo "Homebrew already installed"
-    fi
-    
-    # Install from Brewfile if it exists
-    if [ -f "Brewfile" ]; then
-        echo "Installing packages from Brewfile..."
-        brew bundle install
-    else
-        echo "No Brewfile found, skipping package installation"
-    fi
-else
-    echo "Not on macOS, skipping Homebrew setup"
-fi
+info "Dotfiles installed."
