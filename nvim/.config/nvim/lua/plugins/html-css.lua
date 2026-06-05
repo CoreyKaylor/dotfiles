@@ -1,5 +1,18 @@
 return {
   "Jezda1337/nvim-html-css",
+  ft = {
+    "html",
+    "htmldjango",
+    "tsx",
+    "jsx",
+    "eruby",
+    "svelte",
+    "vue",
+    "blade",
+    "php",
+    "templ",
+    "astro",
+  },
   dependencies = {
     "nvim-treesitter/nvim-treesitter",
     "hrsh7th/nvim-cmp"

@@ -15,7 +15,7 @@ return {
           local tree_win = tree.get_winnr()
 
           -- If we're in the tree, switch to previous window before closing
-          if tree_win and current_win == vim.api.nvim_get_current_win() then
+          if tree_win and current_win == tree_win then
             vim.cmd('wincmd p')  -- Go to previous window
           end
           api.tree.close()
@@ -36,7 +36,7 @@ return {
           local current_win = vim.api.nvim_get_current_win()
           local tree_win = tree.get_winnr()
 
-          if tree_win and current_win == vim.api.nvim_get_current_win() then
+          if tree_win and current_win == tree_win then
             vim.cmd('wincmd p')
           end
           api.tree.close()
