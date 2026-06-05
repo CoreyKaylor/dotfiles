@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PACKAGES=(git mise nvim tmux zsh)
+PACKAGES=(git lazygit mise nvim tmux zsh)
 
 if ! command -v stow >/dev/null 2>&1; then
   printf '%s\n' "GNU Stow is required to uninstall these dotfiles safely."

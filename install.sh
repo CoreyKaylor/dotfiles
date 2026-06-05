@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PACKAGES=(zsh tmux nvim mise git)
+PACKAGES=(zsh tmux nvim mise git lazygit)
 
 info() {
   printf '%s\n' "$*"

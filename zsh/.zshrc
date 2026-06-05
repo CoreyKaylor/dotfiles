@@ -92,17 +92,130 @@ if [[ -d "$HOME/.grok/completions/zsh" ]]; then
   fpath=("$HOME/.grok/completions/zsh" $fpath)
 fi
 
+HISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/zsh/history"
+HISTSIZE=50000
+SAVEHIST=50000
+mkdir -p "${HISTFILE:h}"
+
+setopt extended_history
+setopt hist_ignore_dups
+setopt hist_ignore_space
+setopt hist_reduce_blanks
+setopt inc_append_history
+setopt share_history
+fc -R "$HISTFILE" 2>/dev/null || true
+
 autoload -Uz compinit
+autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
 zstyle ':completion:*' menu select
 compinit -C -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
 
 load_antidote
 
+fzf-history-select() {
+  (( $+commands[fzf] )) || {
+    zle redisplay
+    return
+  }
+
+  zle -I
+
+  local selected
+  selected="$(fc -rl 1 | fzf --height 40% --reverse --query "$LBUFFER")" || {
+    zle redisplay
+    return
+  }
+
+  if [[ "$selected" =~ '^[[:space:]]*[0-9]+[[:space:]]+(.*)$' ]]; then
+    BUFFER="$match[1]"
+    CURSOR="${#BUFFER}"
+  fi
+
+  zle redisplay
+}
+
+fzf-file-select() {
+  (( $+commands[fzf] )) || {
+    zle redisplay
+    return
+  }
+
+  zle -I
+
+  local selected item
+  if (( $+commands[fd] )); then
+    selected="$(fd --hidden --follow --exclude .git . | fzf --height 40% --reverse --multi)" || {
+      zle redisplay
+      return
+    }
+  else
+    selected="$(find . -path './.git' -prune -o -print | sed 's#^\./##' | fzf --height 40% --reverse --multi)" || {
+      zle redisplay
+      return
+    }
+  fi
+
+  while IFS= read -r item; do
+    [[ -n "$item" ]] && LBUFFER+="${(q)item} "
+  done <<< "$selected"
+
+  zle redisplay
+}
+
+fzf-cd-select() {
+  (( $+commands[fzf] )) || {
+    zle redisplay
+    return
+  }
+
+  zle -I
+
+  local selected
+  if (( $+commands[fd] )); then
+    selected="$(fd --hidden --follow --exclude .git --type d . | fzf --height 40% --reverse)" || {
+      zle redisplay
+      return
+    }
+  else
+    selected="$(find . -path './.git' -prune -o -type d -print | sed 's#^\./##' | fzf --height 40% --reverse)" || {
+      zle redisplay
+      return
+    }
+  fi
+
+  [[ -n "$selected" ]] && cd -- "$selected"
+  zle reset-prompt
+}
+
+zle -N fzf-history-select
+zle -N fzf-file-select
+zle -N fzf-cd-select
+
 bindkey -M emacs '^F' forward-char
 bindkey -M viins '^F' vi-forward-char
+bindkey -M emacs '^R' fzf-history-select
+bindkey -M viins '^R' fzf-history-select
+bindkey -M emacs '^T' fzf-file-select
+bindkey -M viins '^T' fzf-file-select
+bindkey -M emacs '^[c' fzf-cd-select
+bindkey -M viins '^[c' fzf-cd-select
+bindkey -M emacs '^[[A' up-line-or-beginning-search
+bindkey -M emacs '^[[B' down-line-or-beginning-search
+bindkey -M emacs '^[OA' up-line-or-beginning-search
+bindkey -M emacs '^[OB' down-line-or-beginning-search
+bindkey -M viins '^[[A' up-line-or-beginning-search
+bindkey -M viins '^[[B' down-line-or-beginning-search
+bindkey -M viins '^[OA' up-line-or-beginning-search
+bindkey -M viins '^[OB' down-line-or-beginning-search
 
 if (( $+commands[mise] )); then
   eval "$(mise activate zsh)"
+fi
+
+if (( $+commands[zoxide] )); then
+  eval "$(zoxide init zsh)"
 fi
 
 alias gw="./gradlew"
@@ -119,4 +232,3 @@ alias tn='tmux new -s'
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#ddd"
 
 [[ ! -f "$HOME/.p10k.zsh" ]] || source "$HOME/.p10k.zsh"
-[[ -f "$HOME/.fzf.zsh" ]] && source "$HOME/.fzf.zsh"

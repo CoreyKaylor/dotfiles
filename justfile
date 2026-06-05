@@ -11,7 +11,7 @@ uninstall:
 
 check:
   mkdir -p /tmp/dotfiles-stow-check
-  stow --dir=. --target=/tmp/dotfiles-stow-check --simulate --restow zsh tmux nvim mise git
+  stow --dir=. --target=/tmp/dotfiles-stow-check --simulate --restow zsh tmux nvim mise git lazygit
   zsh -n zsh/.zshrc
   zsh -n zsh/.zprofile
   zsh -n zsh/.zshenv

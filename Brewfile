@@ -1,4 +1,3 @@
-tap "homebrew/bundle"
 tap "jetbrains/utils"
 tap "supabase/tap"
 # Fast zsh plugin manager with static bundle generation
@@ -81,12 +80,16 @@ brew "sevenzip"
 brew "stow"
 # Fast Python package and tool manager
 brew "uv"
+# Command-line shell and scripting language
+brew "powershell"
 # Vi 'workalike' with many additional features
 brew "vim"
 # Low level tooling for WebAssembly in Rust
 brew "wasm-tools"
 # UNIX shell (command interpreter)
 brew "zsh"
+# Shell extension for faster directory navigation
+brew "zoxide"
 # Official Language Server Protocol for the Kotlin language
 brew "jetbrains/utils/kotlin-lsp"
 # Supabase CLI
@@ -95,5 +98,3 @@ brew "supabase/tap/supabase"
 cask "android-ndk"
 # Terminal emulator that uses platform-native UI and GPU acceleration
 cask "ghostty"
-# Command-line shell and scripting language
-cask "powershell"
