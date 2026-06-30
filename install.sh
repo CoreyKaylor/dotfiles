@@ -12,17 +12,41 @@ has() {
   command -v "$1" >/dev/null 2>&1
 }
 
+brew_path() {
+  local candidate
+
+  if candidate="$(command -v brew 2>/dev/null)"; then
+    printf '%s\n' "$candidate"
+    return
+  fi
+
+  for candidate in /opt/homebrew/bin/brew /usr/local/bin/brew; do
+    if [[ -x "$candidate" ]]; then
+      printf '%s\n' "$candidate"
+      return
+    fi
+  done
+}
+
 ensure_homebrew() {
   if [[ "$(uname -s)" != "Darwin" ]]; then
     return
   fi
+
+  local brew_bin
 
   if ! has brew; then
     info "Installing Homebrew..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   fi
 
-  eval "$(brew shellenv)"
+  brew_bin="$(brew_path || true)"
+  if [[ -z "$brew_bin" ]]; then
+    info "Homebrew installed, but brew was not found in the expected locations."
+    exit 1
+  fi
+
+  eval "$("$brew_bin" shellenv)"
 }
 
 ensure_packages() {
