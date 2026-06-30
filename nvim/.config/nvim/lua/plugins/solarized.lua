@@ -51,7 +51,6 @@ return {
         render_markdown = true,
         mason = true,
         flash = true,
-        gitsigns = true,
         declare_highlight = true,
         bufferline = true,
         cmp = true,

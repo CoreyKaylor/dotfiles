@@ -17,14 +17,14 @@ vim.api.nvim_create_autocmd('FileType', {
 --})
 
 --git grep
-vim.keymap.set('n', '<leader>gg', function()
+vim.keymap.set('n', '<leader>g/', function()
   local cword = vim.fn.expand('<cword>')
   local git_grep = 'git grep -I -n '..cword
   local cmd = 'system("'..git_grep..'")'
   vim.cmd.lgetexpr(cmd)
   vim.cmd.lopen()
   vim.cmd('/'..cword)
-end)
+end, { desc = 'Git grep word' })
 
 --git ls-files
 vim.api.nvim_create_user_command('OpenFile', function(opts)
