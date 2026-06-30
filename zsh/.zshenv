@@ -4,4 +4,4 @@ export EDITOR="${EDITOR:-nvim}"
 export VISUAL="${VISUAL:-$EDITOR}"
 export LC_ALL="${LC_ALL:-en_US.UTF-8}"
 
-path=("$HOME/.local/bin" "$HOME/.opencode/bin" $path)
+path=("$HOME/.local/bin" "$HOME/.grok/bin" "$HOME/.opencode/bin" $path)
