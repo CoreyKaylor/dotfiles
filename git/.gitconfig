@@ -3,6 +3,16 @@
 
 [core]
 	pager = delta
+	editor = nvim
+
+[diff]
+	tool = diffbandit
+
+[difftool]
+	prompt = false
+
+[difftool "diffbandit"]
+	cmd = LOCAL=\"$LOCAL\" REMOTE=\"$REMOTE\" nvim --cmd 'packadd diffbandit.nvim' -c 'lua require(\"diffbandit\").files(vim.env.LOCAL, vim.env.REMOTE)'
 
 [interactive]
 	diffFilter = delta --color-only
