@@ -91,9 +91,9 @@ brew "zsh"
 # Shell extension for faster directory navigation
 brew "zoxide"
 # Official Language Server Protocol for the Kotlin language
-brew "jetbrains/utils/kotlin-lsp"
+brew "jetbrains/utils/kotlin-lsp", trusted: true
 # Supabase CLI
-brew "supabase/tap/supabase"
+brew "supabase/tap/supabase", trusted: true
 # Toolset to implement parts of Android apps in native code
 cask "android-ndk"
 # Terminal emulator that uses platform-native UI and GPU acceleration
