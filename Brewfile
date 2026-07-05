@@ -70,6 +70,8 @@ brew "mono-libgdiplus"
 brew "tree-sitter"
 # Tree-sitter CLI (used by nvim-treesitter auto_install)
 brew "tree-sitter-cli"
+# Terminal multiplexer
+brew "tmux"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
 # Search tool like grep and The Silver Searcher
