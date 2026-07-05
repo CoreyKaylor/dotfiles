@@ -5,6 +5,9 @@
 	pager = delta
 	editor = nvim
 
+[include]
+	path = ~/.config/git/local
+
 [diff]
 	tool = diffbandit
 
