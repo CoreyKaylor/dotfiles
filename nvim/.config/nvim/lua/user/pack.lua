@@ -109,6 +109,7 @@ local function collect_spec(spec, parent)
     local should_upgrade = existing.parent and not normalized.parent
 
     if should_upgrade then
+      existing.parent = nil
       for key, value in pairs(normalized) do
         existing[key] = value
       end
