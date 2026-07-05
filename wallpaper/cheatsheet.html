@@ -360,22 +360,19 @@
       </div>
 
       <!-- Git extras -->
-      <div class="tier2" data-source="git.lua, gitsigns.lua, functions.lua">
-        <h3 class="accent-git">Git Extras</h3>
+      <div class="tier2" data-source="git.lua, functions.lua">
+        <h3 class="accent-git">DiffBandit Extras</h3>
         <table>
           <tr><td><kbd>,g/</kbd></td><td>git grep word</td></tr>
-          <tr><td><kbd>,gf</kbd></td><td>fetch</td></tr>
-          <tr><td><kbd>,gm</kbd></td><td>merge</td></tr>
-          <tr><td><kbd>,gr</kbd></td><td>rebase</td></tr>
-          <tr><td><kbd>,gz</kbd></td><td>stash</td></tr>
-          <tr><td><kbd>,gH</kbd></td><td>current file history</td></tr>
-          <tr><td><kbd>,gG</kbd></td><td>lazygit current file</td></tr>
-          <tr><td><kbd>,gF</kbd></td><td>lazygit filter</td></tr>
-          <tr><td><kbd>,hu</kbd></td><td>undo stage hunk</td></tr>
-          <tr><td><kbd>,hR</kbd></td><td>reset buffer</td></tr>
-          <tr><td><kbd>,hD</kbd></td><td>diff this (~)</td></tr>
-          <tr><td><kbd>,td</kbd></td><td>toggle deleted</td></tr>
-          <tr><td><kbd>ih</kbd> <span class="mode mode-o">o</span><span class="mode mode-x">x</span></td><td>select hunk</td></tr>
+          <tr><td><kbd>:DiffBandit</kbd></td><td>compare files</td></tr>
+          <tr><td><kbd>:DiffBanditBuffers</kbd></td><td>compare buffers</td></tr>
+          <tr><td><kbd>:DiffBanditFolderDiff</kbd></td><td>compare folders</td></tr>
+          <tr><td><kbd>:DiffBanditGitCommit</kbd></td><td>review commit</td></tr>
+          <tr><td><kbd>:DiffBanditGit --staged</kbd></td><td>staged changes</td></tr>
+          <tr><td><kbd>:DiffBanditGit --base</kbd></td><td>base revision</td></tr>
+          <tr><td><kbd>:DiffBanditGit --rev</kbd></td><td>revision range</td></tr>
+          <tr><td><kbd>:DiffBanditGit --</kbd></td><td>pathspec filter</td></tr>
+          <tr><td><kbd>:DiffBanditUndo</kbd></td><td>undo hunk action</td></tr>
         </table>
       </div>
 
@@ -421,33 +418,32 @@
 
     <!-- Git -->
     <div class="card" data-source="git.lua">
-      <h2 class="accent-git">Git <span class="src">neogit + diffview + lazygit</span></h2>
+      <h2 class="accent-git">Git <span class="src">diffbandit</span></h2>
       <table>
-        <tr><td><kbd>,gs</kbd></td><td>status</td></tr>
-        <tr><td><kbd>,gc</kbd></td><td>commit</td></tr>
-        <tr><td><kbd>,gp</kbd></td><td>push</td></tr>
-        <tr><td><kbd>,gP</kbd></td><td>pull</td></tr>
-        <tr><td><kbd>,gd</kbd></td><td>open diffview</td></tr>
-        <tr><td><kbd>,gD</kbd></td><td>close diffview</td></tr>
-        <tr><td><kbd>,gh</kbd></td><td>file history</td></tr>
-        <tr><td><kbd>,gg</kbd></td><td>lazygit</td></tr>
-        <tr><td><kbd>,gl</kbd></td><td>log</td></tr>
-        <tr><td><kbd>,gb</kbd></td><td>branches</td></tr>
+        <tr><td><kbd>,gg</kbd></td><td>changed files</td></tr>
+        <tr><td><kbd>,gG</kbd></td><td>current file diff</td></tr>
+        <tr><td><kbd>,gc</kbd></td><td>commit panel</td></tr>
+        <tr><td><kbd>,gm</kbd></td><td>git menu</td></tr>
+        <tr><td><kbd>,gl</kbd></td><td>log browser</td></tr>
+        <tr><td><kbd>,gb</kbd></td><td>compare refs</td></tr>
+        <tr><td><kbd>,gB</kbd></td><td>checkout branch</td></tr>
+        <tr><td><kbd>,gM</kbd></td><td>merge resolver</td></tr>
+        <tr><td><kbd>,g/</kbd></td><td>git grep word</td></tr>
       </table>
     </div>
 
-    <!-- Gitsigns -->
-    <div class="card" data-source="gitsigns.lua">
-      <h2 class="accent-gitsign">Gitsigns <span class="src">git buffers</span></h2>
+    <!-- DiffBandit -->
+    <div class="card" data-source="diffbandit.nvim">
+      <h2 class="accent-gitsign">DiffBandit <span class="src">inside diff</span></h2>
       <table>
         <tr><td><kbd>]c</kbd> <kbd>[c</kbd></td><td>next / prev hunk</td></tr>
-        <tr><td><kbd>,hs</kbd> <span class="mode mode-n">n</span><span class="mode mode-v">v</span></td><td>stage hunk</td></tr>
-        <tr><td><kbd>,hr</kbd> <span class="mode mode-n">n</span><span class="mode mode-v">v</span></td><td>reset hunk</td></tr>
-        <tr><td><kbd>,hS</kbd></td><td>stage buffer</td></tr>
-        <tr><td><kbd>,gv</kbd></td><td>preview hunk</td></tr>
-        <tr><td><kbd>,hb</kbd></td><td>blame line</td></tr>
-        <tr><td><kbd>,gw</kbd></td><td>diff this (vim diff)</td></tr>
-        <tr><td><kbd>,tb</kbd></td><td>toggle line blame</td></tr>
+        <tr><td><kbd>]f</kbd> <kbd>[f</kbd></td><td>next / prev file</td></tr>
+        <tr><td><kbd>[d</kbd> <kbd>]d</kbd></td><td>align top / bottom</td></tr>
+        <tr><td><kbd>C</kbd></td><td>focus commit panel</td></tr>
+        <tr><td><kbd>Space</kbd></td><td>toggle stage hunk</td></tr>
+        <tr><td><kbd>&gt;&gt;</kbd> <kbd>&lt;&lt;</kbd></td><td>apply hunk side</td></tr>
+        <tr><td><kbd>u</kbd></td><td>undo action</td></tr>
+        <tr><td><kbd>q</kbd></td><td>close diff</td></tr>
       </table>
     </div>
 

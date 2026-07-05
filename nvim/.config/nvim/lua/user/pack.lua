@@ -34,7 +34,6 @@ local setup_modules = {
   ["catppuccin"] = "catppuccin",
   ["colorizer"] = "colorizer",
   ["flash.nvim"] = "flash",
-  ["gitsigns.nvim"] = "gitsigns",
   ["nvim-html-css"] = "html-css",
   ["lualine.nvim"] = "lualine",
   ["nvim-autopairs"] = "nvim-autopairs",
