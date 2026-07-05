@@ -16,7 +16,13 @@ Personal macOS and Linux/WSL dotfiles managed with GNU Stow.
 ./install.sh
 ```
 
-On macOS this installs Homebrew if needed, runs `brew bundle install`, and stows the packages. On Linux/WSL, install GNU Stow with the system package manager first, then run the installer.
+On macOS this installs Homebrew if needed, runs `brew bundle install`, stows the packages, and installs Claude Code, Grok, and Codex CLI when they are missing. On Linux/WSL, install GNU Stow with the system package manager first, then run the installer.
+
+The AI CLI installers are vendor-managed and keep authentication/state outside this repository:
+
+- Claude Code: `~/.claude/` and `~/.local/bin/claude`
+- Grok: `~/.grok/`
+- Codex: `~/.codex/` and `~/.local/bin/codex`
 
 Useful commands:
 

@@ -12,6 +12,41 @@ has() {
   command -v "$1" >/dev/null 2>&1
 }
 
+ai_cli_path() {
+  printf '%s\n' "$HOME/.local/bin:$HOME/.grok/bin:$PATH"
+}
+
+has_ai_cli() {
+  PATH="$(ai_cli_path)" command -v "$1" >/dev/null 2>&1
+}
+
+fetch_url() {
+  local url="$1"
+
+  if has curl; then
+    curl -fsSL "$url"
+    return
+  fi
+
+  if has wget; then
+    wget -q -O - "$url"
+    return
+  fi
+
+  info "curl or wget is required to install AI CLIs."
+  exit 1
+}
+
+profileless_shell() {
+  if [[ -x /usr/bin/false ]]; then
+    printf '%s\n' /usr/bin/false
+  elif [[ -x /bin/false ]]; then
+    printf '%s\n' /bin/false
+  else
+    printf '%s\n' false
+  fi
+}
+
 brew_path() {
   local candidate
 
@@ -93,8 +128,39 @@ stow_packages() {
   done
 }
 
+ensure_ai_cli() {
+  local command_name="$1"
+  local install_url="$2"
+  local runner="$3"
+  local shell_path
+
+  if has_ai_cli "$command_name"; then
+    info "$command_name already installed."
+    return
+  fi
+
+  info "Installing $command_name..."
+  shell_path="$(profileless_shell)"
+
+  case "$command_name" in
+    codex)
+      fetch_url "$install_url" | PATH="$(ai_cli_path)" SHELL="$shell_path" CODEX_NON_INTERACTIVE=1 "$runner"
+      ;;
+    *)
+      fetch_url "$install_url" | PATH="$(ai_cli_path)" SHELL="$shell_path" "$runner"
+      ;;
+  esac
+}
+
+ensure_ai_clis() {
+  ensure_ai_cli claude "https://claude.ai/install.sh" bash
+  ensure_ai_cli grok "https://x.ai/cli/install.sh" bash
+  ensure_ai_cli codex "https://chatgpt.com/codex/install.sh" sh
+}
+
 ensure_packages
 remove_stale_underscore_links
 stow_packages
+ensure_ai_clis
 
 info "Dotfiles installed."
