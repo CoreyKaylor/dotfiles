@@ -1,8 +1,10 @@
 return {
   "maxmx03/solarized.nvim",
-  lazy = true,
-  priority = 900,
+  lazy = false,
+  priority = 1000,
   config = function()
+    vim.o.background = "dark"
+
     require("solarized").setup({
       transparent = {
         enabled = false,
@@ -30,7 +32,7 @@ return {
         return colors
       end,
       palette = "solarized", -- solarized | selenized
-      variant = "autumn", -- spring | summer | autumn | winter
+      variant = "winter", -- spring | summer | autumn | winter
       styles = {
         comments = { italic = true },
         functions = { bold = false },
@@ -60,5 +62,7 @@ return {
         notify = true,
       },
     })
+
+    vim.cmd.colorscheme("solarized")
   end,
 }
