@@ -15,7 +15,7 @@
 	prompt = false
 
 [difftool "diffbandit"]
-	cmd = LOCAL=\"$LOCAL\" REMOTE=\"$REMOTE\" nvim --cmd 'packadd diffbandit.nvim' -c 'lua require(\"diffbandit\").files(vim.env.LOCAL, vim.env.REMOTE)'
+	cmd = LOCAL=\"$LOCAL\" REMOTE=\"$REMOTE\" nvim -c 'lua require(\"user.pack\").load(\"diffbandit.nvim\") require(\"diffbandit\").files(vim.env.LOCAL, vim.env.REMOTE)'
 
 [interactive]
 	diffFilter = delta --color-only
