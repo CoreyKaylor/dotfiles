@@ -41,6 +41,15 @@ return {
       end,
     }
 
+    -- ktlint: IntelliJ/Kotlin conventions only (see ktlint.editorconfig).
+    -- Project .editorconfig still wins when present; this is the fallback.
+    local ktlint_editorconfig = vim.fn.stdpath('config') .. '/ktlint.editorconfig'
+    lint.linters.ktlint.args = {
+      '--reporter=json',
+      '--stdin',
+      '--editorconfig=' .. ktlint_editorconfig,
+    }
+
     -- Auto-lint on save and after text changes
     local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })
 

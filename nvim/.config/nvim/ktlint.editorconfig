@@ -1,0 +1,40 @@
+# Default ktlint style for Neovim (lint + format).
+# Used only when a project has no stronger .editorconfig of its own
+# (ktlint --editorconfig is a fallback, not an override).
+#
+# Goal: stick close to Kotlin / IntelliJ coding conventions, not the
+# stricter ktlint_official layout rules that add a lot of noise.
+
+[*.{kt,kts}]
+ktlint_code_style = intellij_idea
+ktlint_experimental = disabled
+
+# IntelliJ-aligned basics
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+max_line_length = off
+ij_kotlin_imports_layout = *,java.**,javax.**,kotlin.**,^
+ij_kotlin_allow_trailing_comma = true
+ij_kotlin_allow_trailing_comma_on_call_site = true
+
+# ktlint-only wrapping / layout rules beyond Kotlin coding conventions
+ktlint_standard_class-signature = disabled
+ktlint_standard_function-signature = disabled
+ktlint_standard_argument-list-wrapping = disabled
+ktlint_standard_parameter-list-wrapping = disabled
+ktlint_standard_parameter-wrapping = disabled
+ktlint_standard_chain-method-continuation = disabled
+ktlint_standard_string-template-indent = disabled
+ktlint_standard_multiline-expression-wrapping = disabled
+ktlint_standard_if-else-wrapping = disabled
+ktlint_standard_binary-expression-wrapping = disabled
+ktlint_standard_condition-wrapping = disabled
+ktlint_standard_statement-wrapping = disabled
+ktlint_standard_blank-line-before-declaration = disabled
+ktlint_standard_function-expression-body = disabled
+ktlint_standard_function-literal = disabled
+ktlint_standard_try-catch-finally-spacing = disabled
+
+# Keep Kotlin naming / package conventions enabled (those are real standards).
+# Only the layout/wrapping rules above are treated as ktlint extras.

@@ -42,11 +42,7 @@ brew "gnupg"
 brew "goose"
 # Environment diagnostics for Kotlin Multiplatform Mobile app development
 brew "kdoctor"
-# Intelligent Kotlin support for any editor/IDE using the Language Server Protocol
-brew "kotlin-language-server"
-# Kotlin code formatter
-brew "ktfmt"
-# Anti-bikeshedding Kotlin linter with built-in formatter
+# Kotlin style checker/formatter (configured as IntelliJ/Kotlin conventions in nvim)
 brew "ktlint"
 # Powerful, lightweight programming language
 brew "lua"

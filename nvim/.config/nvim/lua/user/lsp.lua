@@ -54,6 +54,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+    vim.keymap.set('n', 'gy', vim.lsp.buf.type_definition, { buffer = ev.buf, desc = 'Go to type definition' })
     vim.keymap.set('n', 'gr', function()
       require('telescope.builtin').lsp_references({
         initial_mode = 'normal',
@@ -73,11 +74,18 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
     vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, opts)
     vim.keymap.set('n', '<leader>rn', function()
+      -- Still useful for kotlin-lsp if the buffer is dirty before rename.
       if vim.bo.modified then
         vim.cmd('write')
       end
       vim.defer_fn(vim.lsp.buf.rename, 100)
     end, opts)
+
+    vim.keymap.set('n', '<leader>ci', vim.lsp.buf.incoming_calls, { buffer = ev.buf, desc = 'Incoming calls' })
+    vim.keymap.set('n', '<leader>co', vim.lsp.buf.outgoing_calls, { buffer = ev.buf, desc = 'Outgoing calls' })
+    vim.keymap.set('n', '<leader>ws', function()
+      require('telescope.builtin').lsp_workspace_symbols()
+    end, { buffer = ev.buf, desc = 'Workspace symbols' })
 
     if not pcall(require, 'conform') then
       vim.keymap.set('n', '<leader>f', function()
@@ -93,6 +101,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
     local client = vim.lsp.get_client_by_id(ev.data.client_id)
     if not client then
       return
+    end
+
+    if client.server_capabilities.inlayHintProvider then
+      pcall(vim.lsp.inlay_hint.enable, true, { bufnr = ev.buf })
     end
 
     if client.name == 'web_html' or client.name == 'web_css' or client.name == 'web_emmet' then

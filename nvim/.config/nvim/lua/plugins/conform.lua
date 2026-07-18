@@ -99,8 +99,10 @@ return {
         return false
       end
 
+      -- Kotlin (ktlint / kotlin-lsp) is slower to cold-start than prettier-class tools.
+      local timeout_ms = vim.bo[bufnr].filetype == 'kotlin' and 5000 or 1000
       return {
-        timeout_ms = 1000,
+        timeout_ms = timeout_ms,
         lsp_fallback = true,
         quiet = true -- Don't show notifications on auto-format
       }
@@ -151,10 +153,16 @@ return {
         prepend_args = { '--fast', '--line-length', '88' },
       },
 
-      -- Kotlin formatter configuration (using ktlint for both linting and formatting)
+      -- Kotlin: ktlint with IntelliJ/Kotlin conventions (see ktlint.editorconfig).
+      -- Project .editorconfig still wins when present; this is the fallback.
       ktlint = {
         command = 'ktlint',
-        args = { '--format', '--stdin', '--log-level=none' },
+        args = {
+          '--format',
+          '--stdin',
+          '--log-level=none',
+          '--editorconfig=' .. vim.fn.stdpath('config') .. '/ktlint.editorconfig',
+        },
         stdin = true,
       },
 
