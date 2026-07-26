@@ -5,3 +5,50 @@ export VISUAL="${VISUAL:-nvim}"
 export LC_ALL="${LC_ALL:-en_US.UTF-8}"
 
 path=("$HOME/.local/bin" "$HOME/.grok/bin" "$HOME/.opencode/bin" "$HOME/.maestro/bin" $path)
+
+# Android SDK: Homebrew commandlinetools first, then Android Studio defaults.
+if [[ -z "${ANDROID_HOME:-}" ]]; then
+  for _android_sdk in \
+    /opt/homebrew/share/android-commandlinetools \
+    /usr/local/share/android-commandlinetools \
+    "$HOME/Library/Android/sdk" \
+    "$HOME/Android/Sdk"
+  do
+    if [[ -d "$_android_sdk" ]]; then
+      export ANDROID_HOME="$_android_sdk"
+      break
+    fi
+  done
+  unset _android_sdk
+fi
+
+if [[ -n "${ANDROID_HOME:-}" ]]; then
+  export ANDROID_SDK_ROOT="${ANDROID_SDK_ROOT:-$ANDROID_HOME}"
+  for _android_bin in \
+    "$ANDROID_HOME/cmdline-tools/latest/bin" \
+    "$ANDROID_HOME/platform-tools" \
+    "$ANDROID_HOME/emulator"
+  do
+    [[ -d "$_android_bin" ]] && path=("$_android_bin" $path)
+  done
+  unset _android_bin
+fi
+
+# AVDs on this machine live under XDG config, not ~/.android/avd.
+if [[ -z "${ANDROID_AVD_HOME:-}" && -d "${XDG_CONFIG_HOME}/.android/avd" ]]; then
+  export ANDROID_AVD_HOME="${XDG_CONFIG_HOME}/.android/avd"
+fi
+
+# NDK via Homebrew cask symlink (share/android-ndk).
+if [[ -z "${ANDROID_NDK_HOME:-}" ]]; then
+  for _android_ndk in /opt/homebrew/share/android-ndk /usr/local/share/android-ndk; do
+    if [[ -d "$_android_ndk" ]]; then
+      export ANDROID_NDK_HOME="$_android_ndk"
+      break
+    fi
+  done
+  unset _android_ndk
+fi
+if [[ -n "${ANDROID_NDK_HOME:-}" ]]; then
+  export NDK="${NDK:-$ANDROID_NDK_HOME}"
+fi

@@ -65,19 +65,9 @@ if [[ "$OSTYPE" == darwin* ]]; then
     [[ -x /usr/local/bin/brew ]] && eval "$(/usr/local/bin/brew shellenv)"
   fi
 
-  export ANDROID_HOME="${ANDROID_HOME:-$HOME/Library/Android/sdk}"
-  path=(
-    "$ANDROID_HOME/tools"
-    "$ANDROID_HOME/tools/bin"
-    "$ANDROID_HOME/platform-tools"
-    "$ANDROID_HOME/emulator"
-    $path
-  )
-
   if (( $+commands[brew] )); then
     local_brew_prefix="$(brew --prefix 2>/dev/null)"
     [[ -d "$local_brew_prefix/opt/sqlite/bin" ]] && path=("$local_brew_prefix/opt/sqlite/bin" $path)
-    [[ -d "$local_brew_prefix/share/android-ndk" ]] && export NDK="$local_brew_prefix/share/android-ndk"
     unset local_brew_prefix
   fi
 fi

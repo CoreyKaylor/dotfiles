@@ -92,6 +92,8 @@ brew "zoxide"
 brew "jetbrains/utils/kotlin-lsp", trusted: true
 # Supabase CLI
 brew "supabase/tap/supabase", trusted: true
+# Android SDK command-line tools (sdkmanager, avdmanager, platform-tools host)
+cask "android-commandlinetools"
 # Toolset to implement parts of Android apps in native code
 cask "android-ndk"
 # Terminal emulator that uses platform-native UI and GPU acceleration
