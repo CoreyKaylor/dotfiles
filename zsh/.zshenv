@@ -7,6 +7,15 @@ export LC_ALL="${LC_ALL:-en_US.UTF-8}"
 path=("$HOME/.local/bin" "$HOME/.grok/bin" "$HOME/.opencode/bin" "$HOME/.maestro/bin" $path)
 
 # Android SDK: Homebrew commandlinetools first, then Android Studio defaults.
+# Drop a stale ANDROID_HOME that points at a missing directory (common after
+# switching from Android Studio's default path to the Homebrew SDK root).
+if [[ -n "${ANDROID_HOME:-}" && ! -d "$ANDROID_HOME" ]]; then
+  unset ANDROID_HOME
+fi
+if [[ -n "${ANDROID_SDK_ROOT:-}" && ! -d "$ANDROID_SDK_ROOT" ]]; then
+  unset ANDROID_SDK_ROOT
+fi
+
 if [[ -z "${ANDROID_HOME:-}" ]]; then
   for _android_sdk in \
     /opt/homebrew/share/android-commandlinetools \
