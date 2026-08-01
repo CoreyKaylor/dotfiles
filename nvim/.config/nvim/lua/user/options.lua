@@ -18,7 +18,7 @@ vim.opt.splitright=true --Create new vertical windows to the right
 vim.opt.hlsearch=true --Highlight search
 vim.opt.incsearch=true --Search incrementally, not just on enter
 vim.opt.exrc=true --Add support for local .nvim.lua configuration to localize settings if needed
-vim.opt.mouse="" --Disable mouse
+vim.opt.mouse="a" --Enable mouse in all modes
 vim.opt.path=""..vim.fn.getcwd()..","..vim.fn.getcwd().."/**"
 
 vim.opt.winborder='rounded'
