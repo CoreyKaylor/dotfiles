@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PACKAGES=(zsh tmux nvim mise git lazygit)
+PACKAGES=(zsh tmux nvim mise git lazygit herdr)
 
 info() {
   printf '%s\n' "$*"
@@ -122,6 +122,9 @@ remove_stale_underscore_links() {
 }
 
 stow_packages() {
+  # Real dir so stow only links config.toml and herdr runtime (plugins/) stays out of the package.
+  mkdir -p "$HOME/.config/herdr"
+
   for package in "${PACKAGES[@]}"; do
     info "Stowing $package"
     stow --dir="$ROOT" --target="$HOME" --restow "$package"
@@ -158,9 +161,28 @@ ensure_ai_clis() {
   ensure_ai_cli codex "https://chatgpt.com/codex/install.sh" sh
 }
 
+ensure_herdr_plugin() {
+  if ! has herdr; then
+    info "herdr not installed; skip herdr-splits plugin."
+    return
+  fi
+
+  if herdr plugin list 2>/dev/null | grep -q 'herdr-splits'; then
+    info "herdr-splits plugin already installed."
+    return
+  fi
+
+  info "Installing herdr-splits plugin for seamless nvim navigation..."
+  herdr plugin install lmilojevicc/herdr-splits.nvim --yes || {
+    info "herdr plugin install failed (server may need to run once). Install later with:"
+    info "  herdr plugin install lmilojevicc/herdr-splits.nvim"
+  }
+}
+
 ensure_packages
 remove_stale_underscore_links
 stow_packages
 ensure_ai_clis
+ensure_herdr_plugin
 
 info "Dotfiles installed."

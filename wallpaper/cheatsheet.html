@@ -99,6 +99,7 @@
 
   /* Accent colors per category */
   .accent-tmux    { color: #7aa2f7; }
+  .accent-herdr   { color: #7aa2f7; }
   .accent-nav     { color: #2ac3de; }
   .accent-core    { color: #9ece6a; }
   .accent-diag    { color: #f7768e; }
@@ -177,48 +178,144 @@
     gap: 10px;
     flex: 1;
   }
+
+  /* Wide top-center herdr multi-column map */
+  .herdr-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr 1.1fr 1.2fr;
+    gap: 14px 18px;
+  }
+  .herdr-grid .col h3 {
+    margin: 0 0 6px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: #565f89;
+  }
+  .herdr-grid .col table td {
+    font-size: 14px;
+    line-height: 1.4;
+    padding: 1px 0;
+  }
+  .herdr-grid .col table td:last-child {
+    color: #9aa5ce;
+  }
+  .herdr-grid .col kbd {
+    font-size: 13px;
+  }
+  .herdr-note {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid #2f3549;
+    font-size: 12px;
+    color: #565f89;
+  }
 </style>
 </head>
 <body>
 <div class="layout">
 
-  <!-- ===== TOP LEFT: Tmux ===== -->
-  <div class="top-left card" data-source=".tmux.conf">
-    <h2 class="accent-tmux">Tmux <span class="src">prefix: C-a</span></h2>
+  <!-- ===== TOP LEFT: Seamless Navigation ===== -->
+  <div class="top-left card" data-source="herdr-splits + vim-tmux-navigator + smart-splits">
+    <h2 class="accent-nav">Seamless Nav</h2>
     <table>
-      <tr><td><kbd>\</kbd></td><td>split vertical</td></tr>
-      <tr><td><kbd>-</kbd></td><td>split horizontal</td></tr>
-      <tr><td><kbd>h/j/k/l</kbd></td><td>select pane</td></tr>
-      <tr><td><kbd>H/J/K/L</kbd></td><td>resize pane (5, repeat)</td></tr>
-      <tr><td><kbd>C-h</kbd> <kbd>C-l</kbd></td><td>prev / next window</td></tr>
-      <tr><td><kbd>Esc</kbd></td><td>copy mode</td></tr>
-      <tr><td><kbd>v</kbd></td><td>begin selection</td></tr>
-      <tr><td><kbd>y</kbd></td><td>yank to clipboard</td></tr>
-      <tr><td><kbd>p</kbd></td><td>paste buffer</td></tr>
-      <tr><td><kbd>C-c</kbd> <kbd>C-v</kbd></td><td>system clipboard</td></tr>
-      <tr><td><kbd>f</kbd></td><td>session switcher (fzf)</td></tr>
-      <tr><td><kbd>r</kbd></td><td>reload config</td></tr>
-      <tr><td><kbd>Up</kbd> <kbd>Down</kbd></td><td>maximize / restore pane</td></tr>
+      <tr><td><kbd>C-h/j/k/l</kbd></td><td>nvim ↔ herdr panes</td></tr>
+      <tr><td><kbd>Alt-h/j/k/l</kbd></td><td>resize nvim + herdr</td></tr>
+      <tr><td><kbd>,,h/j/k/l</kbd></td><td>swap buffer (nvim)</td></tr>
+      <tr><td><kbd>C-a</kbd></td><td>herdr prefix</td></tr>
+      <tr><td><kbd>C-a</kbd> <kbd>h/j/k/l</kbd></td><td>force pane focus</td></tr>
+      <tr><td><kbd>C-a</kbd> <kbd>C-l</kbd></td><td>clear screen</td></tr>
+      <tr><td colspan="2" style="color:#565f89;font-size:12px;padding-top:4px;">Outside herdr: C-hjkl via tmux navigator</td></tr>
     </table>
   </div>
 
-  <!-- ===== TOP CENTER: Seamless Navigation ===== -->
-  <div class="top-center card" data-source="tmux+vim-tmux-navigator+smart-splits">
-    <h2 class="accent-nav">Seamless Navigation</h2>
-    <table>
-      <tr><td><kbd>C-h/j/k/l</kbd></td><td>move across tmux panes + nvim splits</td></tr>
-      <tr><td><kbd>Alt-h/j/k/l</kbd></td><td>resize splits (nvim) / pane nav (tmux)</td></tr>
-      <tr><td><kbd>,,h/j/k/l</kbd></td><td>swap buffer position</td></tr>
-      <tr><td><kbd>C-l</kbd> <span class="mode mode-n">pfx</span></td><td>clear screen in tmux</td></tr>
-    </table>
+  <!-- ===== TOP CENTER: Herdr (full map) ===== -->
+  <div class="top-center card" data-source="herdr/config.toml">
+    <h2 class="accent-herdr">Herdr <span class="src">prefix: C-a &middot; all keys after prefix unless marked</span></h2>
+    <div class="herdr-grid">
+
+      <div class="col">
+        <h3>Panes</h3>
+        <table>
+          <tr><td><kbd>\</kbd> <kbd>v</kbd></td><td>split vertical</td></tr>
+          <tr><td><kbd>-</kbd></td><td>split horizontal</td></tr>
+          <tr><td><kbd>h/j/k/l</kbd></td><td>focus pane</td></tr>
+          <tr><td><kbd>S-h/j/k/l</kbd></td><td>swap pane</td></tr>
+          <tr><td><kbd>z</kbd> <kbd>C-A-z</kbd></td><td>zoom</td></tr>
+          <tr><td><kbd>x</kbd></td><td>close pane</td></tr>
+          <tr><td><kbd>r</kbd></td><td>resize mode</td></tr>
+          <tr><td><kbd>;</kbd></td><td>last pane</td></tr>
+          <tr><td><kbd>Tab</kbd> <kbd>S-Tab</kbd></td><td>cycle panes</td></tr>
+          <tr><td><kbd>S-p</kbd></td><td>rename pane</td></tr>
+          <tr><td><kbd>[</kbd></td><td>copy mode</td></tr>
+          <tr><td><kbd>e</kbd></td><td>edit scrollback</td></tr>
+        </table>
+      </div>
+
+      <div class="col">
+        <h3>Tabs</h3>
+        <table>
+          <tr><td><kbd>c</kbd> <kbd>C-A-c</kbd></td><td>new tab</td></tr>
+          <tr><td><kbd>n</kbd> <kbd>p</kbd></td><td>next / prev</td></tr>
+          <tr><td><kbd>C-A-]</kbd> <kbd>C-A-[</kbd></td><td>next / prev (no pfx)</td></tr>
+          <tr><td><kbd>1..9</kbd></td><td>jump tab</td></tr>
+          <tr><td><kbd>,</kbd></td><td>rename tab</td></tr>
+          <tr><td><kbd>S-x</kbd></td><td>close tab</td></tr>
+        </table>
+        <h3 style="margin-top:10px;">Agents</h3>
+        <table>
+          <tr><td><kbd>S-[</kbd> <kbd>S-]</kbd></td><td>prev / next agent</td></tr>
+          <tr><td><kbd>A-1..9</kbd></td><td>focus agent</td></tr>
+        </table>
+      </div>
+
+      <div class="col">
+        <h3>Workspaces</h3>
+        <table>
+          <tr><td><kbd>w</kbd></td><td>workspace picker</td></tr>
+          <tr><td><kbd>g</kbd></td><td>goto (fuzzy)</td></tr>
+          <tr><td><kbd>S-n</kbd></td><td>new workspace</td></tr>
+          <tr><td><kbd>S-w</kbd></td><td>rename workspace</td></tr>
+          <tr><td><kbd>S-d</kbd></td><td>close workspace</td></tr>
+          <tr><td><kbd>C-p</kbd> <kbd>C-n</kbd></td><td>prev / next space</td></tr>
+          <tr><td><kbd>S-1..9</kbd></td><td>jump workspace</td></tr>
+          <tr><td><kbd>S-g</kbd></td><td>new worktree</td></tr>
+          <tr><td><kbd>S-o</kbd></td><td>open worktree</td></tr>
+          <tr><td><kbd>b</kbd></td><td>toggle sidebar</td></tr>
+        </table>
+      </div>
+
+      <div class="col">
+        <h3>Session &amp; tools</h3>
+        <table>
+          <tr><td><kbd>q</kbd></td><td>detach</td></tr>
+          <tr><td><kbd>?</kbd></td><td>keybind help</td></tr>
+          <tr><td><kbd>s</kbd></td><td>settings</td></tr>
+          <tr><td><kbd>S-r</kbd></td><td>reload config</td></tr>
+          <tr><td><kbd>o</kbd></td><td>open notification</td></tr>
+          <tr><td><kbd>A-g</kbd></td><td>lazygit popup</td></tr>
+          <tr><td><kbd>t</kbd></td><td>scratch shell popup</td></tr>
+          <tr><td><kbd>C-l</kbd></td><td>clear screen</td></tr>
+        </table>
+        <h3 style="margin-top:10px;">Always-on (no prefix)</h3>
+        <table>
+          <tr><td><kbd>C-h/j/k/l</kbd></td><td>smart pane nav</td></tr>
+          <tr><td><kbd>Alt-h/j/k/l</kbd></td><td>smart resize</td></tr>
+          <tr><td><kbd>C-A-z</kbd></td><td>zoom</td></tr>
+        </table>
+      </div>
+
+    </div>
+    <div class="herdr-note">S- = Shift &middot; A- = Alt &middot; C-A- = Ctrl+Alt &middot; herdr-splits owns C-hjkl / Alt-hjkl inside herdr</div>
   </div>
 
-  <!-- ===== TOP RIGHT: empty spacer or title ===== -->
+  <!-- ===== TOP RIGHT: title ===== -->
   <div class="top-right card" style="display:flex;align-items:center;justify-content:center;border-color:#2f3549;">
     <div style="text-align:center;">
       <div style="font-size:28px;font-weight:800;color:#7aa2f7;letter-spacing:1px;">KEYBINDING</div>
       <div style="font-size:28px;font-weight:800;color:#c0caf5;letter-spacing:1px;">CHEAT SHEET</div>
-      <div style="font-size:13px;color:#565f89;margin-top:6px;">dotfiles &middot; tmux &middot; nvim &middot; zsh</div>
+      <div style="font-size:13px;color:#565f89;margin-top:6px;">dotfiles &middot; herdr &middot; nvim &middot; zsh</div>
     </div>
   </div>
 

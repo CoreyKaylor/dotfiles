@@ -4,11 +4,25 @@ Personal macOS and Linux/WSL dotfiles managed with GNU Stow.
 
 ## Layout
 
-- `zsh/`, `tmux/`, `nvim/`, `mise/`, and `git/` are Stow packages that mirror files under `$HOME`.
-- `Brewfile` tracks macOS packages.
+- `zsh/`, `tmux/`, `nvim/`, `mise/`, `git/`, `lazygit/`, and `herdr/` are Stow packages that mirror files under `$HOME`.
+- `Brewfile` tracks macOS packages (including `herdr` and Ghostty).
 - `justfile` provides repo tasks.
 - `wallpaper/` is kept as a manual asset generator and is not stowed.
 - Legacy Vim, Emacs, vendored shell plugins, Powerline fonts, and old submodules were archived in the `pre-modernization-2026-06-05` tag.
+
+### Herdr
+
+Herdr config lives at `herdr/.config/herdr/config.toml` (prefix `ctrl+a`, tmux-like panes/tabs/workspaces). Seamless `Ctrl-hjkl` / `Alt-hjkl` between nvim and herdr panes uses the [herdr-splits](https://github.com/lmilojevicc/herdr-splits.nvim) plugin (installed by `./install.sh` when `herdr` is available).
+
+```sh
+herdr                                      # attach / start
+herdr config check                         # validate config.toml
+herdr server reload-config                 # apply after edits
+herdr plugin install lmilojevicc/herdr-splits.nvim
+prefix+?                                   # in-session keybind help
+```
+
+Ghostty should set `macos-option-as-alt = true` so `Alt-hjkl` resize reaches herdr (see Application Support Ghostty config).
 
 ## Install
 

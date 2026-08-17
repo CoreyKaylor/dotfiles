@@ -14,6 +14,12 @@ plugged/
 /_emacs.d/eshell
 nvim.log
 
+# Herdr runtime (must not land in the stow package)
+herdr/.config/herdr/plugins/
+herdr/.config/herdr/plugins.json
+herdr/.config/herdr/.plugins.lock
+herdr/.config/herdr/*.log
+
 # Environment files (should never be committed)
 .env
 .env.local

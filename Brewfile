@@ -68,6 +68,8 @@ brew "tree-sitter"
 brew "tree-sitter-cli"
 # Terminal multiplexer
 brew "tmux"
+# Agent multiplexer (workspaces / tabs / panes)
+brew "herdr"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
 # Search tool like grep and The Silver Searcher

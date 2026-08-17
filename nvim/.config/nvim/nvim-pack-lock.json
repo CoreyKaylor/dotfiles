@@ -85,6 +85,10 @@
       "src": "https://github.com/ThePrimeagen/harpoon",
       "version": "'harpoon2'"
     },
+    "herdr-splits.nvim": {
+      "rev": "c58bfdf01520845583e0033c11c56fc9d21a5424",
+      "src": "https://github.com/lmilojevicc/herdr-splits.nvim"
+    },
     "kanagawa.nvim": {
       "rev": "bb85e4bfc8d89b0e62c8fa53ccdd13d12e2f77b3",
       "src": "https://github.com/rebelot/kanagawa.nvim"

@@ -2,10 +2,16 @@ vim.g.mapleader=','
 
 vim.keymap.set('n', '<leader>+', vim.cmd.vs) --vertical split
 vim.keymap.set('n', '<leader>-', vim.cmd.split) --horizontal split
-vim.keymap.set('n', '<C-k>', '<C-w>k') --move up one window
-vim.keymap.set('n', '<C-j>', '<C-w>j') --move down one window
-vim.keymap.set('n', '<C-h>', '<C-w>h') --move left one window
-vim.keymap.set('n', '<C-l>', '<C-w>l') --move right one window
+
+-- Plain window nav only outside herdr/tmux (plugins own C-hjkl there)
+local mux = vim.env.HERDR_ENV == '1' or (vim.env.TMUX and vim.env.TMUX ~= '')
+if not mux then
+  vim.keymap.set('n', '<C-k>', '<C-w>k') --move up one window
+  vim.keymap.set('n', '<C-j>', '<C-w>j') --move down one window
+  vim.keymap.set('n', '<C-h>', '<C-w>h') --move left one window
+  vim.keymap.set('n', '<C-l>', '<C-w>l') --move right one window
+end
+
 vim.keymap.set('n', '<C-Up>', [[<cmd>horizontal resize + 5<cr>]])
 vim.keymap.set('n', '<C-Down>', [[<cmd>horizontal resize - 5<cr>]])
 vim.keymap.set('n', '<C-Left>', [[<cmd>vertical resize + 5<cr>]])

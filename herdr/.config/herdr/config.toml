@@ -1,0 +1,169 @@
+# herdr configuration — tmux-like power with clearer shortcuts
+# Stow: herdr/.config/herdr/config.toml → ~/.config/herdr/config.toml
+# Reload: herdr server reload-config  (or prefix+shift+r)
+
+onboarding = false
+
+[terminal]
+# Empty → $SHELL (zsh). Login shells on macOS via "auto".
+shell_mode = "auto"
+new_cwd = "follow"
+
+[keys]
+# Match tmux muscle memory
+prefix = "ctrl+a"
+
+# --- session / utility ---
+help = "prefix+?"
+settings = "prefix+s"
+detach = "prefix+q"
+reload_config = "prefix+shift+r"
+open_notification_target = "prefix+o"
+
+# --- workspaces (≈ tmux sessions) ---
+workspace_picker = "prefix+w"
+goto = "prefix+g"
+new_workspace = "prefix+shift+n"
+rename_workspace = "prefix+shift+w"
+close_workspace = "prefix+shift+d"
+# prefix+[ is copy_mode; use ctrl+p/n for workspace cycle
+previous_workspace = "prefix+ctrl+p"
+next_workspace = "prefix+ctrl+n"
+switch_workspace = "prefix+shift+1..9"
+new_worktree = "prefix+shift+g"
+open_worktree = "prefix+shift+o"
+
+# --- agents ---
+previous_agent = "prefix+shift+["
+next_agent = "prefix+shift+]"
+focus_agent = "prefix+alt+1..9"
+
+# --- tabs (≈ tmux windows) ---
+new_tab = ["prefix+c", "ctrl+alt+c"]
+rename_tab = "prefix+comma"
+previous_tab = ["prefix+p", "ctrl+alt+["]
+next_tab = ["prefix+n", "ctrl+alt+]"]
+switch_tab = "prefix+1..9"
+close_tab = "prefix+shift+x"
+
+# --- panes (≈ tmux splits) ---
+# Dumb focus: always moves herdr focus (no nvim awareness).
+# Smart C-hjkl lives in [[keys.command]] via herdr-splits plugin.
+focus_pane_left = "prefix+h"
+focus_pane_down = "prefix+j"
+focus_pane_up = "prefix+k"
+focus_pane_right = "prefix+l"
+cycle_pane_next = "prefix+tab"
+cycle_pane_previous = "prefix+shift+tab"
+last_pane = "prefix+semicolon"
+split_vertical = ["prefix+v", "prefix+backslash"]
+split_horizontal = "prefix+minus"
+close_pane = "prefix+x"
+zoom = ["prefix+z", "ctrl+alt+z"]
+resize_mode = "prefix+r"
+rename_pane = "prefix+shift+p"
+edit_scrollback = "prefix+e"
+copy_mode = "prefix+["
+toggle_sidebar = "prefix+b"
+swap_pane_left = "prefix+shift+h"
+swap_pane_down = "prefix+shift+j"
+swap_pane_up = "prefix+shift+k"
+swap_pane_right = "prefix+shift+l"
+
+# Navigate mode (workspace/pane picker surface) — keep hjkl
+navigate_workspace_up = "up"
+navigate_workspace_down = "down"
+navigate_pane_left = "h"
+navigate_pane_down = "j"
+navigate_pane_up = "k"
+navigate_pane_right = "l"
+
+# ---------------------------------------------------------------------------
+# Seamless C-hjkl / Alt-hjkl — herdr-splits.nvim (is_vim via process-info)
+# Install: herdr plugin install lmilojevicc/herdr-splits.nvim
+# ---------------------------------------------------------------------------
+
+[[keys.command]]
+key = "ctrl+h"
+type = "plugin_action"
+command = "herdr-splits.nav-left"
+description = "navigate left (nvim/herdr)"
+
+[[keys.command]]
+key = "ctrl+j"
+type = "plugin_action"
+command = "herdr-splits.nav-down"
+description = "navigate down (nvim/herdr)"
+
+[[keys.command]]
+key = "ctrl+k"
+type = "plugin_action"
+command = "herdr-splits.nav-up"
+description = "navigate up (nvim/herdr)"
+
+[[keys.command]]
+key = "ctrl+l"
+type = "plugin_action"
+command = "herdr-splits.nav-right"
+description = "navigate right (nvim/herdr)"
+
+[[keys.command]]
+key = "alt+h"
+type = "plugin_action"
+command = "herdr-splits.resize-left"
+description = "resize left (nvim/herdr)"
+
+[[keys.command]]
+key = "alt+j"
+type = "plugin_action"
+command = "herdr-splits.resize-down"
+description = "resize down (nvim/herdr)"
+
+[[keys.command]]
+key = "alt+k"
+type = "plugin_action"
+command = "herdr-splits.resize-up"
+description = "resize up (nvim/herdr)"
+
+[[keys.command]]
+key = "alt+l"
+type = "plugin_action"
+command = "herdr-splits.resize-right"
+description = "resize right (nvim/herdr)"
+
+# C-l is navigation; recover clear-screen like tmux prefix+C-l
+[[keys.command]]
+key = "prefix+ctrl+l"
+type = "shell"
+command = 'herdr pane send-keys "${HERDR_ACTIVE_PANE_ID}" ctrl+l'
+description = "clear screen in focused pane"
+
+[[keys.command]]
+key = "prefix+alt+g"
+type = "popup"
+command = "lazygit"
+description = "lazygit"
+width = "90%"
+height = "90%"
+
+[[keys.command]]
+key = "prefix+t"
+type = "popup"
+command = 'exec "${SHELL:-zsh}"'
+description = "scratch terminal"
+width = "80%"
+height = "80%"
+
+[ui]
+prompt_new_tab_name = false
+prompt_new_workspace_name = false
+hide_tab_bar_when_single_tab = true
+confirm_close = true
+pane_borders = true
+sidebar_start_collapsed = false
+tab_bar_position = "top"
+accent = "cyan"
+
+[ui.toast]
+delivery = "herdr"
+delay_seconds = 1
