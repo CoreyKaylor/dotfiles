@@ -179,9 +179,25 @@ ensure_herdr_plugin() {
   }
 }
 
+ensure_fnox() {
+  if has fnox; then
+    info "fnox already installed."
+    return
+  fi
+
+  if has mise; then
+    info "Installing fnox via mise..."
+    mise use -g fnox
+    return
+  fi
+
+  info "fnox is not installed. On macOS it comes from the Brewfile. On Linux: mise use -g fnox"
+}
+
 ensure_packages
 remove_stale_underscore_links
 stow_packages
+ensure_fnox
 ensure_ai_clis
 ensure_herdr_plugin
 

@@ -5,23 +5,6 @@ fi
 
 [[ $- != *i* ]] && return
 
-load_env_file() {
-  local env_file="$HOME/.env"
-  [[ -r "$env_file" ]] || return
-
-  local owner mode
-  owner="$(stat -f %Su "$env_file" 2>/dev/null || stat -c %U "$env_file" 2>/dev/null)"
-  mode="$(stat -f %Lp "$env_file" 2>/dev/null || stat -c %a "$env_file" 2>/dev/null)"
-
-  if [[ "$owner" == "$USER" && "$mode" -le 600 ]]; then
-    set -a
-    source "$env_file"
-    set +a
-  else
-    print -u2 "Warning: ~/.env has insecure permissions or ownership"
-  fi
-}
-
 load_antidote() {
   local antidote_script=""
 
@@ -56,8 +39,6 @@ load_antidote() {
   [[ -r "$bundle_file" ]] || return
   source "$bundle_file"
 }
-
-load_env_file
 
 if [[ "$OSTYPE" == darwin* ]]; then
   if ! (( $+commands[brew] )); then
@@ -199,6 +180,12 @@ bindkey -M viins '^[OB' down-line-or-beginning-search
 if (( $+commands[mise] )); then
   eval "$(mise activate zsh)"
 fi
+
+if (( $+commands[fnox] )); then
+  eval "$(fnox activate zsh)"
+fi
+
+[[ -r "${ZDOTDIR:-$HOME}/.zsh/fnox.zsh" ]] && source "${ZDOTDIR:-$HOME}/.zsh/fnox.zsh"
 
 if (( $+commands[zoxide] )); then
   eval "$(zoxide init zsh)"

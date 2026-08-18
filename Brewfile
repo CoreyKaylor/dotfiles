@@ -60,6 +60,8 @@ brew "luajit"
 brew "mingw-w64"
 # Polyglot runtime manager (asdf rust clone)
 brew "mise"
+# Secret manager that injects env vars from the OS keychain (or age)
+brew "fnox"
 # GDI+-compatible API on non-Windows operating systems
 brew "mono-libgdiplus"
 # Incremental parsing library

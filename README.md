@@ -7,6 +7,7 @@ Personal macOS and Linux/WSL dotfiles managed with GNU Stow.
 - `zsh/`, `tmux/`, `nvim/`, `mise/`, `git/`, `lazygit/`, and `herdr/` are Stow packages that mirror files under `$HOME`.
 - `Brewfile` tracks macOS packages (including `herdr` and Ghostty).
 - `justfile` provides repo tasks.
+- `fnox/` is helper scripts. It is not stowed; secret values stay out of this repo.
 - `wallpaper/` is kept as a manual asset generator and is not stowed.
 - Legacy Vim, Emacs, vendored shell plugins, Powerline fonts, and old submodules were archived in the `pre-modernization-2026-06-05` tag.
 
@@ -43,13 +44,50 @@ Useful commands:
 ```sh
 just install
 just check
+just secrets-worktree ~/Projects
+just secrets-migrate ~/Projects
 just shell-time
 just nvim-startup
 ```
 
 ## Secrets
 
-Secrets stay out of this repository. Do not commit plaintext secrets, encrypted secret blobs, or generated secret files. The shell may source a local `~/.env` only when it is owned by the current user and has permissions no broader than `0600`.
+Secrets stay out of this repository. Do not commit plaintext secrets, encrypted secret blobs, or generated secret files.
+
+[fnox](https://fnox.jdx.dev/) stores values in the OS credential store (macOS Keychain, Linux Secret Service, Windows Credential Manager) and injects them as environment variables. `~/.zshrc` runs `fnox activate zsh` so secrets load when you enter a directory that has a `fnox.toml` — including any child of that directory. `~/.env` is no longer sourced.
+
+### Shared CLI secrets (Jira, GitHub, …)
+
+Put one `fnox.toml` at a work-tree root, not in every project and not at `$HOME`:
+
+```text
+~/Projects/fnox.toml     # JIRA_API_TOKEN, GITHUB_TOKEN, …
+~/Projects/crowded/      # inherits
+~/Projects/personal/     # inherits
+```
+
+`cd ~/Projects/anything` then gets those variables automatically. A project can add its own `fnox.toml` for extra keys. `fnox exec -- jira …` works from those trees without the shell hook.
+
+```sh
+just secrets-worktree ~/Projects
+printf '%s' "$token" | fnox -c ~/Projects/fnox.toml set JIRA_API_TOKEN --provider keychain
+```
+
+Providers live in `~/.config/fnox/config.toml` (machine-local).
+
+### Migrating `~/.env`
+
+```sh
+just secrets-migrate ~/Projects
+(cd ~/Projects && fnox list && fnox get JIRA_API_TOKEN)
+mv ~/.env ~/.env.bak
+```
+
+### Other machines
+
+On macOS, `brew bundle` installs fnox. On Linux/WSL, `mise use -g fnox`. WSL usually has no Secret Service; keep an age identity file at `0600` under `~/.config/fnox/` instead of pretending the keychain exists. Headless/CI should use `fnox exec`, not the interactive hook.
+
+For many secrets, store a single age identity in the keychain and encrypt the rest with age so macOS does not prompt once per item. See [fnox keychain](https://fnox.jdx.dev/providers/keychain.html).
 
 ## Neovim Spikes
 
