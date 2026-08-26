@@ -4,7 +4,7 @@ export EDITOR="${EDITOR:-nvim}"
 export VISUAL="${VISUAL:-nvim}"
 export LC_ALL="${LC_ALL:-en_US.UTF-8}"
 
-path=("$HOME/.local/bin" "$HOME/.grok/bin" "$HOME/.opencode/bin" "$HOME/.maestro/bin" $path)
+path=("$HOME/.local/bin" "$HOME/.grok/bin" "$HOME/.opencode/bin" "$HOME/.maestro/bin" "$HOME/.cargo/bin" $path)
 
 # Android SDK: Homebrew commandlinetools first, then Android Studio defaults.
 # Drop a stale ANDROID_HOME that points at a missing directory (common after
