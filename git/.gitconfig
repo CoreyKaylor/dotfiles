@@ -40,3 +40,7 @@
 	co = checkout
 	st = status --short --branch
 	lg = log --graph --decorate --oneline --all
+
+[user]
+	email = corey@kaylors.net
+	name = Corey Kaylor
