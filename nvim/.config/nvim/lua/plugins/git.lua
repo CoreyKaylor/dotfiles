@@ -24,6 +24,7 @@ return {
       'DiffBanditApplyLeftHunk',
       'DiffBanditApplyRightHunk',
       'DiffBanditUndo',
+      'DiffBanditLaunch',
     },
     keys = {
       { '<leader>gg', '<cmd>DiffBanditGit<cr>', desc = 'Git changes (DiffBandit)' },
