@@ -44,6 +44,8 @@ brew "goose"
 brew "kdoctor"
 # Kotlin style checker/formatter (configured as IntelliJ/Kotlin conventions in nvim)
 brew "ktlint"
+# YAML linter used by nvim-lint
+brew "yamllint"
 # Powerful, lightweight programming language
 brew "lua"
 # Language Server for the Lua language
