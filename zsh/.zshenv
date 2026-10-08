@@ -4,7 +4,19 @@ export EDITOR="${EDITOR:-nvim}"
 export VISUAL="${VISUAL:-nvim}"
 export LC_ALL="${LC_ALL:-en_US.UTF-8}"
 
-path=("$HOME/.local/bin" "$HOME/.grok/bin" "$HOME/.opencode/bin" "$HOME/.maestro/bin" "$HOME/.cargo/bin" $path)
+path=("$HOME/.local/bin" "$HOME/.grok/bin" "$HOME/.opencode/bin" "$HOME/.maestro/bin" "$HOME/.cargo/bin" "$HOME/.dotnet/tools" $path)
+
+# Homebrew dotnet. Apple Silicon prefix first, then Intel / Linux Homebrew.
+if [[ -z "${DOTNET_ROOT:-}" ]]; then
+  for _dotnet_root in /opt/homebrew/opt/dotnet/libexec /usr/local/opt/dotnet/libexec; do
+    if [[ -d "$_dotnet_root" ]]; then
+      export DOTNET_ROOT="$_dotnet_root"
+      break
+    fi
+  done
+  unset _dotnet_root
+fi
+export DOTNET_ROLL_FORWARD="${DOTNET_ROLL_FORWARD:-Major}"
 
 # Android SDK: Homebrew commandlinetools first, then Android Studio defaults.
 # Drop a stale ANDROID_HOME that points at a missing directory (common after
