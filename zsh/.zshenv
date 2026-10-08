@@ -4,6 +4,10 @@ export EDITOR="${EDITOR:-nvim}"
 export VISUAL="${VISUAL:-nvim}"
 export LC_ALL="${LC_ALL:-en_US.UTF-8}"
 
+# fnox prints a one-line load summary on startup. That write happens during
+# zsh init and trips Powerlevel10k instant prompt in new herdr panes.
+export FNOX_SHELL_OUTPUT="${FNOX_SHELL_OUTPUT:-none}"
+
 path=("$HOME/.local/bin" "$HOME/.grok/bin" "$HOME/.opencode/bin" "$HOME/.maestro/bin" "$HOME/.cargo/bin" "$HOME/.dotnet/tools" $path)
 
 # Homebrew dotnet. Apple Silicon prefix first, then Intel / Linux Homebrew.
