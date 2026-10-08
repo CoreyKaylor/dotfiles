@@ -50,24 +50,60 @@ return {
       '--editorconfig=' .. ktlint_editorconfig,
     }
 
+    local function linter_cmd(name)
+      local linter = lint.linters[name]
+      if type(linter) == 'function' then
+        linter = linter()
+      end
+      local cmd = linter and linter.cmd
+      if type(cmd) == 'function' then
+        cmd = cmd()
+      end
+      return cmd
+    end
+
+    local function available_linters()
+      local names = lint._resolve_linter_by_ft(vim.bo.filetype)
+      local available = {}
+      for _, name in ipairs(names) do
+        local cmd = linter_cmd(name)
+        if cmd and vim.fn.executable(cmd) == 1 then
+          table.insert(available, name)
+        end
+      end
+      return available
+    end
+
     -- Auto-lint on save and after text changes
     local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })
 
     vim.api.nvim_create_autocmd({ 'BufWritePost', 'BufReadPost', 'InsertLeave' }, {
       group = lint_augroup,
       callback = function()
-        -- Only lint if we have a linter for this filetype
-        local ft = vim.bo.filetype
-        if lint.linters_by_ft[ft] then
-          lint.try_lint()
+        local names = available_linters()
+        if #names > 0 then
+          lint.try_lint(names)
         end
       end,
     })
 
     -- Manual lint command
     vim.api.nvim_create_user_command('Lint', function()
-      lint.try_lint()
+      local names = available_linters()
+      if #names > 0 then
+        lint.try_lint(names)
+      else
+        vim.notify('No linters available for ' .. vim.bo.filetype, vim.log.levels.WARN)
+      end
     end, { desc = 'Run linter on current buffer' })
+
+    -- BufReadPost already fired to load this plugin. Wait for filetype detection.
+    vim.schedule(function()
+      local names = available_linters()
+      if #names > 0 then
+        lint.try_lint(names)
+      end
+    end)
   end,
 }
 
