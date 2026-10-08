@@ -94,6 +94,8 @@ brew "wasm-tools"
 brew "zsh"
 # Shell extension for faster directory navigation
 brew "zoxide"
+# Databricks CLI
+brew "databricks/tap/databricks", trusted: true
 # Official Language Server Protocol for the Kotlin language
 brew "jetbrains/utils/kotlin-lsp", trusted: true
 # Supabase CLI
