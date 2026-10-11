@@ -57,7 +57,7 @@
       "src": "https://github.com/stevearc/conform.nvim"
     },
     "diffbandit.nvim": {
-      "rev": "1eac0c4703cbdd6af3623f13f4db07169a75dbe9",
+      "rev": "7e1e5b8b080e9784fcd27180c25c8733d2fff758",
       "src": "https://github.com/CoreyKaylor/diffbandit.nvim"
     },
     "diffview.nvim": {
