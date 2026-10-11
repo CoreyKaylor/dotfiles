@@ -94,6 +94,8 @@ brew "wasm-tools"
 brew "zsh"
 # Shell extension for faster directory navigation
 brew "zoxide"
+# Official Amazon AWS command-line interface
+brew "awscli"
 # Databricks CLI
 brew "databricks/tap/databricks", trusted: true
 # Official Language Server Protocol for the Kotlin language
