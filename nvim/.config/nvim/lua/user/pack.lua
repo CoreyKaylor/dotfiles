@@ -475,7 +475,10 @@ function M.setup()
   end
 
   for _, spec in ipairs(sorted_start_specs()) do
-    M.load(spec.name)
+    local ok, err = pcall(M.load, spec.name)
+    if not ok then
+      vim.notify(("Failed to load %s: %s"):format(spec.name, err), vim.log.levels.ERROR)
+    end
   end
 
   vim.api.nvim_create_user_command("PackStatus", function()
