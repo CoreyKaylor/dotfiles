@@ -1,7 +1,7 @@
 return {
   'rcarriga/nvim-notify',
   priority = 999, -- Load early to replace vim.notify
-  lazy = false,
+  event = 'VeryLazy',
   config = function()
     local notify = require('notify')
     

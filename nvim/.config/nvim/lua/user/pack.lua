@@ -245,6 +245,43 @@ local function register_build_hooks()
   })
 end
 
+local function source_plugin_files(dir)
+  local patterns = {
+    dir .. "/plugin/*.vim",
+    dir .. "/plugin/**/*.vim",
+    dir .. "/plugin/*.lua",
+    dir .. "/plugin/**/*.lua",
+  }
+  local seen = {}
+
+  for _, pattern in ipairs(patterns) do
+    for _, path in ipairs(vim.fn.glob(pattern, false, true)) do
+      if not seen[path] then
+        seen[path] = true
+        vim.cmd.source({ path, magic = { file = false } })
+      end
+    end
+  end
+end
+
+local pending_after = {}
+local load_depth = 0
+
+-- :packadd after startup does not source after/plugin/, which is where many
+-- plugins (e.g. cmp sources) register themselves. Source those once the
+-- outermost load (plugin + all its dependencies) has finished.
+local function plugin_dir_of(spec)
+  return vim.fn.stdpath("data") .. "/site/pack/core/opt/" .. spec.name
+end
+
+local function flush_after_plugins()
+  local dirs = pending_after
+  pending_after = {}
+  for _, dir in ipairs(dirs) do
+    source_plugin_files(dir .. "/after")
+  end
+end
+
 function M.load(name)
   if loaded[name] then
     return
@@ -256,26 +293,44 @@ function M.load(name)
   end
 
   loading[name] = true
+  load_depth = load_depth + 1
 
-  for _, dependency in ipairs(list(spec.dependencies)) do
-    if type(dependency) == "table" and dependency.optional then
-      goto continue
+  -- pcall keeps load_depth balanced when a plugin's config throws, so later
+  -- lazy loads still flush their after/plugin files. The error is re-raised.
+  local ok, err = pcall(function()
+    for _, dependency in ipairs(list(spec.dependencies)) do
+      if type(dependency) == "table" and dependency.optional then
+        goto continue
+      end
+
+      local dep = normalize_spec(dependency, spec.name)
+      if dep then
+        M.load(dep.name)
+      end
+
+      ::continue::
     end
 
-    local dep = normalize_spec(dependency, spec.name)
-    if dep then
-      M.load(dep.name)
-    end
+    vim.cmd.packadd(spec.name)
+    run_build(spec)
+    run_config(spec)
 
-    ::continue::
+    loaded[name] = true
+    loading[name] = nil
+
+    if vim.v.vim_did_enter == 1 then
+      table.insert(pending_after, plugin_dir_of(spec))
+    end
+  end)
+
+  load_depth = load_depth - 1
+  if load_depth == 0 and #pending_after > 0 then
+    flush_after_plugins()
   end
 
-  vim.cmd.packadd(spec.name)
-  run_build(spec)
-  run_config(spec)
-
-  loaded[name] = true
-  loading[name] = nil
+  if not ok then
+    error(err, 0)
+  end
 end
 
 local function should_start_loaded(spec)
@@ -417,8 +472,37 @@ local function register_events(spec)
     else
       vim.api.nvim_create_autocmd(event, {
         group = vim.api.nvim_create_augroup("PackEvent" .. spec.name:gsub("[^%w]", ""), { clear = false }),
-        callback = function()
+        callback = function(args)
+          if loaded[spec.name] then
+            return
+          end
+
+          local function group_counts()
+            local counts = {}
+            for _, au in ipairs(vim.api.nvim_get_autocmds({ event = args.event })) do
+              if au.group then
+                counts[au.group] = (counts[au.group] or 0) + 1
+              end
+            end
+            return counts
+          end
+
+          local before = group_counts()
           M.load(spec.name)
+
+          -- Replay the triggering event for autocmd groups the plugin just
+          -- created/extended, so it doesn't miss the event that loaded it
+          -- (e.g. cmp and cmp-nvim-lsp both hook InsertEnter).
+          for group, count in pairs(group_counts()) do
+            if count > (before[group] or 0) then
+              pcall(vim.api.nvim_exec_autocmds, args.event, {
+                group = group,
+                buffer = args.buf,
+                modeline = false,
+                data = args.data,
+              })
+            end
+          end
         end,
         once = true,
       })

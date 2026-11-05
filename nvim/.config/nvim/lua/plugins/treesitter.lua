@@ -79,7 +79,7 @@ return {
   "nvim-treesitter/nvim-treesitter",
   branch = "main",
   -- `main` does not support lazy-loading.
-  lazy = false,
+  event = { "BufReadPre", "BufNewFile" },
   build = ":TSUpdate",
   dependencies = {
     { "nvim-treesitter/nvim-treesitter-textobjects", branch = "main" },
