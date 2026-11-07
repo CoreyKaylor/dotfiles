@@ -18,8 +18,8 @@ check:
   zsh -n zsh/.zsh/fnox.zsh
   bash -n fnox/lib.sh
   bash -n fnox/worktree-init.sh
-  bash -n fnox/migrate-from-env.sh
   bash -n fnox/check-hierarchy.sh
+  bash -n fnox/config-docs.sh
   ./fnox/check-hierarchy.sh
   XDG_STATE_HOME=/tmp/nvim-state nvim --clean --headless '+set runtimepath+={{justfile_directory()}}/nvim/.config/nvim' '+luafile {{justfile_directory()}}/nvim/.config/nvim/lua/user/lsp.lua' +qa
   nvim --clean --headless '+luafile {{justfile_directory()}}/nvim/.config/nvim/lua/user/html.lua' +qa
@@ -27,8 +27,8 @@ check:
 secrets-worktree *dirs:
   ./fnox/worktree-init.sh {{dirs}}
 
-secrets-migrate *dirs:
-  ./fnox/migrate-from-env.sh {{dirs}}
+secrets-docs *args:
+  ./fnox/config-docs.sh {{args}}
 
 brew-check:
   brew bundle check --file=./Brewfile

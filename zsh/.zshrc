@@ -183,6 +183,14 @@ fi
 
 if (( $+commands[fnox] )); then
   eval "$(fnox activate zsh)"
+
+  # .zshenv silences fnox during startup (Powerlevel10k instant prompt).
+  # After the first prompt, show which variables each cd loads or unloads.
+  _fnox_output_on() {
+    [[ "${FNOX_SHELL_OUTPUT:-}" == none ]] && export FNOX_SHELL_OUTPUT=normal
+    precmd_functions=(${precmd_functions:#_fnox_output_on})
+  }
+  precmd_functions+=(_fnox_output_on)
 fi
 
 [[ -r "${ZDOTDIR:-$HOME}/.zsh/fnox.zsh" ]] && source "${ZDOTDIR:-$HOME}/.zsh/fnox.zsh"

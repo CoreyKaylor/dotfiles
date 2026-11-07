@@ -17,23 +17,21 @@ global_config_path() {
   printf '%s\n' "${FNOX_CONFIG_DIR:-${XDG_CONFIG_HOME:-$HOME/.config}/fnox}/config.toml"
 }
 
-ensure_global_keychain_provider() {
-  local config
+ensure_global_op_provider() {
+  local config vault
   config="$(global_config_path)"
+  vault="${FNOX_OP_VAULT:-Dev}"
 
   if [[ ! -f "$config" ]]; then
     fnox init --global --skip-wizard --non-interactive
   fi
 
-  if grep -Eq '^\[providers(\.keychain)?\]' "$config" 2>/dev/null &&
-    grep -Eq 'type[[:space:]]*=[[:space:]]*"keychain"' "$config" 2>/dev/null; then
+  if grep -Eq '^\[providers\.op\]' "$config" 2>/dev/null; then
     return
   fi
 
-  case "$(uname -s)" in
-    Darwin) fnox provider add keychain keychain --global --non-interactive ;;
-    *) info "Skipping keychain provider on $(uname -s); add an age identity under $config instead." ;;
-  esac
+  printf '\n[providers.op]\ntype = "1password"\nvault = "%s"\n' "$vault" >>"$config"
+  info "Added 1Password provider \"op\" (vault $vault) to $config"
 }
 
 ensure_worktree_config() {

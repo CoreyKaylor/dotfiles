@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Create a parent fnox.toml so every child directory inherits shared CLI secrets.
+# Set up the 1Password provider and a parent fnox.toml that children inherit.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -10,9 +10,10 @@ usage() {
   cat <<'EOF'
 Usage: fnox/worktree-init.sh <dir> [dir...]
 
-Write a names-only fnox.toml at each work-tree root. Navigating into that
-directory or any child loads those secrets (for example JIRA_API_TOKEN)
-without a per-project config.
+Add the 1Password provider "op" (vault ${FNOX_OP_VAULT:-Dev}) to the global
+fnox config, and write a references-only fnox.toml at each work-tree root.
+Navigating into that directory or any child loads those secrets (for
+example JIRA_API_TOKEN) without a per-project config.
 
 Example:
   ./fnox/worktree-init.sh ~/Projects
@@ -26,7 +27,7 @@ if [[ "${1:-}" == "-h" || "${1:-}" == "--help" || $# -eq 0 ]]; then
 fi
 
 require_fnox
-ensure_global_keychain_provider
+ensure_global_op_provider
 
 for dir in "$@"; do
   [[ -n "$dir" ]] || die "empty directory argument"
@@ -35,6 +36,6 @@ done
 
 info ""
 info "Next:"
-info "  printf '%s' \"\$value\" | fnox -c <dir>/fnox.toml set JIRA_API_TOKEN --provider keychain"
-info "  or: just secrets-migrate <dir> [dir...]"
+info "  fnox-set -s -i shared JIRA_API_TOKEN     # stores in 1Password, references it"
+info "  just secrets-docs pull                   # restore fnox files kept in 1Password"
 info "Open a new shell (or eval \"\$(fnox activate zsh)\") and cd into a child directory."

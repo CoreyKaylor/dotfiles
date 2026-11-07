@@ -45,7 +45,7 @@ Useful commands:
 just install
 just check
 just secrets-worktree ~/Projects
-just secrets-migrate ~/Projects
+just secrets-docs pull
 just shell-time
 just nvim-startup
 ```
@@ -54,7 +54,18 @@ just nvim-startup
 
 Secrets stay out of this repository. Do not commit plaintext secrets, encrypted secret blobs, or generated secret files.
 
-[fnox](https://fnox.jdx.dev/) stores values in the OS credential store (macOS Keychain, Linux Secret Service, Windows Credential Manager) and injects them as environment variables. `~/.zshrc` runs `fnox activate zsh` so secrets load when you enter a directory that has a `fnox.toml` — including any child of that directory. `~/.env` is no longer sourced.
+[fnox](https://fnox.jdx.dev/) injects secrets as environment variables. Values live in 1Password (vault `Dev`); `fnox.toml` files hold only references like `{ provider = "op", value = "pillwise-staging/STG_DATABASE_URL" }` — item `pillwise-staging`, field `STG_DATABASE_URL`. `~/.zshrc` runs `fnox activate zsh`, so secrets load when you enter a directory that has a `fnox.toml`, including any child of it, and each `cd` prints which names changed.
+
+fnox reads 1Password through the `op` CLI (`brew bundle` installs it). Turn on **Settings › Developer › Integrate with 1Password CLI** in the 1Password app so `op` unlocks with Touch ID. fnox batches every reference into one `op` call per directory.
+
+### Adding a secret
+
+```sh
+fnox-set -P staging STG_NEW_TOKEN        # prompts; adds the field to the item that table already uses
+fnox-set -s -i shared JIRA_API_TOKEN     # shared ~/Projects/fnox.toml, item "shared"
+```
+
+`fnox-set` writes the value to 1Password on stdin (never argv), reads it back, then adds the reference to the right `fnox.toml`. `fnox set` alone cannot write to 1Password.
 
 ### Shared CLI secrets (Jira, GitHub, …)
 
@@ -68,26 +79,26 @@ Put one `fnox.toml` at a work-tree root, not in every project and not at `$HOME`
 
 `cd ~/Projects/anything` then gets those variables automatically. A project can add its own `fnox.toml` for extra keys. `fnox exec -- jira …` works from those trees without the shell hook.
 
-```sh
-just secrets-worktree ~/Projects
-printf '%s' "$token" | fnox -c ~/Projects/fnox.toml set JIRA_API_TOKEN --provider keychain
-```
+### fnox files outside a repo
 
-Providers live in `~/.config/fnox/config.toml` (machine-local).
-
-### Migrating `~/.env`
+Some `fnox.toml` files sit in directories that are not git repos (for example `~/Projects/fnox.local.toml`). They hold references only and are kept as 1Password documents tagged `fnox-config`:
 
 ```sh
-just secrets-migrate ~/Projects
-(cd ~/Projects && fnox list && fnox get JIRA_API_TOKEN)
-mv ~/.env ~/.env.bak
+just secrets-docs push ~/Projects/fnox.local.toml   # after editing one
+just secrets-docs pull                              # on a new machine; never overwrites
 ```
 
-### Other machines
+### New machine
 
-On macOS, `brew bundle` installs fnox. On Linux/WSL, `mise use -g fnox`. WSL usually has no Secret Service; keep an age identity file at `0600` under `~/.config/fnox/` instead of pretending the keychain exists. Headless/CI should use `fnox exec`, not the interactive hook.
+```sh
+brew bundle                        # fnox, 1password-cli
+# 1Password app: sign in, enable CLI integration
+just secrets-worktree ~/Projects   # adds the "op" provider to ~/.config/fnox/config.toml
+just secrets-docs pull
+cd ~/Projects/... && fnox list
+```
 
-For many secrets, store a single age identity in the keychain and encrypt the rest with age so macOS does not prompt once per item. See [fnox keychain](https://fnox.jdx.dev/providers/keychain.html).
+On Linux/WSL, install fnox with `mise use -g fnox` and sign in with `op account add`. Headless/CI should use `fnox exec` with `OP_SERVICE_ACCOUNT_TOKEN` (a service account scoped to `Dev`), not the interactive hook.
 
 ## Neovim Spikes
 

@@ -102,6 +102,8 @@ brew "databricks/tap/databricks", trusted: true
 brew "jetbrains/utils/kotlin-lsp", trusted: true
 # Supabase CLI
 brew "supabase/tap/supabase", trusted: true
+# 1Password CLI (op); fnox reads secrets through it
+cask "1password-cli"
 # Android SDK command-line tools (sdkmanager, avdmanager, platform-tools host)
 cask "android-commandlinetools"
 # Toolset to implement parts of Android apps in native code
