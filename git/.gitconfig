@@ -35,6 +35,24 @@
 [push]
 	autoSetupRemote = true
 
+# Sign commits and tags with the GitHub SSH key held in 1Password. On macOS,
+# install.sh points gpg.ssh.program at 1Password's op-ssh-sign in
+# ~/.config/git/local; elsewhere ssh-keygen signs through a forwarded agent.
+[user]
+	signingkey = key::ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIs0w01UMkCOGpl9eAO03U78bzE113Qz7XSwflQN9KhB
+
+[gpg]
+	format = ssh
+
+[gpg "ssh"]
+	allowedSignersFile = ~/.ssh/allowed_signers
+
+[commit]
+	gpgsign = true
+
+[tag]
+	gpgsign = true
+
 [alias]
 	br = branch
 	co = checkout

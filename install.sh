@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PACKAGES=(zsh tmux nvim mise git lazygit herdr)
+PACKAGES=(zsh tmux nvim mise git lazygit herdr ssh)
 
 info() {
   printf '%s\n' "$*"
@@ -124,11 +124,21 @@ remove_stale_underscore_links() {
 stow_packages() {
   # Real dir so stow only links config.toml and herdr runtime (plugins/) stays out of the package.
   mkdir -p "$HOME/.config/herdr"
+  # Real, private dir so stow links individual files and keys never land in the repo.
+  mkdir -p "$HOME/.ssh"
+  chmod 700 "$HOME/.ssh"
 
   for package in "${PACKAGES[@]}"; do
     info "Stowing $package"
     stow --dir="$ROOT" --target="$HOME" --restow "$package"
   done
+}
+
+ensure_git_signing() {
+  local op_ssh_sign="/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+  [[ -x "$op_ssh_sign" ]] || return 0
+  # Machine-local: the path only exists on macOS with 1Password installed.
+  git config --file "$HOME/.config/git/local" gpg.ssh.program "$op_ssh_sign"
 }
 
 ensure_ai_cli() {
@@ -197,6 +207,7 @@ ensure_fnox() {
 ensure_packages
 remove_stale_underscore_links
 stow_packages
+ensure_git_signing
 ensure_fnox
 ensure_ai_clis
 ensure_herdr_plugin

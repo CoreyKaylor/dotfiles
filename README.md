@@ -54,7 +54,7 @@ just nvim-startup
 
 Secrets stay out of this repository. Do not commit plaintext secrets, encrypted secret blobs, or generated secret files.
 
-[fnox](https://fnox.jdx.dev/) injects secrets as environment variables. Values live in 1Password (vault `Dev`); `fnox.toml` files hold only references like `{ provider = "op", value = "pillwise-staging/STG_DATABASE_URL" }` — item `pillwise-staging`, field `STG_DATABASE_URL`. `~/.zshrc` runs `fnox activate zsh`, so secrets load when you enter a directory that has a `fnox.toml`, including any child of it, and each `cd` prints which names changed.
+[fnox](https://fnox.jdx.dev/) injects secrets as environment variables. Values live in 1Password (vault `Dev`); `fnox.toml` files hold only references like `{ provider = "op", value = "myapp-staging/DATABASE_URL" }` — item `myapp-staging`, field `DATABASE_URL`. `~/.zshrc` runs `fnox activate zsh`, so secrets load when you enter a directory that has a `fnox.toml`, including any child of it, and each `cd` prints which names changed.
 
 fnox reads 1Password through the `op` CLI (`brew bundle` installs it). Turn on **Settings › Developer › Integrate with 1Password CLI** in the 1Password app so `op` unlocks with Touch ID. fnox batches every reference into one `op` call per directory.
 
