@@ -35,9 +35,10 @@
 [push]
 	autoSetupRemote = true
 
-# Sign commits and tags with the GitHub SSH key held in 1Password. On macOS,
-# install.sh points gpg.ssh.program at 1Password's op-ssh-sign in
-# ~/.config/git/local; elsewhere ssh-keygen signs through a forwarded agent.
+# Sign commits and tags with the GitHub SSH key held in 1Password. When the
+# 1Password app is installed (macOS or Linux), install.sh points
+# gpg.ssh.program at its op-ssh-sign in ~/.config/git/local; elsewhere
+# ssh-keygen signs through a forwarded agent.
 [user]
 	signingkey = key::ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIs0w01UMkCOGpl9eAO03U78bzE113Qz7XSwflQN9KhB
 

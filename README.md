@@ -4,8 +4,8 @@ Personal macOS and Linux/WSL dotfiles managed with GNU Stow.
 
 ## Layout
 
-- `zsh/`, `tmux/`, `nvim/`, `mise/`, `git/`, `lazygit/`, and `herdr/` are Stow packages that mirror files under `$HOME`.
-- `Brewfile` tracks macOS packages (including `herdr` and Ghostty).
+- `zsh/`, `tmux/`, `nvim/`, `mise/`, `git/`, `lazygit/`, `herdr/`, `ghostty/`, and `ssh/` are Stow packages that mirror files under `$HOME`.
+- `Brewfile` tracks macOS packages (including `herdr` and Ghostty); `Archfile` is the Arch Linux counterpart.
 - `justfile` provides repo tasks.
 - `fnox/` is helper scripts. It is not stowed; secret values stay out of this repo.
 - `wallpaper/` is kept as a manual asset generator and is not stowed.
@@ -23,7 +23,9 @@ herdr plugin install lmilojevicc/herdr-splits.nvim
 prefix+?                                   # in-session keybind help
 ```
 
-Ghostty should set `macos-option-as-alt = true` so `Alt-hjkl` resize reaches herdr (see Application Support Ghostty config).
+### Ghostty
+
+Shared Ghostty settings live in `ghostty/.config/ghostty/dotfiles.conf` (including `macos-option-as-alt = true`, so `Alt-hjkl` resize reaches herdr). `~/.config/ghostty/config` itself stays machine-local, since Omarchy's font and text-size commands rewrite it in place. `install.sh` appends `config-file = ?dotfiles.conf` to it. The included file loads last and wins, so keep `font-family` and `font-size` in the local file. On macOS, Ghostty also reads `~/Library/Application Support/com.mitchellh.ghostty/config` after the XDG config, so remove settings there that should come from the repo.
 
 ## Install
 
@@ -31,7 +33,11 @@ Ghostty should set `macos-option-as-alt = true` so `Alt-hjkl` resize reaches her
 ./install.sh
 ```
 
-On macOS this installs Homebrew if needed, runs `brew bundle install`, stows the packages, and installs Claude Code, Grok, and Codex CLI when they are missing. On Linux/WSL, install GNU Stow with the system package manager first, then run the installer.
+On macOS this installs Homebrew if needed, runs `brew bundle install`, stows the packages, and installs Claude Code, Grok, and Codex CLI when they are missing.
+
+On Arch (including Omarchy) it installs the `Archfile` with `yay`/`paru`, installs fnox through mise (the AUR package is x86_64 only), and offers to `chsh` to zsh. Run it from a terminal, since sudo and chsh prompt. Existing files that would block stow (Omarchy's LazyVim, lazygit, herdr and `~/.config/git/config`) are moved to `~/.dotfiles-backup/<timestamp>/` first. Reruns leave files that already link into the repo alone. Clone over HTTPS the first time; switch the remote to SSH once the 1Password agent is on.
+
+On other Linux/WSL, install GNU Stow with the system package manager first, then run the installer.
 
 The AI CLI installers are vendor-managed and keep authentication/state outside this repository:
 
@@ -98,7 +104,7 @@ just secrets-docs pull
 cd ~/Projects/... && fnox list
 ```
 
-On Linux/WSL, install fnox with `mise use -g fnox` and sign in with `op account add`. Headless/CI should use `fnox exec` with `OP_SERVICE_ACCOUNT_TOKEN` (a service account scoped to `Dev`), not the interactive hook.
+On Linux, the 1Password app's SSH agent socket is `~/.1password/agent.sock` (macOS gets a symlink at the same path from `install.sh`), and commit signing uses `/opt/1Password/op-ssh-sign`. Turn on **Settings › Developer › Use the SSH agent** and **Integrate with 1Password CLI**. Without the desktop app (WSL, servers), sign in with `op account add`. Headless/CI should use `fnox exec` with `OP_SERVICE_ACCOUNT_TOKEN` (a service account scoped to `Dev`), not the interactive hook.
 
 ## Neovim Spikes
 

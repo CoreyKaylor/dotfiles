@@ -24,3 +24,7 @@ herdr/.config/herdr/*.log
 .env
 .env.local
 .env.*.local
+
+# Machine-local files that must not land in stow packages
+ghostty/.config/ghostty/config
+git/.config/git/local

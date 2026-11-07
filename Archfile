@@ -1,0 +1,35 @@
+# Arch Linux packages (the Linux counterpart to Brewfile).
+# install.sh installs these with yay/paru, which resolve repo and AUR names.
+# One package per line; text after # is ignored.
+
+# Core: what install.sh and the stowed configs need
+stow
+zsh
+zsh-antidote                 # AUR; .zshrc looks in /usr/share/zsh-antidote
+git
+git-delta                    # core.pager / lazygit diffs
+just
+jq                           # fnox-set
+neovim
+tree-sitter-cli
+lazygit
+tmux
+herdr
+eza
+fd
+fzf
+ripgrep
+zoxide
+wl-clipboard                 # tmux copy on Wayland
+
+# 1Password: SSH agent, commit signing (op-ssh-sign), and the op CLI for fnox
+1password
+1password-cli
+
+# Language servers and linters used by nvim
+lua-language-server
+typescript-language-server
+vscode-langservers-extracted # AUR
+gopls
+yamllint
+uv
