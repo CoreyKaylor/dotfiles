@@ -3,68 +3,118 @@
 <head>
 <meta charset="UTF-8">
 <title>Keybinding Cheat Sheet</title>
+<!--
+  3840x2160 wallpaper. A column on each edge plus a band across the top and
+  the bottom frame an open box in the middle for a floating terminal.
+  Omarchy's top bar covers ~38px, so the layout starts below it.
+-->
 <style>
+  :root {
+    --bg: #1a1b26;
+    --card: #16161e;
+    --line: #2f3549;
+    --text: #c0caf5;
+    --muted: #9aa5ce;
+    --dim: #565f89;
+    --side: 385px;  /* width of the left and right columns */
+  }
+
   html, body {
     margin: 0;
     padding: 0;
     width: 3840px;
     height: 2160px;
     overflow: hidden;
-    background: #1a1b26;
-    font-family: 'JetBrains Mono', 'SF Mono', 'Menlo', monospace;
-    color: #c0caf5;
+    background: var(--bg);
+    font-family: 'JetBrainsMono Nerd Font', 'JetBrains Mono', 'SF Mono', 'Menlo', monospace;
+    color: var(--text);
   }
 
   .layout {
     display: grid;
-    grid-template-columns: 420px 1fr 420px;
+    grid-template-columns: var(--side) 1fr var(--side);
     grid-template-rows: auto 1fr auto;
+    gap: 12px;
     width: 3840px;
     height: 2160px;
     box-sizing: border-box;
-    padding: 18px;
-    gap: 12px;
+    padding: 50px 18px 18px;
   }
+  .left  { grid-column: 1; grid-row: 1 / 4; }
+  .right { grid-column: 3; grid-row: 1 / 4; }
+  .top    { grid-column: 2; grid-row: 1; }
+  .bottom { grid-column: 2; grid-row: 3; }
+  .left, .right { display: flex; flex-direction: column; gap: 12px; min-height: 0; }
+  .omarchy kbd, .left kbd { color: #7dcfff; }
+  .band {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 12px;
+    align-items: stretch;
+  }
+  .band > * { min-width: 0; }
+  .stack { display: flex; flex-direction: column; gap: 12px; }
+  .stack > .card:last-child { flex: 1; }
+  .span2 { grid-column: span 2; }
+  .span4 { grid-column: span 4; }
+  .subs { display: grid; gap: 0 22px; }
+  .sub > h3:first-child { margin-top: 2px; }
 
   /* --- Cards --- */
   .card {
-    background: #16161e;
-    border: 1px solid #2f3549;
+    background: var(--card);
+    border: 1px solid var(--line);
     border-radius: 8px;
-    padding: 14px 16px 10px;
+    padding: 12px 14px 9px;
     overflow: hidden;
   }
+  .card.grow { flex: 1; }
 
   .card h2 {
-    margin: 0 0 8px;
-    font-size: 20px;
+    margin: 0 0 7px;
+    font-size: 23px;
     font-weight: 700;
     letter-spacing: 0.5px;
   }
-  .card h2 .src {
-    font-size: 12px;
+  .card h2 .src, .card h3 .src {
+    font-size: 13px;
     font-weight: 400;
-    opacity: 0.45;
-    margin-left: 8px;
+    opacity: 0.5;
+    margin-left: 6px;
+    letter-spacing: 0;
+    text-transform: none;
   }
+  .card h3 {
+    margin: 11px 0 5px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+  .card h2 + h3 { margin-top: 2px; }
 
   .card table {
     width: 100%;
     border-collapse: collapse;
   }
   .card td {
-    padding: 2px 0;
+    padding: 1px 0;
     vertical-align: top;
-    font-size: 15px;
-    line-height: 1.45;
+    font-size: 16px;
+    line-height: 1.7;
   }
   .card td:first-child {
     white-space: nowrap;
-    padding-right: 12px;
+    padding-right: 10px;
     width: 1%;
   }
-  .card td:last-child {
-    color: #9aa5ce;
+  .card td:last-child { color: var(--muted); }
+  .card td.note {
+    color: var(--dim);
+    font-size: 13px;
+    padding-top: 3px;
+    white-space: normal;
   }
 
   kbd {
@@ -72,11 +122,11 @@
     background: #292e42;
     border: 1px solid #3b4261;
     border-radius: 4px;
-    padding: 1px 6px;
+    padding: 0 5px;
     font-family: inherit;
     font-size: 14px;
     color: #e0af68;
-    line-height: 1.4;
+    line-height: 1.45;
     white-space: nowrap;
   }
 
@@ -84,10 +134,10 @@
     display: inline-block;
     font-size: 10px;
     font-weight: 700;
-    padding: 0 5px;
+    padding: 0 4px;
     border-radius: 3px;
     vertical-align: middle;
-    margin-left: 4px;
+    margin-left: 3px;
     line-height: 1.6;
   }
   .mode-n { background: #2f6b4f; color: #9ece6a; }
@@ -98,7 +148,7 @@
   .mode-c { background: #5a3030; color: #f7768e; }
 
   /* Accent colors per category */
-  .accent-tmux    { color: #7aa2f7; }
+  .accent-omarchy { color: #7dcfff; }
   .accent-herdr   { color: #7aa2f7; }
   .accent-nav     { color: #2ac3de; }
   .accent-core    { color: #9ece6a; }
@@ -114,129 +164,168 @@
   .accent-zsh     { color: #7aa2f7; }
   .accent-trouble { color: #f7768e; }
   .accent-surr    { color: #ff9e64; }
-  .accent-extra   { color: #565f89; }
+  .accent-extra   { color: #a9b1d6; }
   .accent-func    { color: #e0af68; }
 
-  /* --- Grid placement --- */
-  .top-left    { grid-column: 1; grid-row: 1; }
-  .top-center  { grid-column: 2; grid-row: 1; }
-  .top-right   { grid-column: 3; grid-row: 1; }
-  .left        { grid-column: 1; grid-row: 2; display: flex; flex-direction: column; gap: 12px; }
-  .center      { grid-column: 2; grid-row: 2; display: flex; flex-direction: column; gap: 10px; padding: 8px; }
-  .right       { grid-column: 3; grid-row: 2; display: flex; flex-direction: column; gap: 12px; }
-  .bot-left    { grid-column: 1; grid-row: 3; }
-  .bot-center  { grid-column: 2; grid-row: 3; }
-  .bot-right   { grid-column: 3; grid-row: 3; }
-
-  /* --- Tier 2 inner strip --- */
-  .tier2 {
-    background: #13131a;
-    border: 1px solid #2f3549;
-    border-radius: 6px;
-    padding: 10px 14px 8px;
+  .title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
-  .tier2 h3 {
-    margin: 0 0 5px;
-    font-size: 15px;
-    font-weight: 700;
-    letter-spacing: 0.3px;
+  .title .name {
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    line-height: 1.1;
   }
-  .tier2 h3 .src {
+  .title .legend {
     font-size: 11px;
-    font-weight: 400;
-    opacity: 0.4;
-    margin-left: 6px;
-  }
-  .tier2 table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  .tier2 td {
-    padding: 1px 0;
-    vertical-align: top;
-    font-size: 12px;
-    line-height: 1.4;
-  }
-  .tier2 td:first-child {
-    white-space: nowrap;
-    padding-right: 10px;
-    width: 1%;
-  }
-  .tier2 td:last-child {
-    color: #8b95b5;
-  }
-  .tier2 kbd {
-    font-size: 11px;
-    padding: 0 4px;
-    border-color: #2f3549;
-    background: #1e2030;
-  }
-
-  .center-inner {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    flex: 1;
-  }
-
-  /* Wide top-center herdr multi-column map */
-  .herdr-grid {
-    display: grid;
-    grid-template-columns: 1.1fr 1fr 1.1fr 1.2fr;
-    gap: 14px 18px;
-  }
-  .herdr-grid .col h3 {
-    margin: 0 0 6px;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.6px;
-    text-transform: uppercase;
-    color: #565f89;
-  }
-  .herdr-grid .col table td {
-    font-size: 14px;
-    line-height: 1.4;
-    padding: 1px 0;
-  }
-  .herdr-grid .col table td:last-child {
-    color: #9aa5ce;
-  }
-  .herdr-grid .col kbd {
-    font-size: 13px;
-  }
-  .herdr-note {
-    margin-top: 8px;
-    padding-top: 8px;
-    border-top: 1px solid #2f3549;
-    font-size: 12px;
-    color: #565f89;
+    color: var(--dim);
+    text-align: right;
+    line-height: 1.6;
   }
 </style>
 </head>
 <body>
 <div class="layout">
-
-  <!-- ===== TOP LEFT: Seamless Navigation ===== -->
-  <div class="top-left card" data-source="herdr-splits + vim-tmux-navigator + smart-splits">
-    <h2 class="accent-nav">Seamless Nav</h2>
-    <table>
-      <tr><td><kbd>C-h/j/k/l</kbd></td><td>nvim ↔ herdr panes</td></tr>
-      <tr><td><kbd>Alt-h/j/k/l</kbd></td><td>resize nvim + herdr</td></tr>
-      <tr><td><kbd>,,h/j/k/l</kbd></td><td>swap buffer (nvim)</td></tr>
-      <tr><td><kbd>C-a</kbd></td><td>herdr prefix</td></tr>
-      <tr><td><kbd>C-a</kbd> <kbd>h/j/k/l</kbd></td><td>force pane focus</td></tr>
-      <tr><td><kbd>C-a</kbd> <kbd>C-l</kbd></td><td>clear screen</td></tr>
-      <tr><td colspan="2" style="color:#565f89;font-size:12px;padding-top:4px;">Outside herdr: C-hjkl via tmux navigator</td></tr>
-    </table>
-  </div>
-
-  <!-- ===== TOP CENTER: Herdr (full map) ===== -->
-  <div class="top-center card" data-source="herdr/config.toml">
-    <h2 class="accent-herdr">Herdr <span class="src">prefix: C-a &middot; all keys after prefix unless marked</span></h2>
-    <div class="herdr-grid">
-
-      <div class="col">
-        <h3>Panes</h3>
+<div class="left omarchy">
+<div class="card title">
+        <div class="name"><span style="color:#7aa2f7;">KEYBINDING</span><br>CHEAT SHEET</div>
+        <div class="legend">omarchy &middot; herdr<br>nvim &middot; zsh</div>
+      </div>
+<div class="card" data-source="omarchy menu keybindings --print">
+        <h2 class="accent-omarchy">Omarchy <span class="src">Super ⇧ shift ⌃ ctrl ⌥ alt</span></h2>
+        <table>
+          <tr><td><kbd>Super Space</kbd></td><td>omarchy menu</td></tr>
+          <tr><td><kbd>Super ⌥ Space</kbd></td><td>app launcher</td></tr>
+          <tr><td><kbd>Super K</kbd></td><td>all keybindings</td></tr>
+          <tr><td><kbd>Super Esc</kbd></td><td>system menu</td></tr>
+          <tr><td><kbd>Super ⌃ L</kbd></td><td>lock screen</td></tr>
+          <tr><td><kbd>Super ⇧ Space</kbd></td><td>toggle top bar</td></tr>
+        </table>
+        <h3>Launch</h3>
+        <table>
+          <tr><td><kbd>Super ↵</kbd></td><td>terminal</td></tr>
+          <tr><td><kbd>Super ⌃ ↵</kbd></td><td>herdr</td></tr>
+          <tr><td><kbd>Super ⌥ ↵</kbd></td><td>tmux</td></tr>
+          <tr><td><kbd>Super ⇧ ↵</kbd></td><td>browser</td></tr>
+          <tr><td><kbd>Super ⇧ ⌥ B</kbd></td><td>private browser</td></tr>
+          <tr><td><kbd>Super ⇧ F</kbd></td><td>file manager</td></tr>
+          <tr><td><kbd>Super ⇧ N</kbd></td><td>editor</td></tr>
+          <tr><td><kbd>Super ⇧ O</kbd></td><td>obsidian</td></tr>
+          <tr><td><kbd>Super ⇧ T</kbd></td><td>activity (btop)</td></tr>
+          <tr><td><kbd>Super ⇧ /</kbd></td><td>passwords</td></tr>
+          <tr><td><kbd>Super ⇧ ⌃ A</kbd></td><td>agent</td></tr>
+        </table>
+      </div>
+<div class="card grow" data-source="omarchy menu keybindings --print">
+        <h2 class="accent-omarchy">Windows</h2>
+        <table>
+          <tr><td><kbd>Super W</kbd></td><td>close window</td></tr>
+          <tr><td><kbd>⌃ ⌥ Del</kbd></td><td>close all windows</td></tr>
+          <tr><td><kbd>Super T</kbd></td><td>float / tile</td></tr>
+          <tr><td><kbd>Super O</kbd></td><td>pop out (float + pin)</td></tr>
+          <tr><td><kbd>Super F</kbd></td><td>full screen</td></tr>
+          <tr><td><kbd>Super ⌃ F</kbd></td><td>tiled full screen</td></tr>
+          <tr><td><kbd>Super ⌥ F</kbd></td><td>full width</td></tr>
+          <tr><td><kbd>Super J</kbd></td><td>toggle split</td></tr>
+          <tr><td><kbd>Super P</kbd></td><td>pseudo tile</td></tr>
+          <tr><td><kbd>Super L</kbd></td><td>cycle layout</td></tr>
+          <tr><td><kbd>Super M</kbd></td><td>minimize to dock</td></tr>
+          <tr><td><kbd>Super arrows</kbd></td><td>focus window</td></tr>
+          <tr><td><kbd>Super ⇧ arrows</kbd></td><td>swap window</td></tr>
+          <tr><td><kbd>Super -</kbd> <kbd>=</kbd></td><td>width</td></tr>
+          <tr><td><kbd>Super ⇧ -</kbd> <kbd>=</kbd></td><td>height</td></tr>
+          <tr><td colspan="2" class="note">add ⌃ for big steps, ⌥ for small</td></tr>
+          <tr><td><kbd>Super drag</kbd></td><td>L move, R resize</td></tr>
+          <tr><td><kbd>⌥ Tab</kbd> <kbd>⇧ ⌥ Tab</kbd></td><td>next / prev window</td></tr>
+          <tr><td><kbd>Super ⌫</kbd></td><td>toggle transparency</td></tr>
+          <tr><td><kbd>Super ⇧ ⌫</kbd></td><td>toggle gaps</td></tr>
+        </table>
+        <h3>Groups</h3>
+        <table>
+          <tr><td><kbd>Super G</kbd></td><td>toggle grouping</td></tr>
+          <tr><td><kbd>Super ⌥ G</kbd></td><td>leave group</td></tr>
+          <tr><td><kbd>Super ⌥ arrows</kbd></td><td>move into group</td></tr>
+          <tr><td><kbd>Super ⌥ Tab</kbd></td><td>next in group</td></tr>
+          <tr><td><kbd>Super ⌥ 1..5</kbd></td><td>group window n</td></tr>
+        </table>
+      </div>
+</div>
+<div class="top band">
+<div class="card" data-source="omarchy menu keybindings --print">
+        <h2 class="accent-omarchy">Workspaces <span class="src">per monitor</span></h2>
+        <table>
+          <tr><td><kbd>Super 1..0</kbd></td><td>switch workspace</td></tr>
+          <tr><td><kbd>Super ⇧ 1..0</kbd></td><td>move window there</td></tr>
+          <tr><td><kbd>Super ⇧ ⌥ 1..0</kbd></td><td>move silently</td></tr>
+          <tr><td><kbd>Super Tab</kbd></td><td>next workspace</td></tr>
+          <tr><td><kbd>Super ⇧ Tab</kbd></td><td>previous workspace</td></tr>
+          <tr><td><kbd>Super ⌃ Tab</kbd></td><td>former workspace</td></tr>
+          <tr><td><kbd>Super S</kbd></td><td>toggle scratchpad</td></tr>
+          <tr><td><kbd>Super ⌥ S</kbd></td><td>send to scratchpad</td></tr>
+          <tr><td><kbd>Super ~</kbd></td><td>quake console</td></tr>
+          <tr><td><kbd>Super ⇧ ~</kbd></td><td>to quake console</td></tr>
+        </table>
+        <h3>Monitors</h3>
+        <table>
+          <tr><td><kbd>⌃ ⌥ Tab</kbd></td><td>next monitor</td></tr>
+          <tr><td><kbd>Super ⇧ ⌃ arrows</kbd></td><td>window →</td></tr>
+          <tr><td><kbd>Super ⇧ ⌥ arrows</kbd></td><td>workspace →</td></tr>
+          <tr><td><kbd>Super ⌃ Del</kbd></td><td>laptop display</td></tr>
+          <tr><td><kbd>Super /</kbd> <kbd>Super ⌥ /</kbd></td><td>scale up / down</td></tr>
+        </table>
+      </div>
+<div class="card" data-source="omarchy menu keybindings --print">
+        <h2 class="accent-omarchy">Clipboard &amp; Capture</h2>
+        <table>
+          <tr><td><kbd>Super C</kbd> <kbd>V</kbd> <kbd>X</kbd></td><td>copy / paste / cut</td></tr>
+          <tr><td><kbd>Super ⌃ V</kbd></td><td>clipboard history</td></tr>
+          <tr><td><kbd>Super ⌃ E</kbd></td><td>emoji picker</td></tr>
+          <tr><td><kbd>Print</kbd></td><td>screenshot</td></tr>
+          <tr><td><kbd>⌥ Print</kbd></td><td>screen recording</td></tr>
+          <tr><td><kbd>Super ⌃ C</kbd></td><td>capture menu</td></tr>
+          <tr><td><kbd>Super ⌃ Print</kbd></td><td>OCR text grab</td></tr>
+          <tr><td><kbd>Super Print</kbd></td><td>color picker</td></tr>
+          <tr><td><kbd>Super ⌃ S</kbd></td><td>share</td></tr>
+          <tr><td><kbd>⌥ Space</kbd></td><td>dictation</td></tr>
+        </table>
+      </div>
+<div class="card span2" data-source="omarchy menu keybindings --print">
+<h2 class="accent-omarchy">System &amp; Shell</h2>
+<div class="subs" style="grid-template-columns:repeat(2,1fr)"><div class="sub">
+        <table>
+          <tr><td><kbd>Super ⌃ W</kbd></td><td>background switcher</td></tr>
+          <tr><td><kbd>Super ⌃ T</kbd></td><td>theme menu</td></tr>
+          <tr><td><kbd>Super ⌃ A</kbd></td><td>audio</td></tr>
+          <tr><td><kbd>Super ⌃ B</kbd></td><td>bluetooth</td></tr>
+          <tr><td><kbd>Super ⌃ N</kbd></td><td>network</td></tr>
+          <tr><td><kbd>Super ⌃ D</kbd></td><td>display</td></tr>
+          <tr><td><kbd>Super ⌃ P</kbd></td><td>power</td></tr>
+          <tr><td><kbd>Super ⌃ H</kbd></td><td>hardware menu</td></tr>
+          <tr><td><kbd>Super ⌃ I</kbd></td><td>toggle idle lock</td></tr>
+          <tr><td><kbd>Super ⌃ Z</kbd></td><td>zoom in (⌃⌥ Z reset)</td></tr>
+          <tr><td><kbd>Super ⌃ R</kbd></td><td>set reminder</td></tr>
+          <tr><td><kbd>Super ⌃ ⌥ D</kbd></td><td>calendar</td></tr>
+          <tr><td><kbd>Super ⌃ ⌥ T</kbd></td><td>show time</td></tr>
+        </table>
+        </div><div class="sub"><h3>Notifications</h3>
+        <table>
+          <tr><td><kbd>Super ,</kbd></td><td>dismiss</td></tr>
+          <tr><td><kbd>Super ⇧ ,</kbd></td><td>dismiss all</td></tr>
+          <tr><td><kbd>Super ⌃ ,</kbd></td><td>keyboard control</td></tr>
+          <tr><td><kbd>Super ⇧ ⌥ ,</kbd></td><td>history</td></tr>
+          <tr><td><kbd>Super ⌃ ⌥ ,</kbd></td><td>silence</td></tr>
+        </table>
+        <h3>Help</h3>
+        <table>
+          <tr><td><kbd>Super ⌃ K</kbd></td><td>herdr keybindings</td></tr>
+          <tr><td><kbd>Super ⌥ K</kbd></td><td>tmux keybindings</td></tr>
+        </table>
+      </div></div></div>
+<div class="card span4" data-source="herdr/config.toml">
+<h2 class="accent-herdr">Herdr <span class="src">prefix C-a</span></h2>
+<div class="subs" style="grid-template-columns:repeat(4,1fr)"><div class="sub"><h3>Panes</h3>
         <table>
           <tr><td><kbd>\</kbd> <kbd>v</kbd></td><td>split vertical</td></tr>
           <tr><td><kbd>-</kbd></td><td>split horizontal</td></tr>
@@ -251,10 +340,7 @@
           <tr><td><kbd>[</kbd></td><td>copy mode</td></tr>
           <tr><td><kbd>e</kbd></td><td>edit scrollback</td></tr>
         </table>
-      </div>
-
-      <div class="col">
-        <h3>Tabs</h3>
+        </div><div class="sub"><h3>Tabs</h3>
         <table>
           <tr><td><kbd>c</kbd> <kbd>C-A-c</kbd></td><td>new tab</td></tr>
           <tr><td><kbd>n</kbd> <kbd>p</kbd></td><td>next / prev</td></tr>
@@ -263,31 +349,23 @@
           <tr><td><kbd>,</kbd></td><td>rename tab</td></tr>
           <tr><td><kbd>S-x</kbd></td><td>close tab</td></tr>
         </table>
-        <h3 style="margin-top:10px;">Agents</h3>
+        <h3>Agents</h3>
         <table>
           <tr><td><kbd>S-[</kbd> <kbd>S-]</kbd></td><td>prev / next agent</td></tr>
           <tr><td><kbd>A-1..9</kbd></td><td>focus agent</td></tr>
         </table>
-      </div>
-
-      <div class="col">
-        <h3>Workspaces</h3>
+        </div><div class="sub"><h3>Workspaces</h3>
         <table>
           <tr><td><kbd>w</kbd></td><td>workspace picker</td></tr>
           <tr><td><kbd>g</kbd></td><td>goto (fuzzy)</td></tr>
-          <tr><td><kbd>S-n</kbd></td><td>new workspace</td></tr>
-          <tr><td><kbd>S-w</kbd></td><td>rename workspace</td></tr>
+          <tr><td><kbd>S-n</kbd> <kbd>S-w</kbd></td><td>new / rename</td></tr>
           <tr><td><kbd>S-d</kbd></td><td>close workspace</td></tr>
           <tr><td><kbd>C-p</kbd> <kbd>C-n</kbd></td><td>prev / next space</td></tr>
           <tr><td><kbd>S-1..9</kbd></td><td>jump workspace</td></tr>
-          <tr><td><kbd>S-g</kbd></td><td>new worktree</td></tr>
-          <tr><td><kbd>S-o</kbd></td><td>open worktree</td></tr>
+          <tr><td><kbd>S-g</kbd> <kbd>S-o</kbd></td><td>new / open worktree</td></tr>
           <tr><td><kbd>b</kbd></td><td>toggle sidebar</td></tr>
         </table>
-      </div>
-
-      <div class="col">
-        <h3>Session &amp; tools</h3>
+        </div><div class="sub"><h3>Session &amp; tools</h3>
         <table>
           <tr><td><kbd>q</kbd></td><td>detach</td></tr>
           <tr><td><kbd>?</kbd></td><td>keybind help</td></tr>
@@ -296,308 +374,215 @@
           <tr><td><kbd>o</kbd></td><td>open notification</td></tr>
           <tr><td><kbd>A-g</kbd></td><td>lazygit popup</td></tr>
           <tr><td><kbd>t</kbd></td><td>scratch shell popup</td></tr>
-          <tr><td><kbd>C-l</kbd></td><td>clear screen</td></tr>
+          <tr><td colspan="2" class="note">S- Shift &middot; A- Alt &middot; C-A- Ctrl+Alt (no prefix)</td></tr>
         </table>
-        <h3 style="margin-top:10px;">Always-on (no prefix)</h3>
+      </div></div></div>
+</div>
+<!-- grid row 2, column 2 stays empty for the floating terminal -->
+<div class="bottom band">
+<div class="card" data-source="keymaps.lua">
+        <h2 class="accent-core">Nvim Core <span class="src">leader ,</span></h2>
         <table>
-          <tr><td><kbd>C-h/j/k/l</kbd></td><td>smart pane nav</td></tr>
-          <tr><td><kbd>Alt-h/j/k/l</kbd></td><td>smart resize</td></tr>
-          <tr><td><kbd>C-A-z</kbd></td><td>zoom</td></tr>
+          <tr><td><kbd>,+</kbd> <kbd>,-</kbd></td><td>vsplit / split</td></tr>
+          <tr><td><kbd>C-t</kbd></td><td>new tab</td></tr>
+          <tr><td><kbd>C-p</kbd> <kbd>C-n</kbd></td><td>prev / next tab</td></tr>
+          <tr><td><kbd>C-c</kbd> <span class="mode mode-n">n</span><span class="mode mode-i">i</span></td><td>save all</td></tr>
+          <tr><td><kbd>C-q</kbd></td><td>smart quit</td></tr>
+          <tr><td><kbd>,s</kbd> <span class="mode mode-n">n</span></td><td>replace word</td></tr>
+          <tr><td><kbd>,s</kbd> <span class="mode mode-v">v</span></td><td>replace in selection</td></tr>
+          <tr><td><kbd>,y</kbd> <span class="mode mode-v">v</span></td><td>yank to clipboard</td></tr>
+          <tr><td><kbd>,d</kbd> <span class="mode mode-v">v</span></td><td>void delete</td></tr>
+          <tr><td><kbd>,p</kbd> <span class="mode mode-v">v</span></td><td>paste-over</td></tr>
+          <tr><td><kbd>F2</kbd> <kbd>F3</kbd></td><td>tree / find in tree</td></tr>
+          <tr><td><kbd>F9</kbd></td><td>code outline</td></tr>
+          <tr><td><kbd>J</kbd></td><td>join (centered)</td></tr>
+          <tr><td><kbd>C-u</kbd> <kbd>C-d</kbd></td><td>half page, centered</td></tr>
+          <tr><td><kbd>S-Left/Right</kbd></td><td>prev / next buffer</td></tr>
         </table>
       </div>
-
-    </div>
-    <div class="herdr-note">S- = Shift &middot; A- = Alt &middot; C-A- = Ctrl+Alt &middot; herdr-splits owns C-hjkl / Alt-hjkl inside herdr</div>
-  </div>
-
-  <!-- ===== TOP RIGHT: title ===== -->
-  <div class="top-right card" style="display:flex;align-items:center;justify-content:center;border-color:#2f3549;">
-    <div style="text-align:center;">
-      <div style="font-size:28px;font-weight:800;color:#7aa2f7;letter-spacing:1px;">KEYBINDING</div>
-      <div style="font-size:28px;font-weight:800;color:#c0caf5;letter-spacing:1px;">CHEAT SHEET</div>
-      <div style="font-size:13px;color:#565f89;margin-top:6px;">dotfiles &middot; herdr &middot; nvim &middot; zsh</div>
-    </div>
-  </div>
-
-  <!-- ===== LEFT COLUMN ===== -->
-  <div class="left">
-
-    <!-- Nvim Core -->
-    <div class="card" data-source="keymaps.lua">
-      <h2 class="accent-core">Nvim Core <span class="src">leader: ,</span></h2>
-      <table>
-        <tr><td><kbd>,+</kbd></td><td>vertical split</td></tr>
-        <tr><td><kbd>,-</kbd></td><td>horizontal split</td></tr>
-        <tr><td><kbd>C-t</kbd></td><td>new tab</td></tr>
-        <tr><td><kbd>C-p</kbd> <kbd>C-n</kbd></td><td>prev / next tab</td></tr>
-        <tr><td><kbd>C-c</kbd> <span class="mode mode-n">n</span><span class="mode mode-i">i</span></td><td>save all</td></tr>
-        <tr><td><kbd>C-q</kbd></td><td>smart quit</td></tr>
-        <tr><td><kbd>,s</kbd> <span class="mode mode-n">n</span></td><td>search &amp; replace word</td></tr>
-        <tr><td><kbd>,s</kbd> <span class="mode mode-v">v</span></td><td>replace in selection</td></tr>
-        <tr><td><kbd>,y</kbd> <span class="mode mode-v">v</span></td><td>yank to clipboard</td></tr>
-        <tr><td><kbd>,d</kbd> <span class="mode mode-v">v</span></td><td>void delete</td></tr>
-        <tr><td><kbd>,p</kbd> <span class="mode mode-v">v</span></td><td>paste-over</td></tr>
-        <tr><td><kbd>F2</kbd></td><td>file tree</td></tr>
-        <tr><td><kbd>F3</kbd></td><td>find in tree</td></tr>
-        <tr><td><kbd>F9</kbd></td><td>code outline</td></tr>
-        <tr><td><kbd>J</kbd></td><td>join (centered)</td></tr>
-        <tr><td><kbd>C-u</kbd> <kbd>C-d</kbd></td><td>scroll half (centered)</td></tr>
-        <tr><td><kbd>S-Left</kbd> <kbd>S-Right</kbd></td><td>prev / next buffer</td></tr>
-      </table>
-    </div>
-
-    <!-- Diagnostics -->
-    <div class="card" data-source="diagnostics.lua">
-      <h2 class="accent-diag">Diagnostics <span class="src">global</span></h2>
-      <table>
-        <tr><td><kbd>[d</kbd> <kbd>]d</kbd></td><td>prev / next diagnostic</td></tr>
-        <tr><td><kbd>,e</kbd></td><td>diagnostic float</td></tr>
-        <tr><td><kbd>,q</kbd></td><td>diagnostics to loclist</td></tr>
-      </table>
-    </div>
-
-    <!-- Formatting -->
-    <div class="card" data-source="conform.lua">
-      <h2 class="accent-format">Formatting <span class="src">conform</span></h2>
-      <table>
-        <tr><td><kbd>,f</kbd> <span class="mode mode-n">n</span></td><td>format buffer</td></tr>
-        <tr><td><kbd>,f</kbd> <span class="mode mode-v">v</span></td><td>format selection</td></tr>
-      </table>
-    </div>
-
-    <!-- Telescope -->
-    <div class="card" data-source="telescope.lua">
-      <h2 class="accent-tele">Telescope <span class="src">Space</span></h2>
-      <table>
-        <tr><td><kbd>SPC SPC</kbd></td><td>find files (dropdown)</td></tr>
-        <tr><td><kbd>SPC f</kbd></td><td>find files</td></tr>
-        <tr><td><kbd>SPC e</kbd></td><td>recent files</td></tr>
-        <tr><td><kbd>SPC b</kbd></td><td>buffers</td></tr>
-        <tr><td><kbd>SPC /</kbd></td><td>live grep</td></tr>
-        <tr><td><kbd>SPC l</kbd></td><td>buffer lines</td></tr>
-        <tr><td><kbd>SPC s</kbd></td><td>quick buffer switch</td></tr>
-        <tr><td><kbd>SPC r</kbd></td><td>resume last search</td></tr>
-        <tr><td><kbd>SPC k</kbd></td><td>keymaps</td></tr>
-        <tr><td><kbd>SPC h</kbd></td><td>help tags</td></tr>
-      </table>
-    </div>
-
-    <!-- Harpoon -->
-    <div class="card" data-source="harpoon.lua">
-      <h2 class="accent-harpoon">Harpoon</h2>
-      <table>
-        <tr><td><kbd>,ha</kbd></td><td>add file</td></tr>
-        <tr><td><kbd>,hd</kbd></td><td>remove file</td></tr>
-        <tr><td><kbd>,hc</kbd></td><td>clear all</td></tr>
-        <tr><td><kbd>,hh</kbd></td><td>telescope list</td></tr>
-        <tr><td><kbd>,1</kbd>&ndash;<kbd>,4</kbd></td><td>jump to file 1-4</td></tr>
-        <tr><td><kbd>,hn</kbd> <kbd>,hp</kbd></td><td>next / prev file</td></tr>
-      </table>
-    </div>
-
-  </div>
-
-  <!-- ===== CENTER: Tier 2 inner strip ===== -->
-  <div class="center">
-    <div class="center-inner">
-
-      <!-- Surround -->
-      <div class="tier2" data-source="surround.lua">
-        <h3 class="accent-surr">Surround <span class="src">nvim-surround</span></h3>
+<div class="card span2" data-source="telescope.lua">
+<h2 class="accent-tele">Telescope <span class="src">Space</span></h2>
+<div class="subs" style="grid-template-columns:repeat(2,1fr)"><div class="sub">
         <table>
-          <tr><td><kbd>,S</kbd></td><td>surround word with parens</td></tr>
-          <tr><td><kbd>,"</kbd> <kbd>,'</kbd> <kbd>,(</kbd> <kbd>,{</kbd> <kbd>,[</kbd> <span class="mode mode-v">v</span></td><td>visual surrounds</td></tr>
-          <tr><td><kbd>ys{m}{c}</kbd></td><td>add surround</td></tr>
-          <tr><td><kbd>yss{c}</kbd></td><td>surround line</td></tr>
-          <tr><td><kbd>yS</kbd> / <kbd>ySS</kbd></td><td>with newlines</td></tr>
-          <tr><td><kbd>ds{c}</kbd></td><td>delete surround</td></tr>
-          <tr><td><kbd>cs{o}{n}</kbd></td><td>change surround</td></tr>
-          <tr><td><kbd>S{c}</kbd> <span class="mode mode-v">v</span></td><td>visual surround</td></tr>
-          <tr><td><kbd>gS</kbd> <span class="mode mode-v">v</span></td><td>visual line surround</td></tr>
-          <tr><td><kbd>C-g s</kbd> <span class="mode mode-i">i</span></td><td>insert mode surround</td></tr>
-          <tr><td colspan="2" style="color:#8b95b5;font-size:11px;padding-top:3px;">chars: f=func t=tag p=() b=[] r={} a=&lt;&gt; c=comment q=quote</td></tr>
+          <tr><td><kbd>SPC SPC</kbd></td><td>find files (dropdown)</td></tr>
+          <tr><td><kbd>SPC f</kbd></td><td>find files</td></tr>
+          <tr><td><kbd>SPC e</kbd></td><td>recent files</td></tr>
+          <tr><td><kbd>SPC b</kbd></td><td>buffers</td></tr>
+          <tr><td><kbd>SPC /</kbd></td><td>live grep</td></tr>
+          <tr><td><kbd>SPC l</kbd></td><td>buffer lines</td></tr>
+          <tr><td><kbd>SPC s</kbd></td><td>quick buffer switch</td></tr>
+          <tr><td><kbd>SPC r</kbd></td><td>resume last search</td></tr>
+          <tr><td><kbd>SPC k</kbd></td><td>keymaps</td></tr>
+          <tr><td><kbd>SPC h</kbd></td><td>help tags</td></tr>
         </table>
-      </div>
-
-      <!-- Telescope internals -->
-      <div class="tier2" data-source="telescope.lua">
-        <h3 class="accent-tele">Telescope Internals <span class="src">insert mode</span></h3>
+        </div><div class="sub"><h3>Inside picker <span class="src">insert mode</span></h3>
         <table>
           <tr><td><kbd>C-j</kbd> <kbd>C-k</kbd></td><td>navigate results</td></tr>
           <tr><td><kbd>C-n</kbd> <kbd>C-p</kbd></td><td>cycle history</td></tr>
           <tr><td><kbd>C-u</kbd> <kbd>C-d</kbd></td><td>scroll preview</td></tr>
-          <tr><td><kbd>C-x</kbd></td><td>open in split</td></tr>
-          <tr><td><kbd>C-v</kbd></td><td>open in vsplit</td></tr>
-          <tr><td><kbd>C-t</kbd></td><td>open in tab</td></tr>
+          <tr><td><kbd>C-x</kbd> <kbd>C-v</kbd> <kbd>C-t</kbd></td><td>split / vsplit / tab</td></tr>
           <tr><td><kbd>C-q</kbd></td><td>send to quickfix</td></tr>
-          <tr><td><kbd>dd</kbd> <span class="mode mode-n">n</span></td><td>delete buffer (buffers picker)</td></tr>
+          <tr><td><kbd>dd</kbd> <span class="mode mode-n">n</span></td><td>delete buffer</td></tr>
+        </table>
+      </div></div></div>
+<div class="stack"><div class="card" data-source="diagnostics.lua, conform.lua">
+        <h2 class="accent-diag">Diagnostics</h2>
+        <table>
+          <tr><td><kbd>[d</kbd> <kbd>]d</kbd></td><td>prev / next diagnostic</td></tr>
+          <tr><td><kbd>,e</kbd></td><td>diagnostic float</td></tr>
+          <tr><td><kbd>,q</kbd></td><td>to loclist</td></tr>
+        </table>
+        <h3 class="accent-format" style="color:#bb9af7;">Formatting <span class="src">conform</span></h3>
+        <table>
+          <tr><td><kbd>,f</kbd> <span class="mode mode-n">n</span></td><td>format buffer</td></tr>
+          <tr><td><kbd>,f</kbd> <span class="mode mode-v">v</span></td><td>format selection</td></tr>
+        </table>
+      </div><div class="card" data-source="comment.lua">
+        <h2 class="accent-comment">Comment</h2>
+        <table>
+          <tr><td><kbd>gcc</kbd></td><td>toggle line</td></tr>
+          <tr><td><kbd>gbc</kbd></td><td>toggle block</td></tr>
+          <tr><td><kbd>gc{m}</kbd> <span class="mode mode-n">n</span><span class="mode mode-v">v</span></td><td>comment region</td></tr>
+          <tr><td><kbd>gb{m}</kbd> <span class="mode mode-n">n</span><span class="mode mode-v">v</span></td><td>block region</td></tr>
+          <tr><td><kbd>gcO</kbd> <kbd>gco</kbd> <kbd>gcA</kbd></td><td>above / below / eol</td></tr>
+        </table>
+      </div></div>
+<div class="stack"><div class="card" data-source="flash.lua">
+        <h2 class="accent-flash">Flash</h2>
+        <table>
+          <tr><td><kbd>s</kbd> <span class="mode mode-n">n</span><span class="mode mode-x">x</span><span class="mode mode-o">o</span></td><td>jump forward</td></tr>
+          <tr><td><kbd>S</kbd> <span class="mode mode-n">n</span><span class="mode mode-x">x</span><span class="mode mode-o">o</span></td><td>jump backward</td></tr>
+          <tr><td><kbd>r</kbd> <span class="mode mode-o">o</span></td><td>remote</td></tr>
+          <tr><td><kbd>R</kbd> <span class="mode mode-o">o</span><span class="mode mode-x">x</span></td><td>treesitter</td></tr>
+          <tr><td><kbd>C-s</kbd> <span class="mode mode-c">c</span></td><td>toggle in search</td></tr>
+        </table>
+      </div><div class="card" data-source="harpoon.lua">
+        <h2 class="accent-harpoon">Harpoon</h2>
+        <table>
+          <tr><td><kbd>,ha</kbd> <kbd>,hd</kbd></td><td>add / remove file</td></tr>
+          <tr><td><kbd>,hc</kbd></td><td>clear all</td></tr>
+          <tr><td><kbd>,hh</kbd></td><td>telescope list</td></tr>
+          <tr><td><kbd>,1</kbd>&ndash;<kbd>,4</kbd></td><td>jump to file 1-4</td></tr>
+          <tr><td><kbd>,hn</kbd> <kbd>,hp</kbd></td><td>next / prev file</td></tr>
+        </table>
+      </div></div>
+<div class="card" data-source="surround.lua">
+        <h2 class="accent-surr">Surround</h2>
+        <table>
+          <tr><td><kbd>,S</kbd></td><td>wrap word in ()</td></tr>
+          <tr><td colspan="2"><kbd>,"</kbd> <kbd>,'</kbd> <kbd>,(</kbd> <kbd>,{</kbd> <kbd>,[</kbd> <span class="mode mode-v">v</span> &nbsp;<span style="color:#9aa5ce">wrap sel.</span></td></tr>
+          <tr><td><kbd>ys{m}{c}</kbd></td><td>add</td></tr>
+          <tr><td><kbd>yss{c}</kbd></td><td>whole line</td></tr>
+          <tr><td><kbd>yS</kbd> <kbd>ySS</kbd></td><td>with newlines</td></tr>
+          <tr><td><kbd>ds{c}</kbd></td><td>delete</td></tr>
+          <tr><td><kbd>cs{o}{n}</kbd></td><td>change</td></tr>
+          <tr><td><kbd>S{c}</kbd> <kbd>gS</kbd> <span class="mode mode-v">v</span></td><td>visual / line</td></tr>
+          <tr><td><kbd>C-g s</kbd> <span class="mode mode-i">i</span></td><td>insert mode</td></tr>
+          <tr><td colspan="2" class="note">f=func t=tag p=() b=[] r={} a=&lt;&gt; c=comment q=quote</td></tr>
         </table>
       </div>
-
-      <!-- Nvim extras -->
-      <div class="tier2" data-source="keymaps.lua, bufferline.lua">
-        <h3 class="accent-extra">Nvim Extras</h3>
+<div class="card span2" data-source="keymaps.lua, bufferline.lua">
+<h2 class="accent-extra">Tabs &amp; Buffers</h2>
+<div class="subs" style="grid-template-columns:repeat(2,1fr)"><div class="sub">
         <table>
           <tr><td><kbd>,t1</kbd>&ndash;<kbd>,t9</kbd></td><td>tab by number</td></tr>
-          <tr><td><kbd>,tc</kbd> <kbd>,to</kbd> <kbd>,tt</kbd></td><td>close / only / new tab</td></tr>
+          <tr><td><kbd>,tc</kbd> <kbd>,to</kbd> <kbd>,tt</kbd></td><td>close/only/new</td></tr>
           <tr><td><kbd>,tn</kbd> <kbd>,tp</kbd></td><td>next / prev tab</td></tr>
-          <tr><td><kbd>F5</kbd></td><td>toggle whitespace</td></tr>
-          <tr><td><kbd>F6</kbd></td><td>toggle hlsearch</td></tr>
-          <tr><td><kbd>,?</kbd></td><td>show mappings</td></tr>
           <tr><td><kbd>S-Up</kbd></td><td>:buffer prompt</td></tr>
           <tr><td><kbd>S-Down</kbd></td><td>show buffers</td></tr>
           <tr><td><kbd>S-Del</kbd></td><td>delete buffer</td></tr>
-          <tr><td><kbd>n</kbd> <kbd>N</kbd> <kbd>*</kbd></td><td>centered search</td></tr>
-          <tr><td><kbd>C-PgUp</kbd> <kbd>C-PgDn</kbd></td><td>loclist nav</td></tr>
-          <tr><td><kbd>,bp</kbd></td><td>pin buffer</td></tr>
+          <tr><td><kbd>,bp</kbd></td><td>pin / unpin buffer</td></tr>
           <tr><td><kbd>,bo</kbd></td><td>close other buffers</td></tr>
           <tr><td><kbd>,bP</kbd></td><td>close non-pinned</td></tr>
           <tr><td><kbd>,br</kbd> <kbd>,bl</kbd></td><td>close right / left</td></tr>
         </table>
-      </div>
-
-      <!-- Git extras -->
-      <div class="tier2" data-source="git.lua, functions.lua">
-        <h3 class="accent-git">DiffBandit Extras</h3>
+        </div><div class="sub"><h3>Misc</h3>
         <table>
-          <tr><td><kbd>,g/</kbd></td><td>git grep word</td></tr>
-          <tr><td><kbd>:DiffBandit</kbd></td><td>compare files</td></tr>
-          <tr><td><kbd>:DiffBanditBuffers</kbd></td><td>compare buffers</td></tr>
-          <tr><td><kbd>:DiffBanditFolderDiff</kbd></td><td>compare folders</td></tr>
-          <tr><td><kbd>:DiffBanditGitCommit</kbd></td><td>review commit</td></tr>
-          <tr><td><kbd>:DiffBanditGit --staged</kbd></td><td>staged changes</td></tr>
-          <tr><td><kbd>:DiffBanditGit --base</kbd></td><td>base revision</td></tr>
-          <tr><td><kbd>:DiffBanditGit --rev</kbd></td><td>revision range</td></tr>
-          <tr><td><kbd>:DiffBanditGit --</kbd></td><td>pathspec filter</td></tr>
-          <tr><td><kbd>:DiffBanditUndo</kbd></td><td>undo hunk action</td></tr>
-        </table>
-      </div>
-
-      <!-- Trouble -->
-      <div class="tier2" data-source="trouble.lua">
-        <h3 class="accent-trouble">Trouble</h3>
-        <table>
-          <tr><td><kbd>,xx</kbd></td><td>all diagnostics</td></tr>
-          <tr><td><kbd>,xX</kbd></td><td>buffer diagnostics</td></tr>
-          <tr><td><kbd>,cs</kbd></td><td>symbols</td></tr>
-          <tr><td><kbd>,cl</kbd></td><td>LSP refs</td></tr>
-          <tr><td><kbd>,xL</kbd></td><td>loclist</td></tr>
-          <tr><td><kbd>,xQ</kbd></td><td>quickfix</td></tr>
-          <tr><td><kbd>,xw</kbd></td><td>workspace diag</td></tr>
-          <tr><td><kbd>,xd</kbd></td><td>doc diag</td></tr>
-        </table>
-      </div>
-
-      <!-- LSP extras -->
-      <div class="tier2" data-source="lsp.lua">
-        <h3 class="accent-lsp">LSP Extras</h3>
-        <table>
-          <tr><td><kbd>,wa</kbd></td><td>add workspace folder</td></tr>
-          <tr><td><kbd>,wr</kbd></td><td>remove workspace folder</td></tr>
-          <tr><td><kbd>,wl</kbd></td><td>list workspace folders</td></tr>
-        </table>
-      </div>
-
-      <!-- Functions -->
-      <div class="tier2" data-source="functions.lua">
-        <h3 class="accent-func">Functions</h3>
-        <table>
+          <tr><td><kbd>F5</kbd></td><td>toggle whitespace</td></tr>
+          <tr><td><kbd>F6</kbd></td><td>toggle hlsearch</td></tr>
+          <tr><td><kbd>,?</kbd></td><td>show mappings</td></tr>
+          <tr><td><kbd>n</kbd> <kbd>N</kbd> <kbd>*</kbd></td><td>centered search</td></tr>
+          <tr><td><kbd>C-PgUp</kbd> <kbd>C-PgDn</kbd></td><td>loclist nav</td></tr>
           <tr><td><kbd>,o</kbd></td><td>open file by name</td></tr>
           <tr><td><kbd>,mk</kbd></td><td>run makeprg</td></tr>
         </table>
+      </div></div></div>
+</div>
+<div class="right">
+<div class="card" data-source="git.lua">
+        <h2 class="accent-git">Git <span class="src">diffbandit</span></h2>
+        <table>
+          <tr><td><kbd>,gg</kbd></td><td>changed files</td></tr>
+          <tr><td><kbd>,gG</kbd></td><td>current file diff</td></tr>
+          <tr><td><kbd>,gc</kbd></td><td>commit panel</td></tr>
+          <tr><td><kbd>,gm</kbd></td><td>git menu</td></tr>
+          <tr><td><kbd>,gl</kbd></td><td>log browser</td></tr>
+          <tr><td><kbd>,gb</kbd></td><td>compare refs</td></tr>
+          <tr><td><kbd>,gB</kbd></td><td>checkout branch</td></tr>
+          <tr><td><kbd>,gM</kbd></td><td>merge resolver</td></tr>
+          <tr><td><kbd>,g/</kbd></td><td>git grep word</td></tr>
+        </table>
+        <h3>Inside diff</h3>
+        <table>
+          <tr><td><kbd>]c</kbd> <kbd>[c</kbd></td><td>next / prev hunk</td></tr>
+          <tr><td><kbd>]f</kbd> <kbd>[f</kbd></td><td>next / prev file</td></tr>
+          <tr><td><kbd>[d</kbd> <kbd>]d</kbd></td><td>align top / bottom</td></tr>
+          <tr><td><kbd>C</kbd></td><td>focus commit panel</td></tr>
+          <tr><td><kbd>Space</kbd></td><td>toggle stage hunk</td></tr>
+          <tr><td><kbd>&gt;&gt;</kbd> <kbd>&lt;&lt;</kbd></td><td>apply hunk side</td></tr>
+          <tr><td><kbd>u</kbd></td><td>undo action</td></tr>
+          <tr><td><kbd>q</kbd></td><td>close diff</td></tr>
+        </table>
+        <h3>Commands</h3>
+        <table>
+          <tr><td><kbd>:DiffBandit</kbd></td><td>compare files</td></tr>
+          <tr><td><kbd>:DiffBanditBuffers</kbd></td><td>buffers</td></tr>
+          <tr><td><kbd>:DiffBanditFolderDiff</kbd></td><td>folders</td></tr>
+          <tr><td><kbd>:DiffBanditGitCommit</kbd></td><td>review commit</td></tr>
+          <tr><td><kbd>:DiffBanditGit</kbd></td><td>staged/base/rev</td></tr>
+          <tr><td><kbd>:DiffBanditUndo</kbd></td><td>undo hunk action</td></tr>
+        </table>
       </div>
-
-    </div>
-  </div>
-
-  <!-- ===== RIGHT COLUMN ===== -->
-  <div class="right">
-
-    <!-- Git -->
-    <div class="card" data-source="git.lua">
-      <h2 class="accent-git">Git <span class="src">diffbandit</span></h2>
-      <table>
-        <tr><td><kbd>,gg</kbd></td><td>changed files</td></tr>
-        <tr><td><kbd>,gG</kbd></td><td>current file diff</td></tr>
-        <tr><td><kbd>,gc</kbd></td><td>commit panel</td></tr>
-        <tr><td><kbd>,gm</kbd></td><td>git menu</td></tr>
-        <tr><td><kbd>,gl</kbd></td><td>log browser</td></tr>
-        <tr><td><kbd>,gb</kbd></td><td>compare refs</td></tr>
-        <tr><td><kbd>,gB</kbd></td><td>checkout branch</td></tr>
-        <tr><td><kbd>,gM</kbd></td><td>merge resolver</td></tr>
-        <tr><td><kbd>,g/</kbd></td><td>git grep word</td></tr>
-      </table>
-    </div>
-
-    <!-- DiffBandit -->
-    <div class="card" data-source="diffbandit.nvim">
-      <h2 class="accent-gitsign">DiffBandit <span class="src">inside diff</span></h2>
-      <table>
-        <tr><td><kbd>]c</kbd> <kbd>[c</kbd></td><td>next / prev hunk</td></tr>
-        <tr><td><kbd>]f</kbd> <kbd>[f</kbd></td><td>next / prev file</td></tr>
-        <tr><td><kbd>[d</kbd> <kbd>]d</kbd></td><td>align top / bottom</td></tr>
-        <tr><td><kbd>C</kbd></td><td>focus commit panel</td></tr>
-        <tr><td><kbd>Space</kbd></td><td>toggle stage hunk</td></tr>
-        <tr><td><kbd>&gt;&gt;</kbd> <kbd>&lt;&lt;</kbd></td><td>apply hunk side</td></tr>
-        <tr><td><kbd>u</kbd></td><td>undo action</td></tr>
-        <tr><td><kbd>q</kbd></td><td>close diff</td></tr>
-      </table>
-    </div>
-
-    <!-- LSP -->
-    <div class="card" data-source="lsp.lua">
-      <h2 class="accent-lsp">LSP <span class="src">lsp buffers</span></h2>
-      <table>
-        <tr><td><kbd>gd</kbd></td><td>definition</td></tr>
-        <tr><td><kbd>gD</kbd></td><td>declaration</td></tr>
-        <tr><td><kbd>gi</kbd></td><td>implementation</td></tr>
-        <tr><td><kbd>gr</kbd></td><td>references (telescope)</td></tr>
-        <tr><td><kbd>K</kbd></td><td>hover</td></tr>
-        <tr><td><kbd>gK</kbd></td><td>signature help</td></tr>
-        <tr><td><kbd>,ca</kbd> <span class="mode mode-n">n</span><span class="mode mode-v">v</span></td><td>code action</td></tr>
-        <tr><td><kbd>,rn</kbd></td><td>rename</td></tr>
-      </table>
-    </div>
-
-  </div>
-
-  <!-- ===== BOTTOM LEFT: Flash ===== -->
-  <div class="bot-left card" data-source="flash.lua">
-    <h2 class="accent-flash">Flash</h2>
-    <table>
-      <tr><td><kbd>s</kbd> <span class="mode mode-n">n</span><span class="mode mode-x">x</span><span class="mode mode-o">o</span></td><td>jump forward</td></tr>
-      <tr><td><kbd>S</kbd> <span class="mode mode-n">n</span><span class="mode mode-x">x</span><span class="mode mode-o">o</span></td><td>jump backward</td></tr>
-      <tr><td><kbd>r</kbd> <span class="mode mode-o">o</span></td><td>remote</td></tr>
-      <tr><td><kbd>R</kbd> <span class="mode mode-o">o</span><span class="mode mode-x">x</span></td><td>treesitter</td></tr>
-      <tr><td><kbd>C-s</kbd> <span class="mode mode-c">c</span></td><td>toggle in search</td></tr>
-    </table>
-  </div>
-
-  <!-- ===== BOTTOM CENTER: Comment ===== -->
-  <div class="bot-center card" data-source="comment.lua">
-    <h2 class="accent-comment">Comment</h2>
-    <table>
-      <tr><td><kbd>gcc</kbd></td><td>toggle line comment</td></tr>
-      <tr><td><kbd>gbc</kbd></td><td>toggle block comment</td></tr>
-      <tr><td><kbd>gc{motion}</kbd> <span class="mode mode-n">n</span><span class="mode mode-v">v</span></td><td>comment region</td></tr>
-      <tr><td><kbd>gb{motion}</kbd> <span class="mode mode-n">n</span><span class="mode mode-v">v</span></td><td>block comment region</td></tr>
-      <tr><td><kbd>gcO</kbd> <kbd>gco</kbd> <kbd>gcA</kbd></td><td>comment above / below / eol</td></tr>
-    </table>
-  </div>
-
-  <!-- ===== BOTTOM RIGHT: Zsh & Buffers ===== -->
-  <div class="bot-right card" data-source=".zshrc, bufferline.lua">
-    <h2 class="accent-zsh">Zsh &amp; Buffers</h2>
-    <table>
-      <tr><td><kbd>gw</kbd></td><td>gradlew alias</td></tr>
-      <tr><td><kbd>ta</kbd></td><td>tmux attach</td></tr>
-      <tr><td><kbd>tl</kbd></td><td>tmux list sessions</td></tr>
-      <tr><td><kbd>tn</kbd></td><td>tmux new session</td></tr>
-      <tr><td><kbd>,bp</kbd></td><td>pin / unpin buffer</td></tr>
-      <tr><td><kbd>,bo</kbd></td><td>close other buffers</td></tr>
-    </table>
-  </div>
-
+<div class="card" data-source="lsp.lua">
+        <h2 class="accent-lsp">LSP</h2>
+        <table>
+          <tr><td><kbd>gd</kbd> <kbd>gD</kbd></td><td>def / declaration</td></tr>
+          <tr><td><kbd>gi</kbd></td><td>implementation</td></tr>
+          <tr><td><kbd>gr</kbd></td><td>references</td></tr>
+          <tr><td><kbd>K</kbd> <kbd>gK</kbd></td><td>hover / signature</td></tr>
+          <tr><td><kbd>,ca</kbd> <span class="mode mode-n">n</span><span class="mode mode-v">v</span></td><td>code action</td></tr>
+          <tr><td><kbd>,rn</kbd></td><td>rename</td></tr>
+          <tr><td><kbd>,wa</kbd> <kbd>,wr</kbd> <kbd>,wl</kbd></td><td>workspace folders</td></tr>
+        </table>
+      </div>
+<div class="card" data-source="trouble.lua">
+        <h2 class="accent-trouble">Trouble</h2>
+        <table>
+          <tr><td><kbd>,xx</kbd> <kbd>,xX</kbd></td><td>all / buffer diagnostics</td></tr>
+          <tr><td><kbd>,xw</kbd> <kbd>,xd</kbd></td><td>workspace / doc diag</td></tr>
+          <tr><td><kbd>,cs</kbd> <kbd>,cl</kbd></td><td>symbols / LSP refs</td></tr>
+          <tr><td><kbd>,xL</kbd> <kbd>,xQ</kbd></td><td>loclist / quickfix</td></tr>
+        </table>
+      </div>
+<div class="card" data-source="herdr-splits + vim-tmux-navigator + smart-splits">
+        <h2 class="accent-nav">Seamless Nav</h2>
+        <table>
+          <tr><td><kbd>C-h/j/k/l</kbd></td><td>nvim ↔ herdr panes</td></tr>
+          <tr><td><kbd>Alt-h/j/k/l</kbd></td><td>resize nvim + herdr</td></tr>
+          <tr><td><kbd>,,h/j/k/l</kbd></td><td>swap buffer (nvim)</td></tr>
+          <tr><td><kbd>C-a</kbd> <kbd>h/j/k/l</kbd></td><td>force pane focus</td></tr>
+          <tr><td><kbd>C-a</kbd> <kbd>C-l</kbd></td><td>clear screen</td></tr>
+          <tr><td colspan="2" class="note">Outside herdr: C-hjkl via tmux navigator</td></tr>
+        </table>
+      </div>
+<div class="card grow" data-source=".zshrc">
+        <h2 class="accent-zsh">Zsh</h2>
+        <table>
+          <tr><td><kbd>gw</kbd></td><td>gradlew</td></tr>
+          <tr><td><kbd>ta</kbd> <kbd>tl</kbd> <kbd>tn</kbd></td><td>tmux attach / list / new</td></tr>
+        </table>
+      </div>
+</div>
 </div>
 </body>
 </html>

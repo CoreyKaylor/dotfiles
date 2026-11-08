@@ -4,9 +4,15 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 HTML_FILE="$SCRIPT_DIR/cheatsheet.html"
 OUTPUT_FILE="$SCRIPT_DIR/cheatsheet.png"
 
-CHROME="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-if [ ! -f "$CHROME" ]; then
-  echo "Error: Chrome not found at $CHROME" >&2; exit 1
+CHROME=""
+for candidate in \
+  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+  "$(command -v chromium || true)" \
+  "$(command -v google-chrome-stable || true)"; do
+  if [ -n "$candidate" ] && [ -x "$candidate" ]; then CHROME="$candidate"; break; fi
+done
+if [ -z "$CHROME" ]; then
+  echo "Error: no Chrome or Chromium found" >&2; exit 1
 fi
 
 echo "Generating wallpaper..."
