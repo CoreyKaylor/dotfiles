@@ -211,8 +211,9 @@ backup_conflicts() {
 stow_packages() {
   # Real dir so stow only links config.toml and herdr runtime (plugins/) stays out of the package.
   mkdir -p "$HOME/.config/herdr"
-  # Real dirs so runtime state (lazygit state.yml, mise conf.d/) stays out of the repo.
-  mkdir -p "$HOME/.config/lazygit" "$HOME/.config/mise"
+  # Real dirs so runtime state (lazygit state.yml, other mise conf.d/ files) stays
+  # out of the repo; stow links only conf.d/fnox.toml.
+  mkdir -p "$HOME/.config/lazygit" "$HOME/.config/mise/conf.d"
   # Real dirs so machine-local files (ghostty/config, git/local) stay out of the repo.
   mkdir -p "$HOME/.config/ghostty" "$HOME/.config/git"
   # Real, private dir so stow links individual files and keys never land in the repo.
@@ -331,21 +332,43 @@ ensure_herdr_plugin() {
   }
 }
 
-ensure_fnox() {
-  if has fnox; then
-    info "fnox already installed."
+# Installs the global tools in ~/.config/mise/config.toml and conf.d/fnox.toml
+# (fnox's AUR package is x86_64 only, so Linux gets it from mise). Omarchy's
+# own lazy tools in /etc/mise/conf.d are left to install on first use.
+ensure_mise_tools() {
+  if ! has mise; then
+    info "mise is not installed; skipping mise tools. Install mise, then rerun."
     return
   fi
 
-  if has mise; then
-    # The AUR package is x86_64 only, so Linux uses mise. Write to conf.d so
-    # the stowed ~/.config/mise/config.toml (tracked in this repo) stays clean.
-    info "Installing fnox via mise..."
-    mise use --path "$HOME/.config/mise/conf.d/fnox.toml" fnox@latest
-    return
+  info "Installing mise tools..."
+  (cd "$HOME" && mise install)
+}
+
+# fnox reads 1Password through this per-machine config; it is not in the repo.
+check_fnox_config() {
+  local config="$HOME/.config/fnox/config.toml"
+  [[ -f "$config" ]] && return
+  info "Missing $config. Create it with:"
+  info "  [providers.op]"
+  info "  type = \"1password\""
+  info "  vault = \"Dev\""
+}
+
+# Docker comes from the Archfile. The group change applies at next login.
+ensure_docker() {
+  is_arch || return 0
+  has docker || return 0
+
+  if ! systemctl is-enabled --quiet docker; then
+    info "Enabling docker..."
+    sudo systemctl enable --now docker
   fi
 
-  info "fnox is not installed. On macOS it comes from the Brewfile. On Linux: install mise, then rerun."
+  if ! id -nG "$USER" | tr ' ' '\n' | grep -qx docker; then
+    info "Adding $USER to the docker group (log out and back in for it to apply)..."
+    sudo usermod -aG docker "$USER"
+  fi
 }
 
 # Grok Bot (Cursor/xAI's desktop agent). The AUR packages are x86_64 only, so
@@ -472,11 +495,13 @@ stow_packages
 ensure_ghostty_include
 ensure_1password_agent_socket
 ensure_git_signing
-ensure_fnox
+ensure_mise_tools
+check_fnox_config
 ensure_tpm
 ensure_ai_clis
 ensure_grok_bot
 ensure_tailscale
+ensure_docker
 ensure_herdr_plugin
 ensure_login_shell
 

@@ -33,9 +33,9 @@ Shared Ghostty settings live in `ghostty/.config/ghostty/dotfiles.conf` (includi
 ./install.sh
 ```
 
-On macOS this installs Homebrew if needed, runs `brew bundle install`, stows the packages, and installs Claude Code, Grok, and Codex CLI when they are missing.
+On macOS this installs Homebrew if needed, runs `brew bundle install`, stows the packages, runs `mise install`, and installs Claude Code, Grok, and Codex CLI when they are missing.
 
-On Arch (including Omarchy) it installs the `Archfile` with `yay`/`paru`, installs fnox through mise (the AUR package is x86_64 only), installs Omarchy's lazy mise AI CLIs (Grok, Claude, Codex) up front, installs Grok Bot (`grok-bot-bin` from the AUR on x86_64, the official AppImage unpacked to `~/.local/share/grok-bot` on arm64), enables `tailscaled`, and offers to `chsh` to zsh. Run it from a terminal, since sudo and chsh prompt. Existing files that would block stow (Omarchy's LazyVim, lazygit, herdr and `~/.config/git/config`) are moved to `~/.dotfiles-backup/<timestamp>/` first. Reruns leave files that already link into the repo alone. Clone over HTTPS the first time; switch the remote to SSH once the 1Password agent is on.
+On Arch (including Omarchy) it installs the `Archfile` with `yay`/`paru`, runs `mise install` for the global tools (flyctl, wrangler, stripe, rust and the rest in `mise/.config/mise/config.toml`, plus fnox from `conf.d/fnox.toml`, since its AUR package is x86_64 only), enables `docker` and adds you to the `docker` group, reminds you to create the per-machine `~/.config/fnox/config.toml` (`[providers.op]`, `type = "1password"`, `vault = "Dev"`), installs Omarchy's lazy mise AI CLIs (Grok, Claude, Codex) up front, installs Grok Bot (`grok-bot-bin` from the AUR on x86_64, the official AppImage unpacked to `~/.local/share/grok-bot` on arm64), enables `tailscaled`, and offers to `chsh` to zsh. Run it from a terminal, since sudo and chsh prompt. Existing files that would block stow (Omarchy's LazyVim, lazygit, herdr and `~/.config/git/config`) are moved to `~/.dotfiles-backup/<timestamp>/` first. Reruns leave files that already link into the repo alone. Clone over HTTPS the first time; switch the remote to SSH once the 1Password agent is on.
 
 On other Linux/WSL, install GNU Stow with the system package manager first, then run the installer.
 

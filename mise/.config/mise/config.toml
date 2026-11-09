@@ -2,10 +2,17 @@
 LC_ALL = "en_US.UTF-8"
 
 [tools]
+"cargo:cargo-audit" = "latest"
+flyctl = "latest"
 go = "1.25.0"
 gradle = "8.14.3"
 java = "openjdk-21.0.2"
 lua = "5.4.8"
 node = "24.5.0"
+"npm:cf" = { version = "latest", minimum_release_age = "0s", lazy = true, lazy_bins = ["cf"] }
+"npm:neonctl" = "latest"
+"npm:wrangler" = "latest"
 python = "3.13.5"
 ruby = "3.4.4"
+rust = "latest"
+stripe = "latest"

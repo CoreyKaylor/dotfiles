@@ -28,6 +28,14 @@ wl-clipboard                 # tmux copy on Wayland
 
 # Networking
 tailscale                    # install.sh enables tailscaled
+bind                         # dig
+
+# Dev and cloud tooling (CLIs like flyctl, wrangler, stripe come from mise)
+aws-cli-v2                   # aws
+azure-cli
+docker                       # install.sh enables docker and adds you to the docker group
+docker-compose
+postgresql-libs              # psql
 
 # Language servers and linters used by nvim
 lua-language-server

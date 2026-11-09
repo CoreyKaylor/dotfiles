@@ -1,0 +1,2 @@
+[tools]
+fnox = { version = "latest", workflow = "release.yml" }
