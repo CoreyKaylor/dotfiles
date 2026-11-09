@@ -26,6 +26,9 @@ wl-clipboard                 # tmux copy on Wayland
 1password
 1password-cli
 
+# Networking
+tailscale                    # install.sh enables tailscaled
+
 # Language servers and linters used by nvim
 lua-language-server
 typescript-language-server

@@ -283,6 +283,13 @@ ensure_ai_cli() {
   local shell_path
 
   if has_ai_cli "$command_name"; then
+    # Omarchy declares AI CLIs as lazy mise tools: the command is a wrapper
+    # that downloads on first run. Install it now so it works offline.
+    if [[ "$(PATH="$(ai_cli_path)" command -v "$command_name")" == */mise/command-wrappers/* ]]; then
+      info "Installing $command_name via mise..."
+      mise install "$command_name"
+      return
+    fi
     info "$command_name already installed."
     return
   fi
@@ -341,6 +348,88 @@ ensure_fnox() {
   info "fnox is not installed. On macOS it comes from the Brewfile. On Linux: install mise, then rerun."
 }
 
+# Grok Bot (Cursor/xAI's desktop agent). The AUR packages are x86_64 only, so
+# arm64 uses the official AppImage, unpacked because Omarchy has no fuse2.
+# Rerunning install.sh picks up new releases.
+GROK_BOT_DIR="$HOME/.local/share/grok-bot"
+
+ensure_grok_bot() {
+  is_arch || return 0
+
+  case "$(uname -m)" in
+    x86_64)
+      "$(aur_helper)" -S --needed --noconfirm grok-bot-bin
+      ;;
+    aarch64)
+      ensure_grok_bot_appimage linux-arm64
+      ;;
+    *)
+      info "No Grok Bot build for $(uname -m); skipping."
+      ;;
+  esac
+}
+
+ensure_grok_bot_appimage() {
+  local platform="$1"
+  local api="https://api2.cursor.sh/updates/api/update/$platform/sand/0.0.0/00000000-0000-0000-0000-000000000000/stable"
+  local meta version url sha tmp desktop icon
+
+  meta="$(fetch_url "$api")"
+  version="$(jq -r .version <<<"$meta")"
+  url="$(jq -r .url <<<"$meta")"
+  sha="$(jq -r .sha256hash <<<"$meta")"
+
+  if [[ "$(cat "$GROK_BOT_DIR/.version" 2>/dev/null)" == "$version" ]]; then
+    info "Grok Bot $version already installed."
+    return
+  fi
+
+  info "Installing Grok Bot $version..."
+  tmp="$(mktemp -d)"
+  fetch_url "$url" >"$tmp/grok-bot.AppImage"
+  if ! printf '%s  %s\n' "$sha" "$tmp/grok-bot.AppImage" | sha256sum --check --status; then
+    info "Grok Bot download failed its checksum; skipping."
+    rm -rf "$tmp"
+    return
+  fi
+  chmod +x "$tmp/grok-bot.AppImage"
+  (cd "$tmp" && ./grok-bot.AppImage --appimage-extract >/dev/null)
+
+  rm -rf "$GROK_BOT_DIR"
+  mkdir -p "$(dirname "$GROK_BOT_DIR")" "$HOME/.local/bin" "$HOME/.local/share/applications"
+  mv "$tmp/squashfs-root" "$GROK_BOT_DIR"
+  printf '%s\n' "$version" >"$GROK_BOT_DIR/.version"
+  rm -rf "$tmp"
+
+  printf '#!/bin/sh\nexec "%s/AppRun" "$@"\n' "$GROK_BOT_DIR" >"$HOME/.local/bin/grok-bot"
+  chmod +x "$HOME/.local/bin/grok-bot"
+
+  # Point the bundled launcher entry at the unpacked app so it shows in the app launcher.
+  desktop="$(find "$GROK_BOT_DIR" -maxdepth 1 -name '*.desktop' | head -n1)"
+  if [[ -n "$desktop" ]]; then
+    icon="$(sed -n 's/^Icon=//p' "$desktop" | head -n1)"
+    sed -e "s|^Exec=[^ ]*|Exec=$HOME/.local/bin/grok-bot|" \
+      -e "s|^Icon=.*|Icon=$GROK_BOT_DIR/$icon.png|" \
+      "$desktop" >"$HOME/.local/share/applications/grok-bot.desktop"
+  fi
+}
+
+# Tailscale comes from the Archfile; the daemon has to be enabled before
+# `tailscale up` can log the machine in.
+ensure_tailscale() {
+  is_arch || return 0
+  has tailscale || return 0
+
+  if ! systemctl is-enabled --quiet tailscaled; then
+    info "Enabling tailscaled..."
+    sudo systemctl enable --now tailscaled
+  fi
+
+  if ! tailscale status >/dev/null 2>&1; then
+    info "Tailscale is not logged in. Run: sudo tailscale up"
+  fi
+}
+
 ensure_tpm() {
   local tpm="$HOME/.tmux/plugins/tpm"
   [[ -d "$tpm" ]] && return
@@ -386,6 +475,8 @@ ensure_git_signing
 ensure_fnox
 ensure_tpm
 ensure_ai_clis
+ensure_grok_bot
+ensure_tailscale
 ensure_herdr_plugin
 ensure_login_shell
 
