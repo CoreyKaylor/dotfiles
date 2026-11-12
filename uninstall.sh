@@ -14,4 +14,18 @@ for package in "${PACKAGES[@]}"; do
   stow --dir="$ROOT" --target="$HOME" --delete "$package"
 done
 
+# hyprland.lua require()s hypr/dotfiles.lua (install.sh adds the line), so
+# removing the link would break the session. Leave real copies of the omarchy
+# package in place instead; they stop tracking the repo.
+if [[ -d /usr/share/omarchy ]]; then
+  printf '%s\n' "Unstowing omarchy (keeping copies)"
+  stow --dir="$ROOT" --target="$HOME" --delete omarchy
+  while IFS= read -r -d '' file; do
+    rel="${file#"$ROOT/omarchy/"}"
+    [[ -e "$HOME/$rel" ]] && continue
+    mkdir -p "$(dirname "$HOME/$rel")"
+    cp -p "$file" "$HOME/$rel"
+  done < <(find "$ROOT/omarchy" -type f ! -name .stow-local-ignore -print0)
+fi
+
 printf '%s\n' "Dotfiles uninstalled."

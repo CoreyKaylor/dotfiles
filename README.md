@@ -4,7 +4,7 @@ Personal macOS and Linux/WSL dotfiles managed with GNU Stow.
 
 ## Layout
 
-- `zsh/`, `tmux/`, `nvim/`, `mise/`, `git/`, `lazygit/`, `herdr/`, `ghostty/`, and `ssh/` are Stow packages that mirror files under `$HOME`.
+- `zsh/`, `tmux/`, `nvim/`, `mise/`, `git/`, `lazygit/`, `herdr/`, `ghostty/`, and `ssh/` are Stow packages that mirror files under `$HOME`. `omarchy/` is one too, stowed only on Omarchy.
 - `Brewfile` tracks macOS packages (including `herdr` and Ghostty); `Archfile` is the Arch Linux counterpart.
 - `justfile` provides repo tasks.
 - `fnox/` is helper scripts. It is not stowed; secret values stay out of this repo.
@@ -26,6 +26,12 @@ prefix+?                                   # in-session keybind help
 ### Ghostty
 
 Shared Ghostty settings live in `ghostty/.config/ghostty/dotfiles.conf` (including `macos-option-as-alt = true`, so `Alt-hjkl` resize reaches herdr). `~/.config/ghostty/config` itself stays machine-local, since Omarchy's font and text-size commands rewrite it in place. `install.sh` appends `config-file = ?dotfiles.conf` to it. The included file loads last and wins, so keep `font-family` and `font-size` in the local file. On macOS, Ghostty also reads `~/Library/Application Support/com.mitchellh.ghostty/config` after the XDG config, so remove settings there that should come from the repo.
+
+### Omarchy
+
+`omarchy/` holds only what differs from Omarchy's defaults: `hypr/dotfiles.lua` (Dell 4K above the laptop at 1.333333 scale, Caps/Ctrl swap, Mac-like trackpad and gestures, workspace slide), `omarchy/shell.json` (bar, dock with Ghostty pinned, world clocks), the `workspace-background` shell plugin and the owe `theme-set` hook. Omarchy's own `hypr/*.lua` files stay stock and machine-local, so its update migrations can keep editing them. `install.sh` also makes Ghostty the default terminal (Omarchy ships foot) and adds `require("hypr.dotfiles")` to `~/.config/hypr/hyprland.lua`, just above Omarchy's runtime toggles, so these settings load after Omarchy's defaults and a toggle still wins. `just omarchy-drift` reports a missing require, a broken link or an unsaved `shell.json`; rerun `./install.sh` to fix the first two.
+
+`shell.json` is copied, not stowed, because Omarchy saves it by renaming a new file over it, which would replace a symlink. Omarchy uses it in place of its defaults rather than merging, so it has to be the complete file. `install.sh` only replaces a missing or stock copy. After changing the bar or dock, run `just omarchy-save` to bring the live file back into the repo. `uninstall.sh` leaves real copies behind, since Hyprland fails to load if `dotfiles.lua` is missing.
 
 ## Install
 

@@ -21,6 +21,10 @@ is_arch() {
   [[ -f /etc/arch-release ]]
 }
 
+is_omarchy() {
+  [[ -d /usr/share/omarchy ]]
+}
+
 ai_cli_path() {
   printf '%s\n' "$HOME/.local/bin:$HOME/.grok/bin:$PATH"
 }
@@ -203,6 +207,8 @@ backup_conflicts() {
   for package in "${PACKAGES[@]}"; do
     while IFS= read -r -d '' file; do
       rel="${file#"$ROOT/$package/"}"
+      # Not stowed (see omarchy/.stow-local-ignore); ensure_omarchy_shell_config copies it.
+      [[ "$rel" == .stow-local-ignore || "$package/$rel" == omarchy/.config/omarchy/shell.json ]] && continue
       backup_if_foreign "$rel" || true
     done < <(find "$ROOT/$package" \( -type f -o -type l \) -print0)
   done
@@ -219,6 +225,12 @@ stow_packages() {
   # Real, private dir so stow links individual files and keys never land in the repo.
   mkdir -p "$HOME/.ssh"
   chmod 700 "$HOME/.ssh"
+  # Real dirs so stow links individual files: Omarchy keeps its own files in
+  # hypr/, and packages drop plugins and hooks (superwhisper-panel, the
+  # .sample hooks) beside ours that must not land in the repo.
+  if is_omarchy; then
+    mkdir -p "$HOME/.config/hypr" "$HOME/.config/omarchy/plugins" "$HOME/.config/omarchy/hooks/theme-set.d"
+  fi
 
   for package in "${PACKAGES[@]}"; do
     info "Stowing $package"
@@ -242,6 +254,72 @@ ensure_ghostty_include() {
     printf '%s\n' "# Shared settings from the dotfiles repo; loaded after this file, so they win."
     printf '%s\n' "$line"
   } >>"$config"
+}
+
+# Omarchy saves shell.json by renaming a new file over it, which would replace
+# a symlink, so it is copied rather than stowed. Only Omarchy's stock copy (or
+# no file) is replaced; a customized one is left alone so bar changes made on
+# this machine are not lost. `just omarchy-save` copies it back into the repo.
+ensure_omarchy_shell_config() {
+  is_omarchy || return 0
+  local repo="$ROOT/omarchy/.config/omarchy/shell.json"
+  local live="$HOME/.config/omarchy/shell.json"
+  local stock=/usr/share/omarchy/config/omarchy/shell.json
+
+  cmp -s "$repo" "$live" && return
+  if [[ ! -e "$live" ]] || cmp -s "$stock" "$live"; then
+    info "Copying the dotfiles shell.json to $live"
+    mkdir -p "$(dirname "$live")"
+    [[ -e "$live" ]] && backup_if_foreign .config/omarchy/shell.json
+    cp "$repo" "$live"
+    return
+  fi
+  info "$live differs from the repo copy; left as is."
+  info "  Keep the repo's: cp $repo $live"
+  info "  Keep this one:   just omarchy-save"
+}
+
+# Omarchy defaults to foot; ghostty/ carries the terminal config, so make it
+# the terminal Super+Return and xdg-terminal-exec open.
+ensure_omarchy_terminal() {
+  is_omarchy && has ghostty || return 0
+  [[ "$(omarchy-default-terminal)" == ghostty ]] && return
+  info "Setting Ghostty as Omarchy's default terminal"
+  omarchy-default-terminal ghostty
+}
+
+# ~/.config/hypr/hyprland.lua is Omarchy's (migrations edit it), so the repo's
+# overrides come in through one require line instead of a link. It goes before
+# Omarchy's runtime toggles so a toggle (touchpad off, say) still wins.
+ensure_hypr_dotfiles_include() {
+  is_omarchy || return 0
+  local config="$HOME/.config/hypr/hyprland.lua"
+  local line='require("hypr.dotfiles")'
+  local anchor='require("default.hypr.toggles")'
+
+  [[ -f "$config" ]] || return 0
+  grep -qxF "$line" "$config" && return
+
+  info "Adding the dotfiles require to $config"
+  if grep -qxF "$anchor" "$config"; then
+    local tmp
+    tmp="$(mktemp)"
+    # Insert above the anchor and the comment block directly over it.
+    awk -v line="$line" -v anchor="$anchor" '
+      { lines[NR] = $0 }
+      $0 == anchor { at = NR; while (at > 1 && lines[at - 1] ~ /^--/) at-- }
+      END {
+        for (i = 1; i <= NR; i++) {
+          if (i == at) { print "-- Personal overrides from the dotfiles repo."; print line; print "" }
+          print lines[i]
+        }
+      }
+    ' "$config" >"$tmp"
+    cat "$tmp" >"$config"
+    rm -f "$tmp"
+  else
+    printf '\n%s\n%s\n' "-- Personal overrides from the dotfiles repo." "$line" >>"$config"
+  fi
 }
 
 # ssh/.ssh/config points IdentityAgent at ~/.1password/agent.sock, where the
@@ -509,10 +587,17 @@ print_next_steps() {
   info "Log out and back in (or open a new terminal) to start zsh."
 }
 
+# Omarchy overrides: hypr/dotfiles.lua (monitors, input, look), shell.json,
+# the workspace-background plugin and the owe hook.
+is_omarchy && PACKAGES+=(omarchy)
+
 ensure_packages
 remove_stale_underscore_links
 backup_conflicts
 stow_packages
+ensure_omarchy_shell_config
+ensure_hypr_dotfiles_include
+ensure_omarchy_terminal
 ensure_ghostty_include
 ensure_1password_agent_socket
 ensure_git_signing

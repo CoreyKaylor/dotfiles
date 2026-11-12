@@ -1,0 +1,117 @@
+{
+  "bar": {
+    "background": "none",
+    "layout": {
+      "center": [
+        {
+          "format": "dddd HH:mm",
+          "formatAlt": "d MMMM 'W'ww yyyy",
+          "id": "omarchy.clock",
+          "verticalFormat": "HH\n—\nmm"
+        }
+      ],
+      "centerBegin": [
+        {
+          "id": "omarchy.indicators"
+        }
+      ],
+      "centerEnd": [
+        {
+          "cities": [
+            {
+              "name": "EST",
+              "zone": "EST"
+            },
+            {
+              "lat": -12.04318,
+              "lon": -77.02824,
+              "name": "Lima",
+              "region": "Lima Province, PE",
+              "zone": "America/Lima"
+            },
+            {
+              "lat": 43.6135,
+              "lon": -116.20345,
+              "name": "Boise",
+              "region": "Idaho, US",
+              "zone": "America/Boise"
+            },
+            {
+              "lat": 48.14816,
+              "lon": 17.10674,
+              "name": "Bratislava",
+              "region": "Bratislava Region, SK",
+              "zone": "Europe/Bratislava"
+            }
+          ],
+          "id": "omarchy.elsewhen"
+        },
+        {
+          "id": "omarchy.weather"
+        },
+        {
+          "id": "omarchy.system-update"
+        }
+      ],
+      "left": [
+        {
+          "id": "omarchy.menu"
+        }
+      ],
+      "right": [
+        {
+          "id": "omarchy.tray"
+        },
+        {
+          "id": "omarchy.keyboard-layout"
+        },
+        {
+          "id": "omarchy.agents"
+        },
+        {
+          "id": "omarchy.bluetooth"
+        },
+        {
+          "id": "omarchy.network"
+        },
+        {
+          "id": "omarchy.audio"
+        },
+        {
+          "id": "omarchy.monitor"
+        },
+        {
+          "id": "omarchy.power"
+        }
+      ],
+      "tray": [
+        {
+          "id": "superwhisper.panel"
+        }
+      ]
+    },
+    "position": "top"
+  },
+  "dock": {
+    "pinned": [
+      "org.gnome.Nautilus",
+      "chromium",
+      "com.mitchellh.ghostty",
+      "omacalc",
+      "omawrite",
+      "X",
+      "YouTube"
+    ],
+    "position": "bottom"
+  },
+  "idle": {
+    "lock": 300,
+    "screensaver": 150
+  },
+  "plugins": [
+    {
+      "id": "corey.workspace-background"
+    }
+  ],
+  "version": 1
+}

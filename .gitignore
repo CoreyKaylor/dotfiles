@@ -28,3 +28,6 @@ herdr/.config/herdr/*.log
 # Machine-local files that must not land in stow packages
 ghostty/.config/ghostty/config
 git/.config/git/local
+
+# Omarchy backups (cp foo foo.bak.<ts>) written into a stowed directory
+omarchy/**/*.bak.*

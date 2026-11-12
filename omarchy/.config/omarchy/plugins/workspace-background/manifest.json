@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "id": "corey.workspace-background",
+  "name": "Workspace background",
+  "version": "1.0.0",
+  "author": "Corey Kaylor",
+  "description": "Shows the keybinding cheat sheet as the background of workspace 2 on each monitor.",
+  "kinds": [
+    "service"
+  ],
+  "entryPoints": {
+    "service": "Service.qml"
+  }
+}

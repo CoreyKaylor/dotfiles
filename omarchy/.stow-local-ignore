@@ -1,0 +1,3 @@
+# Omarchy saves shell.json by writing a new file and renaming it over the old
+# one, which replaces a symlink. install.sh copies it instead; see README.
+^/\.config/omarchy/shell\.json$

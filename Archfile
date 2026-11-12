@@ -15,6 +15,7 @@ tree-sitter-cli
 lazygit
 tmux
 herdr
+ghostty                      # default terminal on Omarchy (install.sh sets it)
 eza
 fd
 fzf
