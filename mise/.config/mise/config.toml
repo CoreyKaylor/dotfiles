@@ -1,8 +1,15 @@
 [env]
 LC_ALL = "en_US.UTF-8"
 
+# Arch's dotnet-host sets DOTNET_ROOT=/usr/share/dotnet (root-owned), which
+# mise's shared dotnet install would target. Isolated gives each SDK its own
+# dir under installs/ and points DOTNET_ROOT there when activated.
+[settings.dotnet]
+isolated = true
+
 [tools]
 "cargo:cargo-audit" = "latest"
+dotnet = "11.0.100"
 flyctl = "latest"
 go = "1.25.0"
 gradle = "8.14.3"
