@@ -3,6 +3,7 @@
 #   fnox-set KEY VALUE              this project (under ~/Projects) or shared
 #   fnox-set -P staging KEY         a profile; prompts (hidden) or reads stdin
 #   fnox-set -i ITEM KEY            the 1Password item to hold the field
+#   fnox-set -V Work KEY            another vault; provider is op-<vault> (op for Dev)
 #   fnox-set -s | -p | -l ...       shared, project, or project fnox.local.toml
 #
 # The value becomes field KEY on item ITEM in vault $FNOX_OP_VAULT (Dev),
@@ -36,13 +37,23 @@ fnox-set() {
       -l|--local) mode=local; shift ;;
       -P|--profile) profile="${2:?fnox-set: -P needs a profile}"; shift 2 ;;
       -i|--item) item="${2:?fnox-set: -i needs an item}"; shift 2 ;;
+      -V|--vault)
+        vault="${2:?fnox-set: -V needs a vault}"
+        if [[ "$vault" == Dev ]]; then
+          provider=op
+        else
+          provider="op-${${vault:l}//[^a-z0-9]/-}"
+        fi
+        shift 2
+        ;;
       -h|--help)
-        print -r -- "Usage: fnox-set [-s|-p|-l] [-P PROFILE] [-i ITEM] KEY [VALUE]"
+        print -r -- "Usage: fnox-set [-s|-p|-l] [-P PROFILE] [-i ITEM] [-V VAULT] KEY [VALUE]"
         print -r -- "  -s  $shared/fnox.toml"
         print -r -- "  -p  this project's fnox.toml"
         print -r -- "  -l  this project's fnox.local.toml"
         print -r -- "  -P  write under [profiles.PROFILE.secrets]"
         print -r -- "  -i  1Password item (default: the item this table already uses)"
+        print -r -- "  -V  1Password vault (default: $vault); uses provider op-<vault>, op for Dev"
         print -r -- "  default: this project if cwd is under $shared, else shared"
         print -r -- "  VALUE may be an argument, stdin, or a hidden prompt if omitted"
         print -r -- "  vault: $vault (FNOX_OP_VAULT)"
@@ -58,7 +69,7 @@ fnox-set() {
   done
 
   if (( $# < 1 )); then
-    print -u2 "Usage: fnox-set [-s|-p|-l] [-P PROFILE] [-i ITEM] KEY [VALUE]"
+    print -u2 "Usage: fnox-set [-s|-p|-l] [-P PROFILE] [-i ITEM] [-V VAULT] KEY [VALUE]"
     return 2
   fi
 
@@ -90,7 +101,7 @@ fnox-set() {
   esac
 
   if [[ -z "$item" ]]; then
-    item="$(_fnox_table_item "$profile" "$dest" "${dest:h}/fnox.toml" "${dest:h}/fnox.local.toml")"
+    item="$(_fnox_table_item "$profile" "$provider" "$dest" "${dest:h}/fnox.toml" "${dest:h}/fnox.local.toml")"
     if [[ -z "$item" ]]; then
       print -u2 "fnox-set: no $provider references in that table yet; name the item with -i ITEM"
       return 2
@@ -148,10 +159,10 @@ fnox-set() {
   print -u2 "fnox-set: $key -> op://$vault/$item/$key, referenced in $dest"
 }
 
-# First item referenced by provider "op" in a profile's table, across files.
+# First item referenced by the given provider in a profile's table, across files.
 _fnox_table_item() {
-  local profile="$1" file section item_found
-  shift
+  local profile="$1" provider="$2" file section item_found
+  shift 2
   if [[ "$profile" == default ]]; then
     section='secrets'
   else
@@ -159,7 +170,7 @@ _fnox_table_item() {
   fi
   for file in "$@"; do
     [[ -r "$file" ]] || continue
-    awk -v want="[$section]" -v prov="${FNOX_OP_PROVIDER:-op}" '
+    awk -v want="[$section]" -v prov="$provider" '
       /^[[:space:]]*\[/ { gsub(/[[:space:]]/, ""); cur = $0; next }
       cur == want && $0 ~ "provider *= *\"" prov "\"" &&
         match($0, /value *= *"[^"\/]+\//) {

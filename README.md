@@ -75,7 +75,10 @@ fnox reads 1Password through the `op` CLI (`brew bundle` installs it). Turn on *
 ```sh
 fnox-set -P staging STG_NEW_TOKEN        # prompts; adds the field to the item that table already uses
 fnox-set -s -i shared JIRA_API_TOKEN     # shared ~/Projects/fnox.toml, item "shared"
+fnox-set -V Work -i snowflake SNOWFLAKE_PASSWORD   # another vault; reference uses provider op-work
 ```
+
+Each vault needs a provider in `~/.config/fnox/config.toml`: `op` for `Dev`, `op-<vault, lowercased>` for the rest (`Work` is `op-work`). A single `fnox.toml` can mix them, and the provider on each reference decides which vault the value comes from.
 
 `fnox-set` writes the value to 1Password on stdin (never argv), reads it back, then adds the reference to the right `fnox.toml`. `fnox set` alone cannot write to 1Password.
 
