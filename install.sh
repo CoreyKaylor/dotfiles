@@ -453,6 +453,27 @@ ensure_tailscale() {
   fi
 }
 
+# diffbandit.nvim ships a launcher script: `diffbandit` and `git diffbandit`.
+# It just starts nvim and runs :DiffBanditLaunch, so it uses whichever copy of
+# the plugin the nvim config loads; link it from the vim.pack-managed copy.
+ensure_diffbandit_cli() {
+  has nvim || return 0
+
+  local script="$HOME/.local/share/nvim/site/pack/core/opt/diffbandit.nvim/bin/diffbandit"
+  if [[ ! -x "$script" ]]; then
+    info "Installing nvim plugins..."
+    nvim --headless +qa >/dev/null 2>&1 || true
+  fi
+  if [[ ! -x "$script" ]]; then
+    info "diffbandit.nvim is not installed; skipping the diffbandit CLI."
+    return
+  fi
+
+  mkdir -p "$HOME/.local/bin"
+  ln -sfn "$script" "$HOME/.local/bin/diffbandit"
+  ln -sfn "$script" "$HOME/.local/bin/git-diffbandit"
+}
+
 ensure_tpm() {
   local tpm="$HOME/.tmux/plugins/tpm"
   [[ -d "$tpm" ]] && return
@@ -503,6 +524,7 @@ ensure_grok_bot
 ensure_tailscale
 ensure_docker
 ensure_herdr_plugin
+ensure_diffbandit_cli
 ensure_login_shell
 
 info "Dotfiles installed."
