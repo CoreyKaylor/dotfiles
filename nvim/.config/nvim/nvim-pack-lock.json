@@ -57,7 +57,7 @@
       "src": "https://github.com/stevearc/conform.nvim"
     },
     "diffbandit.nvim": {
-      "rev": "1897aea7a970b49f0687617a16bcea1f53290fbc",
+      "rev": "b13feaa4c5cb8d2b927d9ae2676721e6f54d1a71",
       "src": "https://github.com/CoreyKaylor/diffbandit.nvim"
     },
     "diffview.nvim": {
@@ -77,7 +77,7 @@
       "src": "https://github.com/rafamadriz/friendly-snippets"
     },
     "gitsigns.nvim": {
-      "rev": "ef707fb93301a9b856f36eae4c8f56f5b988a794",
+      "rev": "7c33a797a5c0923e346cbedebe37bdea8f7ea160",
       "src": "https://github.com/lewis6991/gitsigns.nvim"
     },
     "harpoon": {
@@ -86,7 +86,7 @@
       "version": "'harpoon2'"
     },
     "herdr-splits.nvim": {
-      "rev": "94f30cf4e9ac76ddf185a3acd0977be728fa4106",
+      "rev": "4556fc0e7d4895fd8c86a1727dd9104c39e6e7d4",
       "src": "https://github.com/lmilojevicc/herdr-splits.nvim"
     },
     "kanagawa.nvim": {
@@ -114,7 +114,7 @@
       "src": "https://github.com/OXY2DEV/markview.nvim"
     },
     "neogit": {
-      "rev": "ba2f33b64b996ff5530c4c45a3c432fb63aaa95b",
+      "rev": "aa99b440b266bcf7e03399f149ed46f981555fa3",
       "src": "https://github.com/NeogitOrg/neogit"
     },
     "neovim-project": {
@@ -154,11 +154,11 @@
       "src": "https://github.com/kylechui/nvim-surround"
     },
     "nvim-tree.lua": {
-      "rev": "7e1da84aaffb413e1fa47b3895e5caa12501142d",
+      "rev": "5cc8d425c2bf3c09041a2db3cfff6197e2dce34d",
       "src": "https://github.com/nvim-tree/nvim-tree.lua"
     },
     "nvim-treesitter": {
-      "rev": "19bdfc04f40ed2ccb3340591d125f759b0406875",
+      "rev": "60c0f468de3e636fa660a419d537e8033aca4e39",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
       "version": "'main'"
     },
@@ -184,7 +184,7 @@
       "src": "https://github.com/nvim-lua/plenary.nvim"
     },
     "smart-splits.nvim": {
-      "rev": "fdd0142633ae78b175ff29043953e701215a34dd",
+      "rev": "72d073c5a10f6aec93e7cb7f5dc450f9559ed376",
       "src": "https://github.com/mrjones2014/smart-splits.nvim"
     },
     "solarized.nvim": {
