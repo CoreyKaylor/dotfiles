@@ -45,3 +45,6 @@ vscode-langservers-extracted # AUR
 gopls
 yamllint
 uv
+
+# Desktop apps
+artcraft-launcher-bin        # AUR; installs/updates the Craft apps as AppImages in ~/Applications
