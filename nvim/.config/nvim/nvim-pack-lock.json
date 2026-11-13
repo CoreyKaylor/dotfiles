@@ -77,7 +77,7 @@
       "src": "https://github.com/rafamadriz/friendly-snippets"
     },
     "gitsigns.nvim": {
-      "rev": "7c33a797a5c0923e346cbedebe37bdea8f7ea160",
+      "rev": "dc7698f932792a764d3db95fedee26c38e728355",
       "src": "https://github.com/lewis6991/gitsigns.nvim"
     },
     "harpoon": {
@@ -184,7 +184,7 @@
       "src": "https://github.com/nvim-lua/plenary.nvim"
     },
     "smart-splits.nvim": {
-      "rev": "72d073c5a10f6aec93e7cb7f5dc450f9559ed376",
+      "rev": "d3617de050f58e6f1f924b1401fba7677517c196",
       "src": "https://github.com/mrjones2014/smart-splits.nvim"
     },
     "solarized.nvim": {
