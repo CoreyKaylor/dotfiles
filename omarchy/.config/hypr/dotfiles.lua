@@ -43,6 +43,10 @@ hl.gesture({ fingers = 4, direction = "right", action = step_workspace(-1) })
 -- Four-finger swipe up to open the app launcher (like Launchpad).
 hl.gesture({ fingers = 4, direction = "up", action = function() hl.dispatch(hl.dsp.global("omarchy:menu.apps")) end })
 
+-- Bindings -------------------------------------------------------------------
+-- Folio (Omarchy's new Qt file manager, "Files") instead of Nautilus.
+o.rebind("SUPER + SHIFT + F", "File manager", { launch = "folio" })
+
 -- Look and feel --------------------------------------------------------------
 -- Quick horizontal slide when switching workspaces (Omarchy disables this by default).
 -- speed is in deciseconds: 2.5 = 250ms. Style options: "slide", "slidevert", "fade", "slidefade 20%".
