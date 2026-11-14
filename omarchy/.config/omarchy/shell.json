@@ -56,6 +56,9 @@
       "left": [
         {
           "id": "omarchy.menu"
+        },
+        {
+          "id": "omarchy.workspaces"
         }
       ],
       "right": [
@@ -94,7 +97,7 @@
   },
   "dock": {
     "pinned": [
-      "org.gnome.Nautilus",
+      "folio",
       "chromium",
       "com.mitchellh.ghostty",
       "omacalc",
