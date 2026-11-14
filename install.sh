@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PACKAGES=(zsh tmux nvim mise git lazygit herdr ghostty ssh)
+PACKAGES=(zsh tmux nvim mise git jj lazygit herdr ghostty ssh)
 BACKUP_DIR="$HOME/.dotfiles-backup/$(date +%Y%m%d-%H%M%S)"
 
 info() {
@@ -220,8 +220,8 @@ stow_packages() {
   # Real dirs so runtime state (lazygit state.yml, other mise conf.d/ files) stays
   # out of the repo; stow links only conf.d/fnox.toml.
   mkdir -p "$HOME/.config/lazygit" "$HOME/.config/mise/conf.d"
-  # Real dirs so machine-local files (ghostty/config, git/local) stay out of the repo.
-  mkdir -p "$HOME/.config/ghostty" "$HOME/.config/git"
+  # Real dirs so machine-local files (ghostty/config, git/local, jj/conf.d/local.toml) stay out of the repo.
+  mkdir -p "$HOME/.config/ghostty" "$HOME/.config/git" "$HOME/.config/jj/conf.d"
   # Real, private dir so stow links individual files and keys never land in the repo.
   mkdir -p "$HOME/.ssh"
   chmod 700 "$HOME/.ssh"
@@ -353,6 +353,8 @@ ensure_git_signing() {
   # Machine-local: the path differs per OS and only exists with 1Password installed.
   mkdir -p "$HOME/.config/git"
   git config --file "$HOME/.config/git/local" gpg.ssh.program "$op_ssh_sign"
+  mkdir -p "$HOME/.config/jj/conf.d"
+  printf '[signing.backends.ssh]\nprogram = "%s"\n' "$op_ssh_sign" > "$HOME/.config/jj/conf.d/local.toml"
 }
 
 ensure_ai_cli() {

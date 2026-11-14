@@ -8,6 +8,7 @@ zsh
 zsh-antidote                 # AUR; .zshrc looks in /usr/share/zsh-antidote
 git
 git-delta                    # core.pager / lazygit diffs
+jujutsu                      # jj, Git-compatible VCS
 just
 jq                           # fnox-set
 neovim

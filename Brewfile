@@ -34,6 +34,8 @@ brew "git"
 brew "lazygit"
 # Syntax-highlighting pager for git/diff (side-by-side diffs in lazygit)
 brew "git-delta"
+# Git-compatible VCS (jj)
+brew "jj"
 # Command runner for repo-local tasks
 brew "just"
 # GNU Pretty Good Privacy (PGP) package

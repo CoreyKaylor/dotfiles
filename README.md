@@ -4,7 +4,7 @@ Personal macOS and Linux/WSL dotfiles managed with GNU Stow.
 
 ## Layout
 
-- `zsh/`, `tmux/`, `nvim/`, `mise/`, `git/`, `lazygit/`, `herdr/`, `ghostty/`, and `ssh/` are Stow packages that mirror files under `$HOME`. `omarchy/` is one too, stowed only on Omarchy.
+- `zsh/`, `tmux/`, `nvim/`, `mise/`, `git/`, `jj/`, `lazygit/`, `herdr/`, `ghostty/`, and `ssh/` are Stow packages that mirror files under `$HOME`. `omarchy/` is one too, stowed only on Omarchy.
 - `Brewfile` tracks macOS packages (including `herdr` and Ghostty); `Archfile` is the Arch Linux counterpart.
 - `justfile` provides repo tasks.
 - `fnox/` is helper scripts. It is not stowed; secret values stay out of this repo.

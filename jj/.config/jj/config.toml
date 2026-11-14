@@ -1,0 +1,26 @@
+# Jujutsu (jj) config. Mirrors git/.gitconfig: same identity, editor, delta
+# pager and SSH signing with the GitHub key held in 1Password. install.sh puts
+# the machine-local op-ssh-sign path in ~/.config/jj/conf.d/local.toml.
+
+[user]
+name = "Corey Kaylor"
+email = "corey@kaylors.net"
+
+[ui]
+editor = "nvim"
+pager = "delta"
+# delta reads git-format diffs
+diff-formatter = ":git"
+
+# jj rewrites commits constantly (every working-copy snapshot), so signing each
+# one would prompt 1Password nonstop. Leave them unsigned and sign on push.
+[signing]
+behavior = "drop"
+backend = "ssh"
+key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIs0w01UMkCOGpl9eAO03U78bzE113Qz7XSwflQN9KhB"
+
+[signing.backends.ssh]
+allowed-signers = "~/.ssh/allowed_signers"
+
+[git]
+sign-on-push = true

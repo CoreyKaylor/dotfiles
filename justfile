@@ -11,7 +11,7 @@ uninstall:
 
 check:
   mkdir -p /tmp/dotfiles-stow-check
-  stow --dir=. --target=/tmp/dotfiles-stow-check --simulate --restow zsh tmux nvim mise git lazygit herdr ghostty ssh omarchy
+  stow --dir=. --target=/tmp/dotfiles-stow-check --simulate --restow zsh tmux nvim mise git jj lazygit herdr ghostty ssh omarchy
   bash -n omarchy/.config/omarchy/hooks/theme-set.d/10-owe-sync
   jq empty omarchy/.config/omarchy/shell.json omarchy/.config/omarchy/plugins/workspace-background/manifest.json
   zsh -n zsh/.zshrc
