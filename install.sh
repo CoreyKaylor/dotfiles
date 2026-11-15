@@ -322,6 +322,19 @@ ensure_hypr_dotfiles_include() {
   fi
 }
 
+# Trackpad palm rejection lives in libinput, below Hyprland, and its overrides
+# must be in /etc, so the repo copy is installed with sudo. Its sections match
+# only the Apple MTP trackpad, so other machines are unaffected.
+ensure_libinput_quirks() {
+  is_arch || return 0
+  local repo="$ROOT/libinput/local-overrides.quirks"
+  local live=/etc/libinput/local-overrides.quirks
+
+  cmp -s "$repo" "$live" && return
+  info "Installing $live (log out and back in for it to apply)"
+  sudo install -Dm644 "$repo" "$live"
+}
+
 # ssh/.ssh/config points IdentityAgent at ~/.1password/agent.sock, where the
 # Linux app puts it. On macOS, link that path to the real socket (1Password's
 # documented setup) so one ssh config works on both.
@@ -600,6 +613,7 @@ stow_packages
 ensure_omarchy_shell_config
 ensure_hypr_dotfiles_include
 ensure_omarchy_terminal
+ensure_libinput_quirks
 ensure_ghostty_include
 ensure_1password_agent_socket
 ensure_git_signing

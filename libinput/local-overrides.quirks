@@ -1,0 +1,17 @@
+# libinput overrides for the MacBook trackpad (Apple MTP on Asahi). install.sh
+# copies this to /etc/libinput/local-overrides.quirks; log out and back in for
+# a change to apply. The stock values live in
+# /usr/share/libinput/50-system-apple.quirks (palm 1600, touch 150:130).
+#
+# AttrPalmSizeThreshold: contacts at least this wide are ignored as palms.
+#   Lower catches more palm grazes; too low starts dropping real fingertips.
+# AttrTouchSizeRange (down:up): a contact must reach "down" to count as a
+#   touch and ends below "up". Higher ignores light, glancing contacts.
+# Measure real values with `sudo libinput measure touch-size` (libinput-tools).
+
+[Apple Laptop Touchpad (MTP) palm override]
+MatchUdevType=touchpad
+MatchName=Apple*MTP*
+MatchVendor=0x05AC
+AttrPalmSizeThreshold=1000
+AttrTouchSizeRange=200:150

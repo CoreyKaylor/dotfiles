@@ -70,6 +70,11 @@ omarchy-drift:
     echo 'missing: require("hypr.dotfiles") in ~/.config/hypr/hyprland.lua'
     status=1
   fi
+  if ! cmp -s libinput/local-overrides.quirks /etc/libinput/local-overrides.quirks; then
+    echo "differs: /etc/libinput/local-overrides.quirks (rerun ./install.sh)"
+    diff -u libinput/local-overrides.quirks /etc/libinput/local-overrides.quirks || true
+    status=1
+  fi
   [[ $status -eq 0 ]] && echo "All omarchy files match the repo."
   exit $status
 
