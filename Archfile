@@ -37,6 +37,7 @@ aws-cli-v2                   # aws
 azure-cli
 docker                       # install.sh enables docker and adds you to the docker group
 docker-compose
+lazydocker                   # TUI for the docker engine
 postgresql-libs              # psql
 
 # Language servers and linters used by nvim
