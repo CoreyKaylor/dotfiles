@@ -9,6 +9,7 @@ isolated = true
 
 [tools]
 "cargo:cargo-audit" = "latest"
+antigravity-cli = "latest"                # agy, Google Antigravity CLI
 "github:jtnk/tmd" = "latest"              # tmd, terminal Markdown viewer
 dotnet = "11.0.100"
 flyctl = "latest"
